@@ -48,3 +48,6 @@ TagManager:
   - name: Collider
     uniqueID: 1170612019
     locked: 0
+  - name: Chara
+    uniqueID: 195814841
+    locked: 0
