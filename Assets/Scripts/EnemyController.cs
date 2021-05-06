@@ -16,6 +16,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private GameObject destroyEffectPrefab;
 
+    [SerializeField]
+    private DrawPathLine pathLinePrefab;
+
 
     [Header("移動速度")]
     public float moveSpeed;
@@ -32,7 +35,7 @@ public class EnemyController : MonoBehaviour
 
     private Tween tween;
     
-    void Start()
+    IEnumerator  Start()
     {
         hp = maxHp;
 
@@ -41,6 +44,9 @@ public class EnemyController : MonoBehaviour
         // 移動する地点を取得
         Vector3[] paths = pathData.pathTranArray.Select(x => x.position).ToArray();
 
+        // 経路生成
+        yield return StartCoroutine(CreatePathLine(paths));
+
         // 各地点に向けて移動
         tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear);
     }
@@ -48,6 +54,7 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        // 敵の進行方向を取得
         ChangeAnimeDirection();
     }
 
@@ -91,15 +98,13 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("残りHP : " + hp);
 
-
-
         if (hp <= 0) {
 
             // 破壊
             DestroyEnemy();
         }
 
-        // TODO 演出用のエフェクト生成
+        // 演出用のエフェクト生成
         CreateHitEffect();
 
         // ヒットストップ演出
@@ -140,5 +145,38 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         tween.timeScale = 1.0f;
+    }
+
+    /// <summary>
+    /// 経路の生成と破棄
+    /// </summary>
+    private IEnumerator CreatePathLine(Vector3[] paths) {
+
+        yield return null;
+
+        List<DrawPathLine> drawPathLinesList = new List<DrawPathLine>(); 
+
+        // １つの Path ごとに１つずつ順番に経路を生成
+        for (int i = 0; i < paths.Length -1; i++) {
+            DrawPathLine drawPathLine = Instantiate(pathLinePrefab, transform.position, Quaternion.identity);
+
+            Vector3[] drawPaths = new Vector3[2] { paths[i], paths[i + 1] };
+
+            drawPathLine.CreatePathLine(drawPaths);
+
+            drawPathLinesList.Add(drawPathLine);
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // すべてのラインを生成して待機
+        yield return new WaitForSeconds(0.5f);
+
+        // １つのラインずつ順番に削除する
+        for (int i = 0; i < drawPathLinesList.Count;i++) {
+            Destroy(drawPathLinesList[i].gameObject);
+
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
