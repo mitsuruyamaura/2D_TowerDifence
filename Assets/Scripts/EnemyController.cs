@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour
 
     private Tween tween;
     
-    void Start()
+    IEnumerator  Start()
     {
         hp = maxHp;
 
@@ -44,16 +44,17 @@ public class EnemyController : MonoBehaviour
         // 移動する地点を取得
         Vector3[] paths = pathData.pathTranArray.Select(x => x.position).ToArray();
 
+        // 経路生成
+        yield return StartCoroutine(CreatePathLine(paths));
+
         // 各地点に向けて移動
         tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear);
-
-        // 経路生成
-        StartCoroutine(CreatePathLine(paths));
     }
 
 
     void Update()
     {
+        // 敵の進行方向を取得
         ChangeAnimeDirection();
     }
 
@@ -97,15 +98,13 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("残りHP : " + hp);
 
-
-
         if (hp <= 0) {
 
             // 破壊
             DestroyEnemy();
         }
 
-        // TODO 演出用のエフェクト生成
+        // 演出用のエフェクト生成
         CreateHitEffect();
 
         // ヒットストップ演出
@@ -149,7 +148,7 @@ public class EnemyController : MonoBehaviour
     }
 
     /// <summary>
-    /// 経路を生成
+    /// 経路の生成と破棄
     /// </summary>
     private IEnumerator CreatePathLine(Vector3[] paths) {
 

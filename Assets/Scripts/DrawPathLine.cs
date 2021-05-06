@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class DrawPathLine : MonoBehaviour
 {
-    private LineRenderer lineRenderer;
-
     /// <summary>
     /// 経路用のライン生成
     /// </summary>
     /// <param name="drawPaths"></param>
     public void CreatePathLine(Vector3[] drawPaths) {
-        TryGetComponent(out lineRenderer);
+        TryGetComponent(out LineRenderer lineRenderer);
 
         // ラインの太さを調整
         lineRenderer.startWidth = 0.5f;
