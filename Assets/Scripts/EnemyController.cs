@@ -16,6 +16,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private GameObject destroyEffectPrefab;
 
+    [SerializeField]
+    private DrawPathLine pathLinePrefab;
+
 
     [Header("移動速度")]
     public float moveSpeed;
@@ -43,6 +46,9 @@ public class EnemyController : MonoBehaviour
 
         // 各地点に向けて移動
         tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear);
+
+        // 経路生成
+        StartCoroutine(CreatePathLine(paths));
     }
 
 
@@ -140,5 +146,38 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         tween.timeScale = 1.0f;
+    }
+
+    /// <summary>
+    /// 経路を生成
+    /// </summary>
+    private IEnumerator CreatePathLine(Vector3[] paths) {
+
+        yield return null;
+
+        List<DrawPathLine> drawPathLinesList = new List<DrawPathLine>(); 
+
+        // １つの Path ごとに１つずつ順番に経路を生成
+        for (int i = 0; i < paths.Length -1; i++) {
+            DrawPathLine drawPathLine = Instantiate(pathLinePrefab, transform.position, Quaternion.identity);
+
+            Vector3[] drawPaths = new Vector3[2] { paths[i], paths[i + 1] };
+
+            drawPathLine.CreatePathLine(drawPaths);
+
+            drawPathLinesList.Add(drawPathLine);
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // すべてのラインを生成して待機
+        yield return new WaitForSeconds(0.5f);
+
+        // １つのラインずつ順番に削除する
+        for (int i = 0; i < drawPathLinesList.Count;i++) {
+            Destroy(drawPathLinesList[i].gameObject);
+
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
