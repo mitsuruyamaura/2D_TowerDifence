@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private DrawPathLine pathLinePrefab;
 
+    public int attackPower;
 
     [Header("ˆÚ“®‘¬“x")]
     public float moveSpeed;
