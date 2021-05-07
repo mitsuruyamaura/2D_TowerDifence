@@ -15,9 +15,26 @@ public class CharaController : MonoBehaviour
     [Header("çUåÇÇ∑ÇÈÇ‹Ç≈ÇÃë“ã@éûä‘")]
     public float intervalAttackTime = 60.0f;
 
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
-    public void SetUpChara() {
-        
+    [SerializeField]
+    private BoxCollider2D boxCollider;
+
+    [SerializeField]
+    private CharaData charaData;
+
+
+    public void SetUpChara(CharaData charaData) {
+        this.charaData = charaData;
+
+        spriteRenderer.sprite = this.charaData.charaSprite;
+
+        attackPower = this.charaData.attackPower;
+
+        intervalAttackTime = this.charaData.intervalAttackTime;
+
+        boxCollider.size = CharaDataSO.GetAttackRangeSize(charaData.attackRange);
 
     }
 

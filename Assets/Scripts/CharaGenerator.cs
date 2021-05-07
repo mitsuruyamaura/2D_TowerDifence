@@ -14,6 +14,35 @@ public class CharaGenerator : MonoBehaviour
     [SerializeField]
     private Grid grid;     　　　　// Base 側の Tilemap を指定する 
 
+    [SerializeField]
+    private CharaDataSO charaDataSO;
+
+    [SerializeField]
+    private PlacementCharaSelectPopUp placementCharaSelectPopUpPrefab;
+
+    [SerializeField]
+    private Transform canvasTran;
+
+    [SerializeField]
+    private CharaController charaControllerPrefab;
+
+
+    IEnumerator Start() {
+        // 所持しているキャラのデータをリスト化
+        yield return StartCoroutine(CreateHaveCharaDatasList());    
+    }
+
+    /// <summary>
+    /// 所持しているキャラのデータをリスト化
+    /// </summary>
+    private IEnumerator CreateHaveCharaDatasList() {
+        yield return null;
+
+        // TODO 所持しているキャラのリストを作成
+
+
+    }
+
 
     void Update()
     {
@@ -34,12 +63,11 @@ public class CharaGenerator : MonoBehaviour
 
             // タップした位置のタイルのコライダーの情報を確認する
             if (tilemaps.GetColliderType(gridPos) == Tile.ColliderType.None) {
-                GameObject chara = Instantiate(charaPrefab, gridPos, Quaternion.identity);
+                // キャラ配置
+                //CreateChara(gridPos);
 
-                // 位置が左下を 0,0 としているので、中央にくるように調整
-                chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
-
-                chara.GetComponent<CharaController>().SetUpChara();
+                // 配置キャラ選択用ポップアップ生成
+                CreatePlacementCharaSelectPopUp(gridPos);
             }
 
 
@@ -79,5 +107,46 @@ public class CharaGenerator : MonoBehaviour
 
             //　https://baba-s.hatenablog.com/entry/2018/04/08/131500
         }
+    }
+
+    /// <summary>
+    /// キャラ生成。デバッグ用
+    /// </summary>
+    /// <param name="gridPos"></param>
+    private void CreateChara(Vector3Int gridPos) {
+        // タップした位置のタイルのコライダーの情報を確認する
+        if (tilemaps.GetColliderType(gridPos) == Tile.ColliderType.None) {
+            GameObject chara = Instantiate(charaPrefab, gridPos, Quaternion.identity);
+
+            // 位置が左下を 0,0 としているので、中央にくるように調整
+            chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gridPos"></param>
+    private void CreatePlacementCharaSelectPopUp(Vector3Int gridPos) {
+        PlacementCharaSelectPopUp placementCharaSelectPopUp = Instantiate(placementCharaSelectPopUpPrefab, canvasTran, false);
+
+        // TODO 第2引数は所持しているキャラのリストに変更する
+        placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(gridPos, charaDataSO.charaDatasList, this);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gridPos"></param>
+    /// <param name="charaData"></param>
+    public void CreateChooseChara(Vector3Int gridPos, CharaData charaData) {
+
+        CharaController chara = Instantiate(charaControllerPrefab, gridPos, Quaternion.identity);
+
+        // 位置が左下を 0,0 としているので、中央にくるように調整
+        chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
+
+        chara.SetUpChara(charaData);
     }
 }
