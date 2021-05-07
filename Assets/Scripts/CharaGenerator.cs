@@ -26,6 +26,8 @@ public class CharaGenerator : MonoBehaviour
     [SerializeField]
     private CharaController charaControllerPrefab;
 
+    private PlacementCharaSelectPopUp placementCharaSelectPopUp;
+
 
     IEnumerator Start() {
         // 所持しているキャラのデータをリスト化
@@ -125,18 +127,20 @@ public class CharaGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 配置キャラ選択用のポップアップの生成
     /// </summary>
     /// <param name="gridPos"></param>
     private void CreatePlacementCharaSelectPopUp(Vector3Int gridPos) {
-        PlacementCharaSelectPopUp placementCharaSelectPopUp = Instantiate(placementCharaSelectPopUpPrefab, canvasTran, false);
+        if (!placementCharaSelectPopUp) {
+            placementCharaSelectPopUp = Instantiate(placementCharaSelectPopUpPrefab, canvasTran, false);
 
-        // TODO 第2引数は所持しているキャラのリストに変更する
-        placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(gridPos, charaDataSO.charaDatasList, this);
+            // TODO 第2引数は所持しているキャラのリストに変更する
+            placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(gridPos, charaDataSO.charaDatasList, this);
+        }
     }
 
     /// <summary>
-    /// 
+    /// 選択したキャラを生成して配置
     /// </summary>
     /// <param name="gridPos"></param>
     /// <param name="charaData"></param>

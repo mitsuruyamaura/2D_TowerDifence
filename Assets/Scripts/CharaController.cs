@@ -19,12 +19,18 @@ public class CharaController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     [SerializeField]
+    private Animator anim;
+
+    [SerializeField]
     private BoxCollider2D boxCollider;
 
     [SerializeField]
     private CharaData charaData;
 
-
+    /// <summary>
+    /// ƒLƒƒƒ‰‚Ìİ’è
+    /// </summary>
+    /// <param name="charaData"></param>
     public void SetUpChara(CharaData charaData) {
         this.charaData = charaData;
 
@@ -36,8 +42,13 @@ public class CharaController : MonoBehaviour
 
         boxCollider.size = CharaDataSO.GetAttackRangeSize(charaData.attackRange);
 
+        anim.runtimeAnimatorController = this.charaData.charaAnim;
     }
 
+    /// <summary>
+    /// UŒ‚€”õ
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator PrepareteAttack() {
         Debug.Log("UŒ‚€”õŠJn");
         int timer = 0;
@@ -55,6 +66,9 @@ public class CharaController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// UŒ‚
+    /// </summary>
     private void Attack() {
         Debug.Log("UŒ‚");
 
@@ -77,7 +91,6 @@ public class CharaController : MonoBehaviour
         }
 
     }
-
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.tag == "Enemy") {

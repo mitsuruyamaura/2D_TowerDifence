@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor.Animations;
 
 /// <summary>
 /// キャラの詳細データ
@@ -9,6 +10,7 @@ public class CharaData
     public int charaNo;
     public int cost;
     public Sprite charaSprite;
+    public AnimatorController charaAnim;
     public string charaName;
 
     public int attackPower;

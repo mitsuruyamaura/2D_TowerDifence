@@ -46,7 +46,7 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     private CharaGenerator charaGenerator;
 
     /// <summary>
-    /// 
+    /// ポップアップの設定
     /// </summary>
     /// <param name="gridPos"></param>
     /// <param name="haveCharaDataList"></param>
@@ -74,7 +74,7 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
             }
         }
 
-        btnChooseChara.onClick.AddListener(OnClickChooseChara);
+        btnChooseChara.onClick.AddListener(OnClickSubmitChooseChara);
         btnClosePopUp.onClick.AddListener(OnClickClosePopUp);
 
         btnChooseChara.interactable = true;
@@ -99,9 +99,9 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     }
 
     /// <summary>
-    /// 選択しているキャラを生成
+    /// 選択しているキャラを決定
     /// </summary>
-    private void OnClickChooseChara() {
+    private void OnClickSubmitChooseChara() {
         charaGenerator.CreateChooseChara(createCharaPos, chooseCharaData);
         ClosePopUp();
     }

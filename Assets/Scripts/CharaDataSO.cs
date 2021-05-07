@@ -19,7 +19,7 @@ public class CharaDataSO : ScriptableObject
             case AttackRangeType.Middle:
                 return Vector2.one * 2.0f;
             case AttackRangeType.Long:
-                return Vector2.one * 2.0f;
+                return Vector2.one * 3.0f;
             default:
                 return Vector2.one;
         }

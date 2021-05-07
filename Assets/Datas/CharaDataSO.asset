@@ -16,6 +16,7 @@ MonoBehaviour:
   - charaNo: 0
     cost: 100
     charaSprite: {fileID: 4480065207194443510, guid: cdb7543f3566e474a9b88aa4b07acb9b, type: 3}
+    charaAnim: {fileID: 9100000, guid: 59d89093dcd20554e9ccba3d44030a1d, type: 2}
     charaName: Aria
     attackPower: 1
     attackRange: 0
@@ -24,6 +25,7 @@ MonoBehaviour:
   - charaNo: 1
     cost: 200
     charaSprite: {fileID: 1248525323487703161, guid: 82a7f4ebc9d63584ba6e9834987ee30c, type: 3}
+    charaAnim: {fileID: 9100000, guid: 64c17a6c81bf24146a7499fefd5f93d6, type: 2}
     charaName: Billy
     attackPower: 2
     attackRange: 0
@@ -32,6 +34,7 @@ MonoBehaviour:
   - charaNo: 3
     cost: 150
     charaSprite: {fileID: 2684471460419224087, guid: 5278527c151a5424ab1aad3fd3038e0d, type: 3}
+    charaAnim: {fileID: 9100000, guid: 805ec3d451c189f4e8ae478e7a1c8b48, type: 2}
     charaName: Call
     attackPower: 1
     attackRange: 2
@@ -40,6 +43,7 @@ MonoBehaviour:
   - charaNo: 3
     cost: 200
     charaSprite: {fileID: 4558515143993472460, guid: 0b0ee8d89fbcddb41960ae890c9e858f, type: 3}
+    charaAnim: {fileID: 9100000, guid: b977811233e26b64996524428c16a14a, type: 2}
     charaName: Devin
     attackPower: 1
     attackRange: 1
@@ -48,6 +52,7 @@ MonoBehaviour:
   - charaNo: 4
     cost: 300
     charaSprite: {fileID: 4814029082027783119, guid: dcb348c7b73fe9d4ab7a322471cc3de5, type: 3}
+    charaAnim: {fileID: 9100000, guid: 1cb8b5c79079fee49b4076bbcb701291, type: 2}
     charaName: Elen
     attackPower: 3
     attackRange: 0
