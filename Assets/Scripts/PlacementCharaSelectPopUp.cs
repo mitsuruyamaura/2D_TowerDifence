@@ -33,7 +33,11 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     [SerializeField]
     private Transform selectCharaDetailTran;
 
-    public List<SelectCharaDetail> selectCharaDetailsList = new List<SelectCharaDetail>();
+    [SerializeField]
+    private CanvasGroup canvasGroup;
+
+    [SerializeField]
+    private List<SelectCharaDetail> selectCharaDetailsList = new List<SelectCharaDetail>();
 
     private Vector3Int createCharaPos;
 
@@ -47,6 +51,9 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     /// <param name="gridPos"></param>
     /// <param name="haveCharaDataList"></param>
     public void SetUpPlacementCharaSelectPopUp(Vector3Int gridPos,List<CharaData> haveCharaDataList, CharaGenerator charaGenerator) {
+        canvasGroup.alpha = 0;
+        canvasGroup.DOFade(1.0f, 0.5f);
+
         this.charaGenerator = charaGenerator;
 
         btnChooseChara.interactable = false;
@@ -96,12 +103,17 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     /// </summary>
     private void OnClickChooseChara() {
         charaGenerator.CreateChooseChara(createCharaPos, chooseCharaData);
+        ClosePopUp();
     }
 
     /// <summary>
     /// ポップアップを閉じる
     /// </summary>
     private void OnClickClosePopUp() {
+        ClosePopUp();
+    }
 
+    private void ClosePopUp() {
+        canvasGroup.DOFade(0, 0.5f).OnComplete(() => Destroy(gameObject));
     }
 }

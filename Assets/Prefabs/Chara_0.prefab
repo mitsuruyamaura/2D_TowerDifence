@@ -142,6 +142,17 @@ MonoBehaviour:
   enemy: {fileID: 0}
   attackPower: 1
   intervalAttackTime: 60
+  spriteRenderer: {fileID: 2264085560253804945}
+  boxCollider: {fileID: 570961977411606406}
+  charaData:
+    charaNo: 0
+    cost: 0
+    charaSprite: {fileID: 0}
+    charaName: 
+    attackPower: 0
+    attackRange: 0
+    intervalAttackTime: 0
+    discription: 
 --- !u!1 &3526835647952493461
 GameObject:
   m_ObjectHideFlags: 0

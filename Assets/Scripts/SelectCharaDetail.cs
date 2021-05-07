@@ -29,6 +29,9 @@ public class SelectCharaDetail : MonoBehaviour
 
         btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
 
+        imgChara.sprite = this.charaData.charaSprite;
+
+
         btnSelectCharaDetail.interactable = true;
     }
 
