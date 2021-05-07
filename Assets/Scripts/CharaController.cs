@@ -15,12 +15,40 @@ public class CharaController : MonoBehaviour
     [Header("UŒ‚‚·‚é‚Ü‚Å‚Ì‘Ò‹@ŠÔ")]
     public float intervalAttackTime = 60.0f;
 
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
-    public void SetUpChara() {
-        
+    [SerializeField]
+    private Animator anim;
 
+    [SerializeField]
+    private BoxCollider2D boxCollider;
+
+    [SerializeField]
+    private CharaData charaData;
+
+    /// <summary>
+    /// ƒLƒƒƒ‰‚Ìİ’è
+    /// </summary>
+    /// <param name="charaData"></param>
+    public void SetUpChara(CharaData charaData) {
+        this.charaData = charaData;
+
+        spriteRenderer.sprite = this.charaData.charaSprite;
+
+        attackPower = this.charaData.attackPower;
+
+        intervalAttackTime = this.charaData.intervalAttackTime;
+
+        boxCollider.size = CharaDataSO.GetAttackRangeSize(charaData.attackRange);
+
+        anim.runtimeAnimatorController = this.charaData.charaAnim;
     }
 
+    /// <summary>
+    /// UŒ‚€”õ
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator PrepareteAttack() {
         Debug.Log("UŒ‚€”õŠJn");
         int timer = 0;
@@ -38,6 +66,9 @@ public class CharaController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// UŒ‚
+    /// </summary>
     private void Attack() {
         Debug.Log("UŒ‚");
 
@@ -60,7 +91,6 @@ public class CharaController : MonoBehaviour
         }
 
     }
-
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.tag == "Enemy") {
