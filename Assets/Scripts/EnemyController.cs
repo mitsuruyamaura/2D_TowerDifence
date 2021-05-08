@@ -35,12 +35,36 @@ public class EnemyController : MonoBehaviour
     private Animator anim;
 
     private Tween tween;
+
+    private GameManager gameManager;
     
-    IEnumerator  Start()
-    {
+    //IEnumerator  Start()
+    //{
+    //    hp = maxHp;
+
+    //    TryGetComponent(out anim);
+
+    //    // 移動する地点を取得
+    //    Vector3[] paths = pathData.pathTranArray.Select(x => x.position).ToArray();
+
+    //    // 経路生成
+    //    yield return StartCoroutine(CreatePathLine(paths));
+
+    //    // 各地点に向けて移動
+    //    tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear);
+    //}
+
+    /// <summary>
+    /// 敵の設定
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator SetUpEnemyController(PathData pathData, GameManager gameManager) {
         hp = maxHp;
 
         TryGetComponent(out anim);
+
+        this.pathData = pathData;
+        this.gameManager = gameManager;
 
         // 移動する地点を取得
         Vector3[] paths = pathData.pathTranArray.Select(x => x.position).ToArray();
@@ -115,7 +139,7 @@ public class EnemyController : MonoBehaviour
     /// <summary>
     /// 敵破壊処理
     /// </summary>
-    private void DestroyEnemy() {
+    public void DestroyEnemy() {
         tween.Kill();
 
         // TODO SE
@@ -123,6 +147,10 @@ public class EnemyController : MonoBehaviour
 
         GameObject effect = Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
         Destroy(effect,1.5f);
+
+        // TODO Enemy の List から削除
+        gameManager.RemoveEnemyList(this);
+
         Destroy(gameObject);
     }
 
