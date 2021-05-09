@@ -27,12 +27,20 @@ public class SelectCharaDetail : MonoBehaviour
 
         btnSelectCharaDetail.interactable = false;
 
-        btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
-
         imgChara.sprite = this.charaData.charaSprite;
 
+        // コストが支払えるか確認する
+        if (this.charaData.cost <= GameData.instance.CurrencyReactiveProperty.Value) {
 
-        btnSelectCharaDetail.interactable = true;
+
+            btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
+
+            btnSelectCharaDetail.interactable = true;
+        } else {
+
+        }
+
+
     }
 
     /// <summary>
