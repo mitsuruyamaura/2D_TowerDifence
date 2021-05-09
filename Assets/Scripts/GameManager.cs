@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<CharaController> charasList = new List<CharaController>();
 
+    
+
 
     /// <summary>
     /// ゲームの状態
@@ -62,6 +64,9 @@ public class GameManager : MonoBehaviour
 
         // 敵の生成準備
         StartCoroutine(SetUpEnemyGenerate());
+
+        // カレンシーの自動獲得
+        StartCoroutine(TimeToCurrency());
     }
 
     /// <summary>
@@ -69,6 +74,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void RefreshGameData() {
         GameData.instance.charaPlacementCount = 0;
+
+        // ゲームの度にインスタンスする
+        GameData.instance.CurrencyReactiveProperty = new ReactiveProperty<int>();
 
         if (GameData.instance.isDebug) {
             GameData.instance.CurrencyReactiveProperty.Value = GameData.instance.maxCurrency;
@@ -213,5 +221,28 @@ public class GameManager : MonoBehaviour
 
         // ゲーム再開
         currentGameState = GameState.Play;
+    }
+
+    /// <summary>
+    /// 時間の経過に応じてカレンシーを加算
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator TimeToCurrency() {
+
+        int timer = 0;
+
+        while (true) {
+            timer++;
+
+            // 規定の時間が経過し、カレンシーが最大値でなければ
+            if (timer > GameData.instance.getCurrencyIntervalTime && GameData.instance.CurrencyReactiveProperty.Value < GameData.instance.maxCurrency) {
+                timer = 0;
+
+                // 最大値以下になるようにカレンシーを加算
+                GameData.instance.CurrencyReactiveProperty.Value = Mathf.Clamp(GameData.instance.CurrencyReactiveProperty.Value += GameData.instance.addCurrencyPoint, 0, GameData.instance.maxCurrency);
+            }
+
+            yield return null;
+        }
     }
 }

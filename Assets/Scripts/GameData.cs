@@ -17,6 +17,10 @@ public class GameData : MonoBehaviour
 
     public bool isDebug;
 
+    public int getCurrencyIntervalTime;
+
+    public int addCurrencyPoint;
+
     // TODO “G‚Ì”j‰ó”‚ÌŠÇ—‚à ReactiveProperty ‚ğg‚¤
 
 

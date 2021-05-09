@@ -2681,7 +2681,9 @@ MonoBehaviour:
   maxCurrency: 1000
   charaPlacementCount: 0
   maxCharaPlacementCount: 2
-  isDebug: 1
+  isDebug: 0
+  getCurrencyIntervalTime: 100
+  addCurrencyPoint: 100
 --- !u!114 &1126548199 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}

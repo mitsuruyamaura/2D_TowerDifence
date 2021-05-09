@@ -15,11 +15,11 @@ public class CharaDataSO : ScriptableObject
     public static Vector2 GetAttackRangeSize(AttackRangeType attackRangeType) {
         switch (attackRangeType) {
             case AttackRangeType.Short:
-                return Vector2.one;
-            case AttackRangeType.Middle:
                 return Vector2.one * 2.0f;
-            case AttackRangeType.Long:
+            case AttackRangeType.Middle:
                 return Vector2.one * 3.0f;
+            case AttackRangeType.Long:
+                return Vector2.one * 4.0f;
             default:
                 return Vector2.one;
         }
