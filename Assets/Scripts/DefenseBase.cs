@@ -18,6 +18,8 @@ public class DefenseBase : MonoBehaviour
     /// <param name="gameManager"></param>
     public void SetUpDefenseBase(GameManager gameManager) {
         this.gameManager = gameManager;
+
+        defenseBaseDurability = GameData.instance.defenseBaseDurability;
     }
 
 

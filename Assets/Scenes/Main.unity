@@ -2684,6 +2684,7 @@ MonoBehaviour:
   isDebug: 0
   getCurrencyIntervalTime: 100
   addCurrencyPoint: 100
+  defenseBaseDurability: 10
 --- !u!114 &1126548199 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
@@ -6007,6 +6008,7 @@ MonoBehaviour:
   enemyPathDatas:
   - {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
   - {fileID: 6480637869730562238, guid: c22d709802aec2f4a84b041f36f377d0, type: 3}
+  enemyDataSO: {fileID: 11400000, guid: bd0fb56bca9000a479d48108b9d1aadd, type: 2}
 --- !u!1001 &2241670340234686944
 PrefabInstance:
   m_ObjectHideFlags: 0
