@@ -13,7 +13,7 @@ public class DefenseBase : MonoBehaviour
     private GameManager gameManager;
 
     /// <summary>
-    /// 
+    /// 設定
     /// </summary>
     /// <param name="gameManager"></param>
     public void SetUpDefenseBase(GameManager gameManager) {
@@ -28,7 +28,7 @@ public class DefenseBase : MonoBehaviour
             // ダメージ演出生成
             //CreateDamageEffect();
 
-            if (defenseBaseDurability <= 0) {
+            if (defenseBaseDurability <= 0 && gameManager.currentGameState == GameManager.GameState.Play) {
                 Debug.Log("Game Over");
 
                 // TODO ゲームオーバー処理

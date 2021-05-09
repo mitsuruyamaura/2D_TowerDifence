@@ -22,10 +22,35 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private UIManager uiManager;
 
+    [SerializeField]
+    private DefenseBase defenseBase;
+
+    [SerializeField]
+    private CharaGenerator charaGenerator;
+
+    /// <summary>
+    /// ゲームの状態
+    /// </summary>
+    public enum GameState {
+        Wait,
+        Play,
+        GameUp
+    }
+
+    public GameState currentGameState;
+
     
     void Start()
     {
+        currentGameState = GameState.Wait;
+
+        StartCoroutine(charaGenerator.SetUpCharaGenerator(this));
+
+        defenseBase.SetUpDefenseBase(this);
+
         isEnemyGenerate = true;
+
+        currentGameState = GameState.Play;
 
         // 敵の生成準備
         StartCoroutine(SetUpEnemyGenerate());
@@ -88,11 +113,14 @@ public class GameManager : MonoBehaviour
     public void JudgeGameClear() {
         // 生成数を超えているか
         if (destroyEnemyCount >= generateEnemyCount) {
-            // TODO ゲームクリアの処理を追加
 
             Debug.Log("ゲームクリア");
 
+            GameUp();
+
             uiManager.CreateGameClearSet();
+
+            // TODO ゲームクリアの処理を追加
         }
     }
 
@@ -100,9 +128,26 @@ public class GameManager : MonoBehaviour
     /// ゲームオーバー処理
     /// </summary>
     public void GameOver() {
+
+        GameUp();
+
         // 表示
         uiManager.CreateGameOverSet();
 
         // TODO ゲームオーバーの処理を追加
+    }
+
+    /// <summary>
+    /// ゲーム終了
+    /// </summary>
+    private void GameUp() {
+
+        currentGameState = GameState.GameUp;
+
+        // キャラ配置用のポップアップが開いている場合には破棄
+        charaGenerator.DestroyPlacementCharaSelectPopUp();
+
+        // TODO ゲーム終了時に行う処理を追加
+
     }
 }
