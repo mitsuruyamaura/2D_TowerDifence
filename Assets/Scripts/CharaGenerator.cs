@@ -176,7 +176,7 @@ public class CharaGenerator : MonoBehaviour
         // ˆÊ’u‚ª¶‰º‚ğ 0,0 ‚Æ‚µ‚Ä‚¢‚é‚Ì‚ÅA’†‰›‚É‚­‚é‚æ‚¤‚É’²®
         chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
 
-        chara.SetUpChara(charaData);
+        chara.SetUpChara(charaData, gameManager);
 
         gameManager.AddCharasList(chara);
     }

@@ -27,7 +27,7 @@ public class PopUpBase : MonoBehaviour
         canvasGroup.DOFade(0, 0.5f)
             .SetEase(Ease.Linear)
             .OnComplete(() => {
-                SceneStateManager.instance.PrapareteNextScene(SceneName.Main);
+                SceneStateManager.instance.PreparateNextScene(SceneName.Main);
                 Destroy(gameObject);
             });
     }

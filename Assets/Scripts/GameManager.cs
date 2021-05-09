@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     public enum GameState {
         Wait,
         Play,
+        Stop,
         GameUp
     }
 
@@ -47,6 +48,8 @@ public class GameManager : MonoBehaviour
     
     void Start()
     {
+        RefreshGameData();
+
         currentGameState = GameState.Wait;
 
         StartCoroutine(charaGenerator.SetUpCharaGenerator(this));
@@ -59,6 +62,19 @@ public class GameManager : MonoBehaviour
 
         // 敵の生成準備
         StartCoroutine(SetUpEnemyGenerate());
+    }
+
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    private void RefreshGameData() {
+        GameData.instance.charaPlacementCount = 0;
+
+        if (GameData.instance.isDebug) {
+            GameData.instance.CurrencyReactiveProperty.Value = GameData.instance.maxCurrency;
+        } else {
+            GameData.instance.CurrencyReactiveProperty.Value = 0;
+        }      
     }
 
     /// <summary>
@@ -157,9 +173,45 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 生成したキャラを List に追加
+    /// 選択したキャラの情報を List に追加
     /// </summary>
     public void AddCharasList(CharaController chara) {
         charasList.Add(chara);
+    }
+
+    /// <summary>
+    /// 選択したキャラを破棄し、情報を List から削除
+    /// </summary>
+    /// <param name="chara"></param>
+    public void RemoveCharasList(CharaController chara) {
+        Destroy(chara.gameObject);
+        charasList.Remove(chara);
+    }
+
+    public void PreparateCreateReturnCharaPopUp(CharaController chara) {
+
+        // ゲーム停止
+        currentGameState = GameState.Stop;
+
+        // 配置解除を選択するポップアップを作成
+        uiManager.CreateReturnCharaPopUp(chara, this);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void JudgeReturnChara(bool isReturnChara, CharaController chara) {
+
+        // キャラの配置を解除する場合
+        if (isReturnChara) {
+            // 選択したキャラを破棄し、情報を List から削除
+            RemoveCharasList(chara);
+
+            // 配置数を減算
+            GameData.instance.charaPlacementCount--;
+        }
+
+        // ゲーム再開
+        currentGameState = GameState.Play;
     }
 }
