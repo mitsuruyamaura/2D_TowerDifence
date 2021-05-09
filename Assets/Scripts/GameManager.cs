@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private CharaGenerator charaGenerator;
+
+    [SerializeField]
+    private List<CharaController> charasList = new List<CharaController>();
+
 
     /// <summary>
     /// ゲームの状態
@@ -149,5 +154,12 @@ public class GameManager : MonoBehaviour
 
         // TODO ゲーム終了時に行う処理を追加
 
+    }
+
+    /// <summary>
+    /// 生成したキャラを List に追加
+    /// </summary>
+    public void AddCharasList(CharaController chara) {
+        charasList.Add(chara);
     }
 }

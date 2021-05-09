@@ -62,6 +62,11 @@ public class CharaGenerator : MonoBehaviour
 
     void Update()
     {
+        // 配置できる最大キャラ数に達している場合には配置できない
+        if (GameData.instance.charaPlacementCount >= GameData.instance.maxCharaPlacementCount) {
+            return;
+        }
+
         // タップしたら (かつゲームプレイ中なら)
         if (Input.GetMouseButtonDown(0) && gameManager.currentGameState == GameManager.GameState.Play) {
 
@@ -160,12 +165,20 @@ public class CharaGenerator : MonoBehaviour
     /// <param name="charaData"></param>
     public void CreateChooseChara(Vector3Int gridPos, CharaData charaData) {
 
+        // コスト支払い
+        GameData.instance.CurrencyReactiveProperty.Value -= charaData.cost;
+
+        // キャラ数カウント
+        GameData.instance.charaPlacementCount++;
+
         CharaController chara = Instantiate(charaControllerPrefab, gridPos, Quaternion.identity);
 
         // 位置が左下を 0,0 としているので、中央にくるように調整
         chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
 
         chara.SetUpChara(charaData);
+
+        gameManager.AddCharasList(chara);
     }
 
     /// <summary>
