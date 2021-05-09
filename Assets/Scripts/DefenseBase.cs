@@ -7,8 +7,18 @@ public class DefenseBase : MonoBehaviour
     [Header("‘Ï‹v’l")]
     public int defenseBaseDurability;
 
-    [SerializeField]
-    private GameObject damageEffectPrefab;
+    [SerializeField, HideInInspector]
+    private GameObject damageEffectPrefab;  // “G‘¤‚Æd•¡‚·‚é‚Ì‚Åˆê’U‚È‚µ‚É‚µ‚Ä•Û—¯
+
+    private GameManager gameManager;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gameManager"></param>
+    public void SetUpDefenseBase(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -16,16 +26,17 @@ public class DefenseBase : MonoBehaviour
             defenseBaseDurability -= enemyController.attackPower;
 
             // ƒ_ƒ[ƒW‰‰o¶¬
-            CreateDamageEffect();
+            //CreateDamageEffect();
 
             if (defenseBaseDurability <= 0) {
                 Debug.Log("Game Over");
 
                 // TODO ƒQ[ƒ€ƒI[ƒo[ˆ—
+                gameManager.GameOver();
             }
 
             // “G‚Ì”j‰ó
-            enemyController.DestroyEnemy();
+            enemyController.DestroyEnemy(false);
         }
     }
 

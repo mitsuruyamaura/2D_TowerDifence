@@ -126,7 +126,7 @@ public class EnemyController : MonoBehaviour
         if (hp <= 0) {
 
             // 破壊
-            DestroyEnemy();
+            DestroyEnemy(true);
         }
 
         // 演出用のエフェクト生成
@@ -139,7 +139,7 @@ public class EnemyController : MonoBehaviour
     /// <summary>
     /// 敵破壊処理
     /// </summary>
-    public void DestroyEnemy() {
+    public void DestroyEnemy(bool isPlayerDestroyed) {
         tween.Kill();
 
         // TODO SE
@@ -151,9 +151,18 @@ public class EnemyController : MonoBehaviour
         // TODO Enemy の List から削除
         gameManager.RemoveEnemyList(this);
 
+        // プレイヤーが破壊している場合
+        if (isPlayerDestroyed) {
+            // 倒した敵の数をカウント
+            gameManager.CountUpDestoryEnemyCount();
+        }
+
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// ヒットエフェクト生成
+    /// </summary>
     private void CreateHitEffect() {
         // TODO SE
 

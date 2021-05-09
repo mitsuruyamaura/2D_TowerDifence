@@ -13,6 +13,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private List<EnemyController> enemiesList = new List<EnemyController>();
+
+    private int generateEnemyCount;
+    private int destroyEnemyCount;
+
+    public int maxEnemyCount;
+
+    [SerializeField]
+    private UIManager uiManager;
+
     
     void Start()
     {
@@ -39,6 +48,12 @@ public class GameManager : MonoBehaviour
 
                 // 敵の生成と List への追加
                 enemiesList.Add(enemyGenerator.GenerateEnemy(this));
+                generateEnemyCount++;
+
+                // 最大生成数を超えたら
+                if (generateEnemyCount >= maxEnemyCount) {
+                    isEnemyGenerate = false;
+                }
             }
 
             yield return null;
@@ -55,5 +70,39 @@ public class GameManager : MonoBehaviour
     /// <param name="removeEnemy"></param>
     public void RemoveEnemyList(EnemyController removeEnemy) {
         enemiesList.Remove(removeEnemy);
+    }
+
+    /// <summary>
+    /// 破壊した敵の数をカウント
+    /// </summary>
+    public void CountUpDestoryEnemyCount() {
+        destroyEnemyCount++;
+
+        // ゲームクリア判定
+        JudgeGameClear();
+    }
+
+    /// <summary>
+    /// ゲームクリア判定
+    /// </summary>
+    public void JudgeGameClear() {
+        // 生成数を超えているか
+        if (destroyEnemyCount >= generateEnemyCount) {
+            // TODO ゲームクリアの処理を追加
+
+            Debug.Log("ゲームクリア");
+
+            uiManager.CreateGameClearSet();
+        }
+    }
+
+    /// <summary>
+    /// ゲームオーバー処理
+    /// </summary>
+    public void GameOver() {
+        // 表示
+        uiManager.CreateGameOverSet();
+
+        // TODO ゲームオーバーの処理を追加
     }
 }

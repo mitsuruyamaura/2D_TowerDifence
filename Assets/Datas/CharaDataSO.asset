@@ -43,7 +43,7 @@ MonoBehaviour:
   - charaNo: 3
     cost: 200
     charaSprite: {fileID: 4558515143993472460, guid: 0b0ee8d89fbcddb41960ae890c9e858f, type: 3}
-    charaAnim: {fileID: 9100000, guid: b977811233e26b64996524428c16a14a, type: 2}
+    charaAnim: {fileID: 9100000, guid: 1baa36ca644223b408d3f3b280046bd9, type: 2}
     charaName: Devin
     attackPower: 1
     attackRange: 1
