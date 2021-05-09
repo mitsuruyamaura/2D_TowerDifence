@@ -2097,6 +2097,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2112,6 +2113,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 8
+  m_MaxRayIntersections: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -2601,6 +2618,7 @@ MonoBehaviour:
   gameOverSetPrefab: {fileID: 7064288228121943772, guid: ffcf24a27362eee4f89a58c48340dec8, type: 3}
   canvasTran: {fileID: 635654292}
   txtCost: {fileID: 2001248844}
+  returnCharaPopUpPrefab: {fileID: 8289275981426463077, guid: 0a6e659c1d048a943baf2a785d015425, type: 3}
 --- !u!4 &1024534447
 Transform:
   m_ObjectHideFlags: 0

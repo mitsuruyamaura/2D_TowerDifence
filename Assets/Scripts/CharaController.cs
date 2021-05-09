@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;  // EventTrigger 利用時 
 
 public class CharaController : MonoBehaviour
 {
@@ -27,12 +29,16 @@ public class CharaController : MonoBehaviour
     [SerializeField]
     private CharaData charaData;
 
+    private GameManager gameManager;
+
+
     /// <summary>
     /// キャラの設定
     /// </summary>
     /// <param name="charaData"></param>
-    public void SetUpChara(CharaData charaData) {
+    public void SetUpChara(CharaData charaData, GameManager gameManager) {
         this.charaData = charaData;
+        this.gameManager = gameManager;
 
         spriteRenderer.sprite = this.charaData.charaSprite;
 
@@ -101,5 +107,12 @@ public class CharaController : MonoBehaviour
             enemy = null;
 
         }
+    }
+
+    /// <summary>
+    /// キャラをタップした際の処理
+    /// </summary>
+    public void OnClickChara() {
+        gameManager.PreparateCreateReturnCharaPopUp(this);
     }
 }

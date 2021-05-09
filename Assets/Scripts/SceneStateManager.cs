@@ -19,7 +19,7 @@ public class SceneStateManager : MonoBehaviour
     /// <summary>
     /// ƒV[ƒ“‘JˆÚ‚Ì€”õ
     /// </summary>
-    public void PrapareteNextScene(SceneName nextSceneName) {
+    public void PreparateNextScene(SceneName nextSceneName) {
         StartCoroutine(NextScene(nextSceneName));
     }
 

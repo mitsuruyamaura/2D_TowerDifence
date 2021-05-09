@@ -19,7 +19,12 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text txtCost;
 
+    [SerializeField]
+    private ReturnSelectCharaPopUp returnCharaPopUpPrefab;
+
+
     void Start() {
+        // 購読開始
         GameData.instance.CurrencyReactiveProperty.Subscribe((x) => txtCost.text = x.ToString());
     }
 
@@ -28,6 +33,7 @@ public class UIManager : MonoBehaviour
     /// ゲームクリア表示生成
     /// </summary>
     public void CreateGameClearSet() {
+        ResetSubscribe();
         PopUpBase gameClearSet = Instantiate(gameClearSetPrefab, canvasTran, false);
         gameClearSet.SetUpPopUpBase();
     }
@@ -36,7 +42,24 @@ public class UIManager : MonoBehaviour
     /// ゲームオーバー表示生成
     /// </summary>
     public void CreateGameOverSet() {
+        ResetSubscribe();
         PopUpBase gameOverSet = Instantiate(gameOverSetPrefab, canvasTran, false);
         gameOverSet.SetUpPopUpBase();
+    }
+
+    /// <summary>
+    /// キャラの配置を解除する選択用のポップアップの生成
+    /// </summary>
+    public void CreateReturnCharaPopUp(CharaController charaController, GameManager gameManager) {
+        ReturnSelectCharaPopUp returnSelectCharaPopUp = Instantiate(returnCharaPopUpPrefab, canvasTran, false);
+        returnSelectCharaPopUp.SetUpReturnSelectCharaPopUp(charaController, gameManager);
+    }
+
+    /// <summary>
+    /// ReactiveProperty の購読を停止
+    /// </summary>
+    private void ResetSubscribe() {
+        // 購読停止
+        GameData.instance.CurrencyReactiveProperty.Dispose();
     }
 }

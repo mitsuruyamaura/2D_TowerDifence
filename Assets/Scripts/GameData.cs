@@ -27,10 +27,5 @@ public class GameData : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
-
-        if (isDebug) {
-            // Debug
-            CurrencyReactiveProperty.Value = maxCurrency;
-        }
     }
 }
