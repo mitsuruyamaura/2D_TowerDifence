@@ -37,6 +37,9 @@ public class EnemyController : MonoBehaviour
     private Tween tween;
 
     private GameManager gameManager;
+
+    public EnemyData enemyData;
+
     
     //IEnumerator  Start()
     //{
@@ -58,7 +61,13 @@ public class EnemyController : MonoBehaviour
     /// ìGÇÃê›íË
     /// </summary>
     /// <returns></returns>
-    public IEnumerator SetUpEnemyController(PathData pathData, GameManager gameManager) {
+    public IEnumerator SetUpEnemyController(PathData pathData, GameManager gameManager, EnemyData enemyData) {
+        this.enemyData = enemyData;
+
+        moveSpeed = this.enemyData.moveSpeed;
+        attackPower = this.enemyData.attackPower;
+
+        maxHp = this.enemyData.hp;
         hp = maxHp;
 
         TryGetComponent(out anim);
