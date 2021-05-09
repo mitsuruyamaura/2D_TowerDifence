@@ -28,10 +28,24 @@ public class CharaGenerator : MonoBehaviour
 
     private PlacementCharaSelectPopUp placementCharaSelectPopUp;
 
+    private GameManager gameManager;
 
-    IEnumerator Start() {
+
+    //IEnumerator Start() {
+    //    // 所持しているキャラのデータをリスト化
+    //    yield return StartCoroutine(CreateHaveCharaDatasList());
+    //}
+
+    /// <summary>
+    /// 設定
+    /// </summary>
+    /// <param name="gameManager"></param>
+    /// <returns></returns>
+    public IEnumerator SetUpCharaGenerator(GameManager gameManager) {
+        this.gameManager = gameManager;
+
         // 所持しているキャラのデータをリスト化
-        yield return StartCoroutine(CreateHaveCharaDatasList());    
+        yield return StartCoroutine(CreateHaveCharaDatasList());
     }
 
     /// <summary>
@@ -48,8 +62,8 @@ public class CharaGenerator : MonoBehaviour
 
     void Update()
     {
-        // タップしたら
-        if (Input.GetMouseButtonDown(0)) {
+        // タップしたら (かつゲームプレイ中なら)
+        if (Input.GetMouseButtonDown(0) && gameManager.currentGameState == GameManager.GameState.Play) {
 
             // タップした位置に Ray を飛ばす
             //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -152,5 +166,14 @@ public class CharaGenerator : MonoBehaviour
         chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
 
         chara.SetUpChara(charaData);
+    }
+
+    /// <summary>
+    /// 配置キャラ選択用のポップアップの破壊
+    /// </summary>
+    public void DestroyPlacementCharaSelectPopUp() {
+        if (placementCharaSelectPopUp) {
+            Destroy(placementCharaSelectPopUp.gameObject);
+        }
     }
 }

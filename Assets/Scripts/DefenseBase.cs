@@ -7,8 +7,18 @@ public class DefenseBase : MonoBehaviour
     [Header("耐久値")]
     public int defenseBaseDurability;
 
-    [SerializeField]
-    private GameObject damageEffectPrefab;
+    [SerializeField, HideInInspector]
+    private GameObject damageEffectPrefab;  // 敵側と重複するので一旦なしにして保留
+
+    private GameManager gameManager;
+
+    /// <summary>
+    /// 設定
+    /// </summary>
+    /// <param name="gameManager"></param>
+    public void SetUpDefenseBase(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -16,16 +26,17 @@ public class DefenseBase : MonoBehaviour
             defenseBaseDurability -= enemyController.attackPower;
 
             // ダメージ演出生成
-            CreateDamageEffect();
+            //CreateDamageEffect();
 
-            if (defenseBaseDurability <= 0) {
+            if (defenseBaseDurability <= 0 && gameManager.currentGameState == GameManager.GameState.Play) {
                 Debug.Log("Game Over");
 
                 // TODO ゲームオーバー処理
+                gameManager.GameOver();
             }
 
             // 敵の破壊
-            enemyController.DestroyEnemy();
+            enemyController.DestroyEnemy(false);
         }
     }
 
