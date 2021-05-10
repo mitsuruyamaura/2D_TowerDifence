@@ -1761,14 +1761,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnemyGenerate: 0
-  generateIntervalTime: 100
+  generateIntervalTime: 0
   enemyGenerator: {fileID: 2075823086}
   enemiesList: []
+  generateEnemyCount: 0
   maxEnemyCount: 2
   uiManager: {fileID: 1024534446}
   defenseBase: {fileID: 220937352}
   charaGenerator: {fileID: 255663045}
   charasList: []
+  currentStageData:
+    stageName: 
+    stageNo: 0
+    generateIntervalTime: 0
+    enemys: []
+    enemyPathDatas: []
+    clearPoint: 0
   currentGameState: 0
 --- !u!4 &184673229
 Transform:
@@ -2608,7 +2616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &899387324
 Transform:
   m_ObjectHideFlags: 0
@@ -2731,6 +2739,7 @@ MonoBehaviour:
   getCurrencyIntervalTime: 100
   addCurrencyPoint: 100
   defenseBaseDurability: 10
+  totalClearPoint: 0
 --- !u!114 &1126548199 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
@@ -6048,13 +6057,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyControllerPrefab: {fileID: 2241670340192394592, guid: 3491597913c01004c953d09060d8ab4d, type: 3}
-  enemyGenerateTrans:
-  - {fileID: 526367402}
-  - {fileID: 591766982}
-  enemyPathDatas:
-  - {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
-  - {fileID: 6480637869730562238, guid: c22d709802aec2f4a84b041f36f377d0, type: 3}
-  enemyDataSO: {fileID: 11400000, guid: bd0fb56bca9000a479d48108b9d1aadd, type: 2}
 --- !u!1001 &2241670340234686944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6142,10 +6144,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PathTranSet (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 6480637869730562237, guid: c22d709802aec2f4a84b041f36f377d0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6480637869730562239, guid: c22d709802aec2f4a84b041f36f377d0, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -6203,10 +6201,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PathTranSet
       objectReference: {fileID: 0}
-    - target: {fileID: 8731422298378982033, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8731422298378982034, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -6263,10 +6257,6 @@ PrefabInstance:
     - target: {fileID: 3515562598619921080, guid: a2816bb7fba79a24a955f09e82f35052, type: 3}
       propertyPath: m_Name
       value: PathTranSet (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3515562598619921080, guid: a2816bb7fba79a24a955f09e82f35052, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3515562598619921083, guid: a2816bb7fba79a24a955f09e82f35052, type: 3}
       propertyPath: m_RootOrder

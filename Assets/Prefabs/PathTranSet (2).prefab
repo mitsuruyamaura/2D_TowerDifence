@@ -346,7 +346,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6480637869730562239
 Transform:
   m_ObjectHideFlags: 0
@@ -384,6 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae8a9f6c1635934e911c2c18b2f1834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generateTran: {fileID: 6480637868832454965}
   pathTranArray:
   - {fileID: 6480637868832454965}
   - {fileID: 6480637868645966680}
