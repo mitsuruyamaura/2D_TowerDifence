@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<EnemyController> enemiesList = new List<EnemyController>();
 
-    private int generateEnemyCount;
+    public int generateEnemyCount;
     private int destroyEnemyCount;
 
     public int maxEnemyCount;
@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<CharaController> charasList = new List<CharaController>();
 
-    
+    [SerializeField]
+    private StageData currentStageData;
+
 
 
     /// <summary>
@@ -54,6 +56,9 @@ public class GameManager : MonoBehaviour
 
         currentGameState = GameState.Wait;
 
+        // ステージの設定
+        SetUpStageData();
+
         StartCoroutine(charaGenerator.SetUpCharaGenerator(this));
 
         defenseBase.SetUpDefenseBase(this);
@@ -63,7 +68,7 @@ public class GameManager : MonoBehaviour
         currentGameState = GameState.Play;
 
         // 敵の生成準備
-        StartCoroutine(SetUpEnemyGenerate());
+        StartCoroutine(enemyGenerator.PreparateEnemyGenerate(this, currentStageData));
 
         // カレンシーの自動獲得
         StartCoroutine(TimeToCurrency());
@@ -86,36 +91,53 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 敵の生成準備
+    /// ステージデータの設定
     /// </summary>
-    /// <returns></returns>
-    private IEnumerator SetUpEnemyGenerate() {
+    private void SetUpStageData() {
+        currentStageData = DataBaseManager.instance.stageDataSO.stageDatasList[GameData.instance.stageNo];
+        generateIntervalTime = currentStageData.generateIntervalTime;
+        maxEnemyCount = currentStageData.enemys.Length;
 
-        int timer = 0;
+        // TODO 他にもあれば追加
 
-        while (isEnemyGenerate) {
+    }
 
-            timer++;
+    ///// <summary>
+    ///// 敵の生成準備
+    ///// </summary>
+    ///// <returns></returns>
+    //private IEnumerator SetUpEnemyGenerate() {
 
-            if (timer > generateIntervalTime) {
-                timer = 0;
+    //    int timer = 0;
 
-                // 敵の生成と List への追加
-                enemiesList.Add(enemyGenerator.GenerateEnemy(this));
-                generateEnemyCount++;
+    //    while (isEnemyGenerate) {
 
-                // 最大生成数を超えたら
-                if (generateEnemyCount >= maxEnemyCount) {
-                    isEnemyGenerate = false;
-                }
-            }
+    //        timer++;
 
-            yield return null;
-        }
+    //        if (timer > generateIntervalTime) {
+    //            timer = 0;
 
-        // TODO 生成終了
+    //            // 敵の生成と List への追加
+    //            enemiesList.Add(enemyGenerator.GenerateEnemy(this));
+    //            generateEnemyCount++;
+
+    //            // 最大生成数を超えたら
+    //            if (generateEnemyCount >= maxEnemyCount) {
+    //                isEnemyGenerate = false;
+    //            }
+    //        }
+
+    //        yield return null;
+    //    }
+
+    //    // TODO 生成終了
 
 
+    //}
+
+    public void AddEnemyList(EnemyController enemy) {
+        enemiesList.Add(enemy);
+        generateEnemyCount++;
     }
 
     /// <summary>
@@ -150,6 +172,8 @@ public class GameManager : MonoBehaviour
             uiManager.CreateGameClearSet();
 
             // TODO ゲームクリアの処理を追加
+
+            GameData.instance.totalClearPoint += currentStageData.clearPoint;
         }
     }
 
@@ -243,6 +267,15 @@ public class GameManager : MonoBehaviour
             }
 
             yield return null;
+        }
+    }
+
+    /// <summary>
+    /// 敵の生成を停止するか判定
+    /// </summary>
+    public void JudgeGenerateEnemysEnd() {
+        if (generateEnemyCount >= maxEnemyCount) {
+            isEnemyGenerate = false;
         }
     }
 }

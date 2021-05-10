@@ -23,6 +23,10 @@ public class GameData : MonoBehaviour
 
     public int defenseBaseDurability;
 
+    public int stageNo;
+
+    public int totalClearPoint;
+
     // TODO “G‚Ì”j‰ó”‚ÌŠÇ—‚à ReactiveProperty ‚ğg‚¤
 
 
