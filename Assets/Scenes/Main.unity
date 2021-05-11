@@ -2005,10 +2005,10 @@ MonoBehaviour:
   charaPrefab: {fileID: 1525304520991991745, guid: adaf07c1a5c8cc44ca50e31c3ce7b7b9, type: 3}
   tilemaps: {fileID: 26017571}
   grid: {fileID: 2046535007}
-  charaDataSO: {fileID: 11400000, guid: b5733135115a95f40a9ec4d00c34dce0, type: 2}
   placementCharaSelectPopUpPrefab: {fileID: 4249342438748508414, guid: b18c1a43df2b29841bbeda1b055a9611, type: 3}
   canvasTran: {fileID: 635654292}
   charaControllerPrefab: {fileID: 1649173764764400977, guid: adaf07c1a5c8cc44ca50e31c3ce7b7b9, type: 3}
+  charaDatasList: []
 --- !u!1 &320989441
 GameObject:
   m_ObjectHideFlags: 0
@@ -2744,6 +2744,7 @@ MonoBehaviour:
   defenseBaseDurability: 10
   stageNo: 0
   totalClearPoint: 0
+  possessionCharaNosList: 0200000001000000
 --- !u!114 &1126548199 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
