@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     public GameState currentGameState;
 
     
-    void Start()
+    IEnumerator Start()
     {
         RefreshGameData();
 
@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(charaGenerator.SetUpCharaGenerator(this));
 
         defenseBase.SetUpDefenseBase(this);
+
+        yield return StartCoroutine(uiManager.Opening());
 
         isEnemyGenerate = true;
 
@@ -174,6 +176,9 @@ public class GameManager : MonoBehaviour
             // TODO ゲームクリアの処理を追加
 
             GameData.instance.totalClearPoint += currentStageData.clearPoint;
+
+            // TODO ゲームクリア演出
+
         }
     }
 

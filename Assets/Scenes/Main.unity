@@ -2361,7 +2361,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2704,6 +2704,7 @@ MonoBehaviour:
   canvasTran: {fileID: 635654292}
   txtCost: {fileID: 2001248844}
   returnCharaPopUpPrefab: {fileID: 8289275981426463077, guid: 0a6e659c1d048a943baf2a785d015425, type: 3}
+  openingPrefab: {fileID: 5743430510299070119, guid: 12bf6f9a7e9eba246b8a7a01588de86c, type: 3}
 --- !u!4 &1024534447
 Transform:
   m_ObjectHideFlags: 0
