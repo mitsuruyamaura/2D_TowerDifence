@@ -171,14 +171,12 @@ public class GameManager : MonoBehaviour
 
             GameUp();
 
+            // TODO ゲームクリア演出
             uiManager.CreateGameClearSet();
 
             // TODO ゲームクリアの処理を追加
 
             GameData.instance.totalClearPoint += currentStageData.clearPoint;
-
-            // TODO ゲームクリア演出
-
         }
     }
 

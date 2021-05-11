@@ -2704,8 +2704,8 @@ MonoBehaviour:
   canvasTran: {fileID: 635654292}
   txtCost: {fileID: 2001248844}
   returnCharaPopUpPrefab: {fileID: 8289275981426463077, guid: 0a6e659c1d048a943baf2a785d015425, type: 3}
-  openingEffectPrefab: {fileID: 0}
-  gameCearEffectPrefab: {fileID: 0}
+  openingEffectPrefab: {fileID: 5743430510299070119, guid: 12bf6f9a7e9eba246b8a7a01588de86c, type: 3}
+  gameCearEffectPrefab: {fileID: 499653293768713791, guid: 5081456b854b51e488586ff734647344, type: 3}
 --- !u!4 &1024534447
 Transform:
   m_ObjectHideFlags: 0

@@ -6,16 +6,13 @@ using DG.Tweening;
 using Coffee.UIExtensions;
 
 
-public class LogoEffect : MonoBehaviour
+public class LogoEffect : PopUpBase
 {
     [SerializeField]
     private Image imgStart;
 
     [SerializeField]
     private ShinyEffectForUGUI shinyEffect;
-
-    [SerializeField]
-    private CanvasGroup canvasGroup;
 
     /// <summary>
     /// オープニング演出再生
@@ -30,5 +27,16 @@ public class LogoEffect : MonoBehaviour
         sequence.Append(canvasGroup.DOFade(0.0f, 0.5f)).OnComplete(() => Destroy(gameObject));        
     }
 
+    /// <summary>
+    /// ゲームクリア演出再生
+    /// </summary>
+    public void PlayGameClear() {
+        canvasGroup.alpha = 0.0f;
 
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(canvasGroup.DOFade(1.0f, 0.5f).OnComplete(() => shinyEffect.Play(1.0f)));
+
+        // ボタンを押せるようにする
+        sequence.AppendInterval(1.0f).OnComplete(() => SetUpPopUpBase());
+    }
 }
