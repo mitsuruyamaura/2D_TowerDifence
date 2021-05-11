@@ -23,7 +23,10 @@ public class UIManager : MonoBehaviour
     private ReturnSelectCharaPopUp returnCharaPopUpPrefab;
 
     [SerializeField]
-    private LogoEffect openingPrefab;
+    private LogoEffect openingEffectPrefab;
+
+    [SerializeField]
+    private LogoEffect gameCearEffectPrefab;
 
 
     void Start() {
@@ -37,8 +40,10 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void CreateGameClearSet() {
         ResetSubscribe();
-        PopUpBase gameClearSet = Instantiate(gameClearSetPrefab, canvasTran, false);
-        gameClearSet.SetUpPopUpBase();
+        //PopUpBase gameClearSet = Instantiate(gameClearSetPrefab, canvasTran, false);
+        //gameClearSet.SetUpPopUpBase();
+
+        StartCoroutine(GameClear());
     }
 
     /// <summary>
@@ -72,8 +77,20 @@ public class UIManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator Opening() {
 
-        LogoEffect opening = Instantiate(openingPrefab, canvasTran, false);
+        LogoEffect opening = Instantiate(openingEffectPrefab, canvasTran, false);
         opening.PlayOpening();
+        yield return new WaitForSeconds(1.5f);
+    }
+
+    /// <summary>
+    /// ゲームクリア演出作成
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator GameClear() {
+
+        LogoEffect gameClear = Instantiate(gameCearEffectPrefab, canvasTran, false);
+        gameClear.PlayGameClear();
+
         yield return new WaitForSeconds(1.5f);
     }
 }

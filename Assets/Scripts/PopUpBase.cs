@@ -10,7 +10,7 @@ public class PopUpBase : MonoBehaviour
     private Button btnSubmit;
 
     [SerializeField]
-    private CanvasGroup canvasGroup;
+    protected CanvasGroup canvasGroup;
 
     /// <summary>
     /// ‰Šúİ’è
