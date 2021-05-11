@@ -101,22 +101,22 @@ public class EnemyController : MonoBehaviour
             anim.SetFloat("Y", 0f);
             anim.SetFloat("X", -1.0f);
 
-            Debug.Log("¶•ûŒü");
+            //Debug.Log("¶•ûŒü");
         } else if (transform.position.y > currentPos.y) {
             anim.SetFloat("X", 0f);
             anim.SetFloat("Y", 1.0f);
 
-            Debug.Log("ã¶Œü");
+            //Debug.Log("ã¶Œü");
         } else if (transform.position.y < currentPos.y) {
             anim.SetFloat("X", 0f);
             anim.SetFloat("Y", -1.0f);
 
-            Debug.Log("‰º•ûŒü");
+            //Debug.Log("‰º•ûŒü");
         } else {
             anim.SetFloat("Y", 0f);
             anim.SetFloat("X", 1.0f);
 
-            Debug.Log("‰E•ûŒü");         
+            //Debug.Log("‰E•ûŒü");         
         }
 
         currentPos = transform.position;

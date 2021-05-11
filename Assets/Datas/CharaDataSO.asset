@@ -31,7 +31,7 @@ MonoBehaviour:
     attackRange: 0
     intervalAttackTime: 200
     discription: 
-  - charaNo: 3
+  - charaNo: 2
     cost: 150
     charaSprite: {fileID: 2684471460419224087, guid: 5278527c151a5424ab1aad3fd3038e0d, type: 3}
     charaAnim: {fileID: 9100000, guid: 805ec3d451c189f4e8ae478e7a1c8b48, type: 2}

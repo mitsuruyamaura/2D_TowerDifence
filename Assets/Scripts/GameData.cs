@@ -27,6 +27,9 @@ public class GameData : MonoBehaviour
 
     public int totalClearPoint;
 
+    [Header("Š‚µ‚Ä‚¢‚éƒLƒƒƒ‰‚Ì”Ô†")]
+    public List<int> possessionCharaNosList = new List<int>();
+
     // TODO “G‚Ì”j‰ó”‚ÌŠÇ—‚à ReactiveProperty ‚ğg‚¤
 
 

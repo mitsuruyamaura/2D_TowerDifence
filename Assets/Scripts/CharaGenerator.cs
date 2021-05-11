@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 public class CharaGenerator : MonoBehaviour
 {
@@ -14,8 +15,8 @@ public class CharaGenerator : MonoBehaviour
     [SerializeField]
     private Grid grid;     　　　　// Base 側の Tilemap を指定する 
 
-    [SerializeField]
-    private CharaDataSO charaDataSO;
+    //[SerializeField]
+    //private CharaDataSO charaDataSO;
 
     [SerializeField]
     private PlacementCharaSelectPopUp placementCharaSelectPopUpPrefab;
@@ -29,6 +30,9 @@ public class CharaGenerator : MonoBehaviour
     private PlacementCharaSelectPopUp placementCharaSelectPopUp;
 
     private GameManager gameManager;
+
+    [SerializeField, Header("所持しているキャラのデータ")]
+    private List<CharaData> charaDatasList = new List<CharaData>();
 
 
     //IEnumerator Start() {
@@ -54,9 +58,10 @@ public class CharaGenerator : MonoBehaviour
     private IEnumerator CreateHaveCharaDatasList() {
         yield return null;
 
-        // TODO 所持しているキャラのリストを作成
-
-
+        // 所持しているキャラの番号を元にキャラのデータのリストを作成
+        for (int i = 0; i < GameData.instance.possessionCharaNosList.Count; i++) {
+            charaDatasList.Add(DataBaseManager.instance.charaDataSO.charaDatasList.Find(x => x.charaNo == GameData.instance.possessionCharaNosList[i]));
+        }
     }
 
 
@@ -154,7 +159,7 @@ public class CharaGenerator : MonoBehaviour
             placementCharaSelectPopUp = Instantiate(placementCharaSelectPopUpPrefab, canvasTran, false);
 
             // TODO 第2引数は所持しているキャラのリストに変更する
-            placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(gridPos, charaDataSO.charaDatasList, this);
+            placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(gridPos, charaDatasList, this);
         }
     }
 

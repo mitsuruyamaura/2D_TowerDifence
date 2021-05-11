@@ -2005,10 +2005,10 @@ MonoBehaviour:
   charaPrefab: {fileID: 1525304520991991745, guid: adaf07c1a5c8cc44ca50e31c3ce7b7b9, type: 3}
   tilemaps: {fileID: 26017571}
   grid: {fileID: 2046535007}
-  charaDataSO: {fileID: 11400000, guid: b5733135115a95f40a9ec4d00c34dce0, type: 2}
   placementCharaSelectPopUpPrefab: {fileID: 4249342438748508414, guid: b18c1a43df2b29841bbeda1b055a9611, type: 3}
   canvasTran: {fileID: 635654292}
   charaControllerPrefab: {fileID: 1649173764764400977, guid: adaf07c1a5c8cc44ca50e31c3ce7b7b9, type: 3}
+  charaDatasList: []
 --- !u!1 &320989441
 GameObject:
   m_ObjectHideFlags: 0
@@ -2095,36 +2095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae8a9f6c1635934e911c2c18b2f1834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &515516271
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 515516272}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &515516272
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515516271}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5720813, y: 0.2912322, z: -0.22381124}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,6 +2744,7 @@ MonoBehaviour:
   defenseBaseDurability: 10
   stageNo: 0
   totalClearPoint: 0
+  possessionCharaNosList: 0200000001000000
 --- !u!114 &1126548199 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
