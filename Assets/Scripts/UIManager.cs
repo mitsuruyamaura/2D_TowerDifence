@@ -22,6 +22,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private ReturnSelectCharaPopUp returnCharaPopUpPrefab;
 
+    [SerializeField]
+    private LogoEffect openingPrefab;
+
 
     void Start() {
         // 購読開始
@@ -61,5 +64,16 @@ public class UIManager : MonoBehaviour
     private void ResetSubscribe() {
         // 購読停止
         GameData.instance.CurrencyReactiveProperty.Dispose();
+    }
+
+    /// <summary>
+    /// オープニング演出作成
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator Opening() {
+
+        LogoEffect opening = Instantiate(openingPrefab, canvasTran, false);
+        opening.PlayOpening();
+        yield return new WaitForSeconds(1.5f);
     }
 }

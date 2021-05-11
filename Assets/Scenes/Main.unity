@@ -1777,6 +1777,7 @@ MonoBehaviour:
     enemys: []
     enemyPathDatas: []
     clearPoint: 0
+    defenseBaseDurability: 0
   currentGameState: 0
 --- !u!4 &184673229
 Transform:
@@ -2094,6 +2095,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae8a9f6c1635934e911c2c18b2f1834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &515516271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 515516272}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &515516272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515516271}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5720813, y: 0.2912322, z: -0.22381124}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2330,7 +2361,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2673,6 +2704,7 @@ MonoBehaviour:
   canvasTran: {fileID: 635654292}
   txtCost: {fileID: 2001248844}
   returnCharaPopUpPrefab: {fileID: 8289275981426463077, guid: 0a6e659c1d048a943baf2a785d015425, type: 3}
+  openingPrefab: {fileID: 5743430510299070119, guid: 12bf6f9a7e9eba246b8a7a01588de86c, type: 3}
 --- !u!4 &1024534447
 Transform:
   m_ObjectHideFlags: 0
@@ -2739,6 +2771,7 @@ MonoBehaviour:
   getCurrencyIntervalTime: 100
   addCurrencyPoint: 100
   defenseBaseDurability: 10
+  stageNo: 0
   totalClearPoint: 0
 --- !u!114 &1126548199 stripped
 MonoBehaviour:
