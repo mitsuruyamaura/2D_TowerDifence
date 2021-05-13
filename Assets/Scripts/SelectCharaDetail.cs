@@ -45,7 +45,7 @@ public class SelectCharaDetail : MonoBehaviour
 
         //}
 
-
+        Debug.Log("SetUp End");
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class SelectCharaDetail : MonoBehaviour
         // TODO アニメ演出
 
         // このクラスでの購読を停止する 
-        GameData.instance.CurrencyReactiveProperty.Subscribe().Dispose();
+        //GameData.instance.CurrencyReactiveProperty.Subscribe().Dispose();
 
         // タップした SelectCharaDetail の情報をポップアップに送る
         placementCharaSelectPop.SetSelectCharaDetail(charaData);
@@ -65,14 +65,24 @@ public class SelectCharaDetail : MonoBehaviour
     /// コストが支払えるか確認する
     /// </summary>
     private void JudgePermissionCost(int value) {
-        if (this.charaData.cost <= value) {
+        if (charaData.cost <= value) {
 
             btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
 
             btnSelectCharaDetail.interactable = true;
 
             // このクラスでの購読を停止する 
-            GameData.instance.CurrencyReactiveProperty.Subscribe().Dispose();
+            //GameData.instance.CurrencyReactiveProperty.Subscribe().Dispose();
+            Debug.Log("Judge 停止");
         }
+    }
+
+    /// <summary>
+    /// このクラスでの購読を停止する
+    /// </summary>
+    public void DisposeCurrency() {
+        // このクラスでの購読を停止する 
+        GameData.instance.CurrencyReactiveProperty.Subscribe().Dispose();
+        Debug.Log("停止");
     }
 }

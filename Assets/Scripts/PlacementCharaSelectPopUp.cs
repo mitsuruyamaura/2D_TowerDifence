@@ -28,6 +28,10 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     private Text txtPickupCharaCost;
 
     [SerializeField]
+    private Text txtPickupCharaMAxAttackCount;
+
+
+    [SerializeField]
     private SelectCharaDetail selectCharaDetailPrefab;
 
     [SerializeField]
@@ -82,26 +86,47 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     }
 
     /// <summary>
+    /// 表示
+    /// </summary>
+    public void DisplayPopUp(Vector3Int gridPos) {
+
+        // キャラの生成位置の保持
+        createCharaPos = gridPos;
+
+        canvasGroup.DOFade(1.0f, 0.5f);
+    }
+
+    /// <summary>
     /// 選択された SelectCharaDetail の情報をポップアップ内のピックアップに表示する
     /// </summary>
     /// <param name="charaData"></param>
     public void SetSelectCharaDetail(CharaData charaData) {
         chooseCharaData = charaData;
-
-
+        
+        // 各値の設定
         imgPickupChara.sprite = charaData.charaSprite;
 
         txtPickupCharaName.text = charaData.charaName;
 
+        txtPickupCharaAttackPower.text = charaData.attackPower.ToString();
+
         txtPickupCharaAttackRangeType.text = charaData.attackRange.ToString();
 
         txtPickupCharaCost.text = charaData.cost.ToString();
+
+        txtPickupCharaMAxAttackCount.text = charaData.maxAttackCount.ToString();
     }
 
     /// <summary>
     /// 選択しているキャラを決定
     /// </summary>
     private void OnClickSubmitChooseChara() {
+
+        // コストの支払いが可能か最終確認
+        if (chooseCharaData.cost > GameData.instance.CurrencyReactiveProperty.Value) {
+            return;
+        }
+
         charaGenerator.CreateChooseChara(createCharaPos, chooseCharaData);
         ClosePopUp();
     }
@@ -114,6 +139,12 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     }
 
     private void ClosePopUp() {
-        canvasGroup.DOFade(0, 0.5f).OnComplete(()=> charaGenerator.DestroyPlacementCharaSelectPopUp());
+        for (int i = 0; i < selectCharaDetailsList.Count; i++) {
+            selectCharaDetailsList[i].DisposeCurrency();
+            Destroy(selectCharaDetailsList[i].gameObject);
+        }
+        selectCharaDetailsList.Clear();
+
+        canvasGroup.DOFade(0, 0.5f).OnComplete(() => charaGenerator.DestroyPlacementCharaSelectPopUp());
     }
 }

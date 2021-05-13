@@ -165,7 +165,7 @@ public class CharaGenerator : MonoBehaviour
 
             // TODO 第2引数は所持しているキャラのリストに変更する
             placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(gridPos, charaDatasList, this);
-        }
+        } 
     }
 
     /// <summary>
