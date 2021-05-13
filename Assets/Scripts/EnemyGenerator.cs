@@ -30,16 +30,18 @@ public class EnemyGenerator : MonoBehaviour
 
         while (gameManager.isEnemyGenerate) {
 
-            timer++;
+            if (this.gameManager.currentGameState == GameManager.GameState.Play) {
+                timer++;
 
-            if (timer > gameManager.generateIntervalTime) {
-                timer = 0;
+                if (timer > gameManager.generateIntervalTime) {
+                    timer = 0;
 
-                // “G‚Ì¶¬‚Æ List ‚Ö‚Ì’Ç‰Á
-                gameManager.AddEnemyList(GenerateEnemy(gameManager.generateEnemyCount));
+                    // “G‚Ì¶¬‚Æ List ‚Ö‚Ì’Ç‰Á
+                    gameManager.AddEnemyList(GenerateEnemy(gameManager.generateEnemyCount));
 
-                // Å‘å¶¬”‚ğ’´‚¦‚½‚ç¶¬’â~
-                gameManager.JudgeGenerateEnemysEnd();
+                    // Å‘å¶¬”‚ğ’´‚¦‚½‚ç¶¬’â~
+                    gameManager.JudgeGenerateEnemysEnd();
+                }
             }
 
             yield return null;

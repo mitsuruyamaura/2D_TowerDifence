@@ -114,6 +114,6 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     }
 
     private void ClosePopUp() {
-        canvasGroup.DOFade(0, 0.5f).OnComplete(() => Destroy(gameObject));
+        canvasGroup.DOFade(0, 0.5f).OnComplete(()=> charaGenerator.DestroyPlacementCharaSelectPopUp());
     }
 }

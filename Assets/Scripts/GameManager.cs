@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     /// ゲームの状態
     /// </summary>
     public enum GameState {
-        Wait,
+        Preparate,
         Play,
         Stop,
         GameUp
@@ -54,7 +54,8 @@ public class GameManager : MonoBehaviour
     {
         RefreshGameData();
 
-        currentGameState = GameState.Wait;
+        SetGameState(GameState.Preparate);
+        //currentGameState = GameState.Wait;
 
         // ステージの設定
         SetUpStageData();
@@ -67,7 +68,8 @@ public class GameManager : MonoBehaviour
 
         isEnemyGenerate = true;
 
-        currentGameState = GameState.Play;
+        SetGameState(GameState.Play);
+        //currentGameState = GameState.Play;
 
         // 敵の生成準備
         StartCoroutine(enemyGenerator.PreparateEnemyGenerate(this, currentStageData));
@@ -137,6 +139,10 @@ public class GameManager : MonoBehaviour
 
     //}
 
+    /// <summary>
+    /// 敵の情報を List に追加
+    /// </summary>
+    /// <param name="enemy"></param>
     public void AddEnemyList(EnemyController enemy) {
         enemiesList.Add(enemy);
         generateEnemyCount++;
@@ -198,7 +204,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void GameUp() {
 
-        currentGameState = GameState.GameUp;
+        SetGameState(GameState.GameUp);
+        //currentGameState = GameState.GameUp;
 
         // キャラ配置用のポップアップが開いている場合には破棄
         charaGenerator.DestroyPlacementCharaSelectPopUp();
@@ -226,7 +233,8 @@ public class GameManager : MonoBehaviour
     public void PreparateCreateReturnCharaPopUp(CharaController chara) {
 
         // ゲーム停止
-        currentGameState = GameState.Stop;
+        SetGameState(GameState.Stop);
+        //currentGameState = GameState.Stop;
 
         // 配置解除を選択するポップアップを作成
         uiManager.CreateReturnCharaPopUp(chara, this);
@@ -247,18 +255,19 @@ public class GameManager : MonoBehaviour
         }
 
         // ゲーム再開
-        currentGameState = GameState.Play;
+        SetGameState(GameState.Play);
+        //currentGameState = GameState.Play;
     }
 
     /// <summary>
     /// 時間の経過に応じてカレンシーを加算
     /// </summary>
     /// <returns></returns>
-    private IEnumerator TimeToCurrency() {
+    public IEnumerator TimeToCurrency() {
 
         int timer = 0;
 
-        while (true) {
+        while (currentGameState == GameState.Play) {
             timer++;
 
             // 規定の時間が経過し、カレンシーが最大値でなければ
@@ -279,6 +288,32 @@ public class GameManager : MonoBehaviour
     public void JudgeGenerateEnemysEnd() {
         if (generateEnemyCount >= maxEnemyCount) {
             isEnemyGenerate = false;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="nextGameState"></param>
+    public void SetGameState(GameState nextGameState) {
+        currentGameState = nextGameState;
+    }
+
+    /// <summary>
+    /// すべての敵の移動を一時停止
+    /// </summary>
+    public void PauseEnemies() {
+        for (int i = 0; i < enemiesList.Count; i++) {
+            enemiesList[i].PauseMove();
+        }
+    }
+
+    /// <summary>
+    /// すべての敵の移動を再開
+    /// </summary>
+    public void ResumeEnemies() {
+        for (int i = 0; i < enemiesList.Count; i++) {
+            enemiesList[i].ResumeMove();
         }
     }
 }

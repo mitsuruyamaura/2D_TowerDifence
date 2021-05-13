@@ -54,6 +54,9 @@ public class SelectCharaDetail : MonoBehaviour
     private void OnClickSelectCharaDetail() {
         // TODO アニメ演出
 
+        // このクラスでの購読を停止する 
+        GameData.instance.CurrencyReactiveProperty.Subscribe().Dispose();
+
         // タップした SelectCharaDetail の情報をポップアップに送る
         placementCharaSelectPop.SetSelectCharaDetail(charaData);
     }
