@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UniRx;
 
 public class SelectCharaDetail : MonoBehaviour
 {
@@ -30,15 +31,19 @@ public class SelectCharaDetail : MonoBehaviour
         imgChara.sprite = this.charaData.charaSprite;
 
         // コストが支払えるか確認する
-        if (this.charaData.cost <= GameData.instance.CurrencyReactiveProperty.Value) {
+        GameData.instance.CurrencyReactiveProperty.Subscribe(x => JudgePermissionCost(x));
 
 
-            btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
+        // コストが支払えるか確認する
+        //if (this.charaData.cost <= GameData.instance.CurrencyReactiveProperty.Value) {
 
-            btnSelectCharaDetail.interactable = true;
-        } else {
 
-        }
+        //    btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
+
+        //    btnSelectCharaDetail.interactable = true;
+        //} else {
+
+        //}
 
 
     }
@@ -51,5 +56,20 @@ public class SelectCharaDetail : MonoBehaviour
 
         // タップした SelectCharaDetail の情報をポップアップに送る
         placementCharaSelectPop.SetSelectCharaDetail(charaData);
+    }
+
+    /// <summary>
+    /// コストが支払えるか確認する
+    /// </summary>
+    private void JudgePermissionCost(int value) {
+        if (this.charaData.cost <= value) {
+
+            btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
+
+            btnSelectCharaDetail.interactable = true;
+
+            // このクラスでの購読を停止する 
+            GameData.instance.CurrencyReactiveProperty.Subscribe().Dispose();
+        }
     }
 }
