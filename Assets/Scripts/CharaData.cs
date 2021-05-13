@@ -16,6 +16,7 @@ public class CharaData
     public int attackPower;
     public AttackRangeType attackRange;
     public float intervalAttackTime;
+    public int maxAttackCount;
 
     [Multiline]
     public string discription;

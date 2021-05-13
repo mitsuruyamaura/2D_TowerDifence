@@ -21,6 +21,7 @@ MonoBehaviour:
     attackPower: 1
     attackRange: 0
     intervalAttackTime: 120
+    maxAttackCount: 3
     discription: 
   - charaNo: 1
     cost: 200
@@ -30,6 +31,7 @@ MonoBehaviour:
     attackPower: 2
     attackRange: 0
     intervalAttackTime: 200
+    maxAttackCount: 2
     discription: 
   - charaNo: 2
     cost: 150
@@ -39,6 +41,7 @@ MonoBehaviour:
     attackPower: 1
     attackRange: 2
     intervalAttackTime: 120
+    maxAttackCount: 2
     discription: 
   - charaNo: 3
     cost: 200
@@ -48,6 +51,7 @@ MonoBehaviour:
     attackPower: 1
     attackRange: 1
     intervalAttackTime: 80
+    maxAttackCount: 3
     discription: 
   - charaNo: 4
     cost: 300
@@ -57,4 +61,5 @@ MonoBehaviour:
     attackPower: 3
     attackRange: 0
     intervalAttackTime: 300
+    maxAttackCount: 4
     discription: 

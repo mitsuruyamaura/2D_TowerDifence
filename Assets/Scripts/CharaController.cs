@@ -31,6 +31,8 @@ public class CharaController : MonoBehaviour
 
     private GameManager gameManager;
 
+    private int maxAttackCount;
+
 
     /// <summary>
     /// キャラの設定
@@ -49,6 +51,8 @@ public class CharaController : MonoBehaviour
         boxCollider.size = CharaDataSO.GetAttackRangeSize(charaData.attackRange);
 
         anim.runtimeAnimatorController = this.charaData.charaAnim;
+
+        maxAttackCount = this.charaData.maxAttackCount;
     }
 
     /// <summary>
@@ -58,6 +62,7 @@ public class CharaController : MonoBehaviour
     public IEnumerator PrepareteAttack() {
         Debug.Log("攻撃準備開始");
         int timer = 0;
+        int attackCount = 0;
 
         while (isAttack) {
 
@@ -68,6 +73,12 @@ public class CharaController : MonoBehaviour
 
                     timer = 0;
                     Attack();
+                    attackCount++;
+
+                    if (attackCount >= maxAttackCount) {
+                        // キャラ破壊
+                        gameManager.JudgeReturnChara(true, this);
+                    }
                 }
             }
 
