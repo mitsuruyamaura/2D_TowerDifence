@@ -61,11 +61,14 @@ public class CharaController : MonoBehaviour
 
         while (isAttack) {
 
-            timer++;
-            if(timer > intervalAttackTime) {
+            if (gameManager.currentGameState == GameManager.GameState.Play) {
 
-                timer = 0;
-                Attack();
+                timer++;
+                if (timer > intervalAttackTime) {
+
+                    timer = 0;
+                    Attack();
+                }
             }
 
             yield return null;

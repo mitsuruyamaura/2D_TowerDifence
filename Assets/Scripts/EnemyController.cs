@@ -83,6 +83,11 @@ public class EnemyController : MonoBehaviour
 
         // Še’n“_‚ÉŒü‚¯‚ÄˆÚ“®
         tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear);
+
+        // ƒQ[ƒ€’â~’†‚È‚çˆÚ“®‚ğ~‚ß‚é
+        if (gameManager.currentGameState == GameManager.GameState.Stop) {
+            PauseMove();
+        }
     }
 
 
@@ -225,5 +230,19 @@ public class EnemyController : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    /// <summary>
+    /// ˆÚ“®‚ğˆê’â~
+    /// </summary>
+    public void PauseMove() {
+        tween.Pause();
+    }
+
+    /// <summary>
+    /// ˆÚ“®ÄŠJ
+    /// </summary>
+    public void ResumeMove() {
+        tween.Play();
     }
 }

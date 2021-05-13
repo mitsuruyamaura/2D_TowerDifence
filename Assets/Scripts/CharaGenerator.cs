@@ -156,6 +156,11 @@ public class CharaGenerator : MonoBehaviour
     /// <param name="gridPos"></param>
     private void CreatePlacementCharaSelectPopUp(Vector3Int gridPos) {
         if (!placementCharaSelectPopUp) {
+
+            gameManager.SetGameState(GameManager.GameState.Stop);
+
+            gameManager.PauseEnemies();
+
             placementCharaSelectPopUp = Instantiate(placementCharaSelectPopUpPrefab, canvasTran, false);
 
             // TODO 第2引数は所持しているキャラのリストに変更する
@@ -192,6 +197,14 @@ public class CharaGenerator : MonoBehaviour
     public void DestroyPlacementCharaSelectPopUp() {
         if (placementCharaSelectPopUp) {
             Destroy(placementCharaSelectPopUp.gameObject);
+        }
+
+        // GameUp ではない場合
+        if (gameManager.currentGameState == GameManager.GameState.Stop) {
+            gameManager.SetGameState(GameManager.GameState.Play);
+
+            gameManager.ResumeEnemies();
+            StartCoroutine(gameManager.TimeToCurrency());
         }
     }
 }
