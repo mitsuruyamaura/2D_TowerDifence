@@ -2737,7 +2737,7 @@ MonoBehaviour:
     value: 0
   maxCurrency: 1000
   charaPlacementCount: 0
-  maxCharaPlacementCount: 2
+  maxCharaPlacementCount: 5
   isDebug: 0
   getCurrencyIntervalTime: 100
   addCurrencyPoint: 100
