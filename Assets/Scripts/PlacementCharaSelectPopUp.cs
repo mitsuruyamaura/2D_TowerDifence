@@ -30,7 +30,6 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     [SerializeField]
     private Text txtPickupCharaMAxAttackCount;
 
-
     [SerializeField]
     private SelectCharaDetail selectCharaDetailPrefab;
 
@@ -54,7 +53,7 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     /// </summary>
     /// <param name="gridPos"></param>
     /// <param name="haveCharaDataList"></param>
-    public void SetUpPlacementCharaSelectPopUp(Vector3Int gridPos,List<CharaData> haveCharaDataList, CharaGenerator charaGenerator) {
+    public void SetUpPlacementCharaSelectPopUp(List<CharaData> haveCharaDataList, CharaGenerator charaGenerator) {
         canvasGroup.alpha = 0;
         canvasGroup.DOFade(1.0f, 0.5f);
 
@@ -62,9 +61,6 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
 
         btnChooseChara.interactable = false;
         btnClosePopUp.interactable = false;
-        
-        // キャラの生成位置の保持
-        createCharaPos = gridPos;
 
         // 所持しているキャラ分の SelectCharaDetail を生成
         for (int i = 0; i < haveCharaDataList.Count; i++) {
@@ -86,12 +82,9 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     }
 
     /// <summary>
-    /// 表示
+    /// ポップアップの表示
     /// </summary>
-    public void DisplayPopUp(Vector3Int gridPos) {
-
-        // キャラの生成位置の保持
-        createCharaPos = gridPos;
+    public void ShowPopUp() {
 
         canvasGroup.DOFade(1.0f, 0.5f);
     }
@@ -118,7 +111,7 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     }
 
     /// <summary>
-    /// 選択しているキャラを決定
+    /// 選択しているキャラを配置するボタンを押した際の処理
     /// </summary>
     private void OnClickSubmitChooseChara() {
 
@@ -127,24 +120,33 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
             return;
         }
 
-        charaGenerator.CreateChooseChara(createCharaPos, chooseCharaData);
-        ClosePopUp();
+        // キャラの生成
+        charaGenerator.CreateChooseChara(chooseCharaData);
+
+        // ポップアップの非表示
+        HidePopUp();
     }
 
     /// <summary>
-    /// ポップアップを閉じる
+    /// 配置を止めるボタンを押した際の処理
     /// </summary>
     private void OnClickClosePopUp() {
-        ClosePopUp();
+
+        // ポップアップの非表示
+        HidePopUp();
     }
 
-    private void ClosePopUp() {
-        for (int i = 0; i < selectCharaDetailsList.Count; i++) {
-            selectCharaDetailsList[i].DisposeCurrency();
-            Destroy(selectCharaDetailsList[i].gameObject);
-        }
-        selectCharaDetailsList.Clear();
+    /// <summary>
+    /// ポップアップの非表示
+    /// </summary>
+    private void HidePopUp() {
 
-        canvasGroup.DOFade(0, 0.5f).OnComplete(() => charaGenerator.DestroyPlacementCharaSelectPopUp());
+        // 各キャラのボタンの制御
+        for (int i = 0; i < selectCharaDetailsList.Count; i++) {
+            selectCharaDetailsList[i].ChangeActivateButton(false);
+        }
+
+        // ポップアップの非表示
+        canvasGroup.DOFade(0, 0.5f).OnComplete(() => charaGenerator.InactivatePlacementCharaSelectPopUp());
     }
 }

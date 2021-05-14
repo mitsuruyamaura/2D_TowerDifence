@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.EventSystems;  // EventTrigger 利用時 
 
 public class CharaController : MonoBehaviour
 {
@@ -31,7 +30,7 @@ public class CharaController : MonoBehaviour
 
     private GameManager gameManager;
 
-    private int maxAttackCount;
+    private int attackCount = 0;     // 現在の攻撃回数の残り
 
 
     /// <summary>
@@ -52,7 +51,7 @@ public class CharaController : MonoBehaviour
 
         anim.runtimeAnimatorController = this.charaData.charaAnim;
 
-        maxAttackCount = this.charaData.maxAttackCount;
+        attackCount = this.charaData.maxAttackCount;
     }
 
     /// <summary>
@@ -62,10 +61,10 @@ public class CharaController : MonoBehaviour
     public IEnumerator PrepareteAttack() {
         Debug.Log("攻撃準備開始");
         int timer = 0;
-        int attackCount = 0;
 
         while (isAttack) {
 
+            // ゲームプレイ中のみ攻撃する
             if (gameManager.currentGameState == GameManager.GameState.Play) {
 
                 timer++;
@@ -73,9 +72,10 @@ public class CharaController : MonoBehaviour
 
                     timer = 0;
                     Attack();
-                    attackCount++;
+                    attackCount--;
 
-                    if (attackCount >= maxAttackCount) {
+                    // 攻撃回数がなくなったら
+                    if (attackCount <= 0) {
                         // キャラ破壊
                         gameManager.JudgeReturnChara(true, this);
                     }
@@ -124,7 +124,7 @@ public class CharaController : MonoBehaviour
     }
 
     /// <summary>
-    /// キャラをタップした際の処理
+    /// キャラをタップした際の処理(EventTrigger)
     /// </summary>
     public void OnClickChara() {
         gameManager.PreparateCreateReturnCharaPopUp(this);

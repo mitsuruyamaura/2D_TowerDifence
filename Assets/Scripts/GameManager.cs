@@ -35,8 +35,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private StageData currentStageData;
 
-
-
     /// <summary>
     /// ゲームの状態
     /// </summary>
@@ -52,34 +50,38 @@ public class GameManager : MonoBehaviour
     
     IEnumerator Start()
     {
-        RefreshGameData();
-
+        // ゲームの進行状態を準備中に設定
         SetGameState(GameState.Preparate);
-        //currentGameState = GameState.Wait;
+
+        // ゲームデータを初期化
+        RefreshGameData();
 
         // ステージの設定
         SetUpStageData();
 
+        // キャラ生成の設定
         StartCoroutine(charaGenerator.SetUpCharaGenerator(this));
 
+        // 拠点の設定
         defenseBase.SetUpDefenseBase(this);
 
+        // オープニング演出再生
         yield return StartCoroutine(uiManager.Opening());
 
         isEnemyGenerate = true;
 
+        // ゲームの進行状態をプレイ中に変更
         SetGameState(GameState.Play);
-        //currentGameState = GameState.Play;
 
-        // 敵の生成準備
+        // 敵の生成準備開始
         StartCoroutine(enemyGenerator.PreparateEnemyGenerate(this, currentStageData));
 
-        // カレンシーの自動獲得
+        // カレンシーの自動獲得処理の開始
         StartCoroutine(TimeToCurrency());
     }
 
     /// <summary>
-    /// 初期化
+    /// ゲームデータを初期化
     /// </summary>
     private void RefreshGameData() {
         GameData.instance.charaPlacementCount = 0;
@@ -105,39 +107,6 @@ public class GameManager : MonoBehaviour
         // TODO 他にもあれば追加
 
     }
-
-    ///// <summary>
-    ///// 敵の生成準備
-    ///// </summary>
-    ///// <returns></returns>
-    //private IEnumerator SetUpEnemyGenerate() {
-
-    //    int timer = 0;
-
-    //    while (isEnemyGenerate) {
-
-    //        timer++;
-
-    //        if (timer > generateIntervalTime) {
-    //            timer = 0;
-
-    //            // 敵の生成と List への追加
-    //            enemiesList.Add(enemyGenerator.GenerateEnemy(this));
-    //            generateEnemyCount++;
-
-    //            // 最大生成数を超えたら
-    //            if (generateEnemyCount >= maxEnemyCount) {
-    //                isEnemyGenerate = false;
-    //            }
-    //        }
-
-    //        yield return null;
-    //    }
-
-    //    // TODO 生成終了
-
-
-    //}
 
     /// <summary>
     /// 敵の情報を List に追加
@@ -180,9 +149,11 @@ public class GameManager : MonoBehaviour
             // TODO ゲームクリア演出
             uiManager.CreateGameClearSet();
 
+            // クリアボーナスの獲得
+            GameData.instance.totalClearPoint += currentStageData.clearPoint;
+
             // TODO ゲームクリアの処理を追加
 
-            GameData.instance.totalClearPoint += currentStageData.clearPoint;
         }
     }
 
@@ -191,12 +162,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GameOver() {
 
+        // ゲーム終了処理
         GameUp();
 
         // 表示
         uiManager.CreateGameOverSet();
 
         // TODO ゲームオーバーの処理を追加
+
     }
 
     /// <summary>
@@ -204,11 +177,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void GameUp() {
 
+        // ゲームの進行状態をゲーム終了に変更
         SetGameState(GameState.GameUp);
-        //currentGameState = GameState.GameUp;
 
         // キャラ配置用のポップアップが開いている場合には破棄
-        charaGenerator.DestroyPlacementCharaSelectPopUp();
+        charaGenerator.InactivatePlacementCharaSelectPopUp();
 
         // TODO ゲーム終了時に行う処理を追加
 
@@ -230,11 +203,14 @@ public class GameManager : MonoBehaviour
         charasList.Remove(chara);
     }
 
+    /// <summary>
+    /// 配置解除を選択するポップアップ作成の準備
+    /// </summary>
+    /// <param name="chara"></param>
     public void PreparateCreateReturnCharaPopUp(CharaController chara) {
 
-        // ゲーム停止
+        // ゲームの進行状態をゲーム停止に変更
         SetGameState(GameState.Stop);
-        //currentGameState = GameState.Stop;
 
         // 配置解除を選択するポップアップを作成
         uiManager.CreateReturnCharaPopUp(chara, this);
@@ -254,9 +230,8 @@ public class GameManager : MonoBehaviour
             GameData.instance.charaPlacementCount--;
         }
 
-        // ゲーム再開
+        //  ゲームの進行状態をプレイ中に変更して、ゲーム再開
         SetGameState(GameState.Play);
-        //currentGameState = GameState.Play;
     }
 
     /// <summary>
@@ -267,6 +242,7 @@ public class GameManager : MonoBehaviour
 
         int timer = 0;
 
+        // ゲームプレイ中のみ加算
         while (currentGameState == GameState.Play) {
             timer++;
 
@@ -292,7 +268,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// GameState の変更
     /// </summary>
     /// <param name="nextGameState"></param>
     public void SetGameState(GameState nextGameState) {
