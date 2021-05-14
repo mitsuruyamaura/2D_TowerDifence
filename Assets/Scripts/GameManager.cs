@@ -212,6 +212,9 @@ public class GameManager : MonoBehaviour
         // ゲームの進行状態をゲーム停止に変更
         SetGameState(GameState.Stop);
 
+        // すべての敵の移動を一時停止
+        PauseEnemies();
+
         // 配置解除を選択するポップアップを作成
         uiManager.CreateReturnCharaPopUp(chara, this);
     }
@@ -232,6 +235,12 @@ public class GameManager : MonoBehaviour
 
         //  ゲームの進行状態をプレイ中に変更して、ゲーム再開
         SetGameState(GameState.Play);
+
+        // すべての敵の移動を再開
+        ResumeEnemies();
+
+        // カレンシーの加算処理を再開
+        StartCoroutine(TimeToCurrency());
     }
 
     /// <summary>
