@@ -11,5 +11,9 @@ public class EnemyData
     public int attackPower;
     public int moveSpeed;
 
+    [Header("アイテムドロップ率")]
+    public int itemDropRate;
+
     // TODO
+
 }
