@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private UIManager uiManager;
 
-    [SerializeField]
+    //[SerializeField]
     private DefenseBase defenseBase;
 
     [SerializeField]
@@ -47,6 +47,11 @@ public class GameManager : MonoBehaviour
 
     public GameState currentGameState;
 
+    //[SerializeField]
+    private MapInfo currentMapInfo;
+
+    [SerializeField]
+    private DefenseBase defenseBasePrefab;
     
     IEnumerator Start()
     {
@@ -60,10 +65,10 @@ public class GameManager : MonoBehaviour
         SetUpStageData();
 
         // キャラ生成の設定
-        StartCoroutine(charaGenerator.SetUpCharaGenerator(this));
+        StartCoroutine(charaGenerator.SetUpCharaGenerator(this, currentMapInfo));
 
         // 拠点の設定
-        defenseBase.SetUpDefenseBase(this);
+        defenseBase.SetUpDefenseBase(this, currentStageData.defenseBaseDurability);
 
         // オープニング演出再生
         yield return StartCoroutine(uiManager.Opening());
@@ -100,12 +105,15 @@ public class GameManager : MonoBehaviour
     /// ステージデータの設定
     /// </summary>
     private void SetUpStageData() {
+
+        // GameData の stageNo から StageData を取得
         currentStageData = DataBaseManager.instance.stageDataSO.stageDatasList[GameData.instance.stageNo];
         generateIntervalTime = currentStageData.generateIntervalTime;
-        maxEnemyCount = currentStageData.enemys.Length;
+        maxEnemyCount = currentStageData.mapInfo.appearEnemyInfos.Length;
 
         // TODO 他にもあれば追加
-
+        currentMapInfo = Instantiate(currentStageData.mapInfo);
+        defenseBase = Instantiate(defenseBasePrefab, currentMapInfo.GetDefenseBaseTran());
     }
 
     /// <summary>
