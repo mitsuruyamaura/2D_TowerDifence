@@ -63,26 +63,26 @@ public class EnemyGenerator : MonoBehaviour
         //StartCoroutine(enemy.SetUpEnemyController(enemyPathDatas[randomValue], gameManager, stageData.enemyPathDatas[posNo] Random.Range(0, enemyDataSO.enemyDatasList.Count))));
 
         // ¶¬ˆÊ’u
-        int posNo = stageData.enemys[generateNo].y;
+        int posNo = stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.y;
 
         // ¶¬ˆÊ’u‚ªƒ‰ƒ“ƒ_ƒ€‚©Šm”F
-        if (stageData.enemys[generateNo].y == -1) {
-            posNo = Random.Range(0, stageData.enemyPathDatas.Length);
+        if (stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.y == -1) {
+            posNo = Random.Range(0, stageData.mapInfo.appearEnemyInfos.Length);
         }
 
         // “G‚Ì¶¬
-        EnemyController enemy = Instantiate(enemyControllerPrefab, stageData.enemyPathDatas[posNo].generateTran.position, Quaternion.identity);
+        EnemyController enemy = Instantiate(enemyControllerPrefab, stageData.mapInfo.appearEnemyInfos[posNo].enemyPathData.generateTran.position, Quaternion.identity);
 
         // “G‚ÌŽí—Þ
-        int enemyNo = stageData.enemys[generateNo].x;
+        int enemyNo = stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.x;
 
         // “G‚ªƒ‰ƒ“ƒ_ƒ€‚©Šm”F
-        if (stageData.enemys[generateNo].x == -1) {
+        if (stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.x == -1) {
             enemyNo = Random.Range(0, DataBaseManager.instance.enemyDataSO.enemyDatasList.Count);
         }
 
         // “G‚Ìî•ñ‚ÌÝ’è
-        StartCoroutine(enemy.SetUpEnemyController(stageData.enemyPathDatas[posNo], gameManager, DataBaseManager.instance.enemyDataSO.enemyDatasList.Find(x => x.enemyNo == enemyNo)));
+        StartCoroutine(enemy.SetUpEnemyController(stageData.mapInfo.appearEnemyInfos[posNo].enemyPathData, gameManager, DataBaseManager.instance.enemyDataSO.enemyDatasList.Find(x => x.enemyNo == enemyNo)));
 
         return enemy;
     }

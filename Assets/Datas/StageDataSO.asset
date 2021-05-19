@@ -15,25 +15,19 @@ MonoBehaviour:
   stageDatasList:
   - stageName: "\u30C0\u30FC\u30AB\u30FC\u30AF\u8352\u539F"
     stageNo: 0
-    generateIntervalTime: 100
-    enemys:
-    - {x: -1, y: -1}
-    - {x: 0, y: 0}
-    - {x: 1, y: 1}
-    enemyPathDatas:
-    - {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
-    - {fileID: 3515562598619921082, guid: a2816bb7fba79a24a955f09e82f35052, type: 3}
-    - {fileID: 6480637869730562238, guid: c22d709802aec2f4a84b041f36f377d0, type: 3}
+    generateIntervalTime: 500
     clearPoint: 100
+    defenseBaseDurability: 10
+    mapInfo: {fileID: 1076739480964982573, guid: c3e177096455d0044842921e7ef6c56a, type: 3}
   - stageName: "\u30E1\u30EB\u30C9\u6E7F\u5730"
     stageNo: 1
     generateIntervalTime: 0
-    enemys: []
-    enemyPathDatas: []
     clearPoint: 300
+    defenseBaseDurability: 0
+    mapInfo: {fileID: 0}
   - stageName: "\u30EB\u30FC\u30F4\u30A9\u30B9\u306E\u68EE"
     stageNo: 2
     generateIntervalTime: 0
-    enemys: []
-    enemyPathDatas: []
     clearPoint: 500
+    defenseBaseDurability: 0
+    mapInfo: {fileID: 0}

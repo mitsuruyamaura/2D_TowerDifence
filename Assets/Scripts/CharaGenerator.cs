@@ -6,14 +6,14 @@ using System.Linq;
 
 public class CharaGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject charaPrefab;
+    //[SerializeField]
+    //private GameObject charaPrefab;
 
-    [SerializeField]
+    //[SerializeField]
     private Tilemap tilemaps;　　　// Walk 側の Tilemap を指定する
 
-    [SerializeField]
-    private Grid grid;     　　　　// Base 側の Tilemap を指定する 
+    //[SerializeField]
+    private Grid grid;     　　　　// Base 側の Grid を指定する 
 
     //[SerializeField]
     //private CharaDataSO charaDataSO;
@@ -46,8 +46,10 @@ public class CharaGenerator : MonoBehaviour
     /// </summary>
     /// <param name="gameManager"></param>
     /// <returns></returns>
-    public IEnumerator SetUpCharaGenerator(GameManager gameManager) {
+    public IEnumerator SetUpCharaGenerator(GameManager gameManager, MapInfo mapInfo) {
         this.gameManager = gameManager;
+
+        (tilemaps, grid) = mapInfo.GetMapInfo(); 
 
         // 所持しているキャラのデータをリスト化
         CreateHaveCharaDatasList();
@@ -127,19 +129,19 @@ public class CharaGenerator : MonoBehaviour
         placementCharaSelectPopUp.ShowPopUp();
     }
 
-    /// <summary>
-    /// キャラ生成。デバッグ用
-    /// </summary>
-    /// <param name="gridPos"></param>
-    private void CreateChara(Vector3Int gridPos) {
-        // タップした位置のタイルのコライダーの情報を確認する
-        if (tilemaps.GetColliderType(gridPos) == Tile.ColliderType.None) {
-            GameObject chara = Instantiate(charaPrefab, gridPos, Quaternion.identity);
+    ///// <summary>
+    ///// キャラ生成。デバッグ用
+    ///// </summary>
+    ///// <param name="gridPos"></param>
+    //private void CreateChara(Vector3Int gridPos) {
+    //    // タップした位置のタイルのコライダーの情報を確認する
+    //    if (tilemaps.GetColliderType(gridPos) == Tile.ColliderType.None) {
+    //        GameObject chara = Instantiate(charaPrefab, gridPos, Quaternion.identity);
 
-            // 位置が左下を 0,0 としているので、中央にくるように調整
-            chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
-        }
-    }
+    //        // 位置が左下を 0,0 としているので、中央にくるように調整
+    //        chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
+    //    }
+    //}
 
     /// <summary>
     /// 選択したキャラを生成して配置

@@ -16,12 +16,15 @@ public class DefenseBase : MonoBehaviour
     /// İ’è
     /// </summary>
     /// <param name="gameManager"></param>
-    public void SetUpDefenseBase(GameManager gameManager) {
+    public void SetUpDefenseBase(GameManager gameManager, int defenseBaseDurability) {
         this.gameManager = gameManager;
 
-        defenseBaseDurability = GameData.instance.defenseBaseDurability;
+        if (GameData.instance.isDebug) {
+            defenseBaseDurability = GameData.instance.defenseBaseDurability;
+        } else {
+            this.defenseBaseDurability = defenseBaseDurability;
+        }
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.TryGetComponent(out EnemyController enemyController)) {
