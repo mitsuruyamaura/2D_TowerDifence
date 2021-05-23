@@ -28,9 +28,12 @@ public class CharaController : MonoBehaviour
     [SerializeField]
     private CharaData charaData;
 
+    [SerializeField]
+    private Text txtAttackCount;
+
     private GameManager gameManager;
 
-    private int attackCount = 0;     // 現在の攻撃回数の残り
+    private int attackCount = 0;     // TODO 現在の攻撃回数の残り Reactive Property にしてもいい
 
 
     /// <summary>
@@ -52,6 +55,8 @@ public class CharaController : MonoBehaviour
         anim.runtimeAnimatorController = this.charaData.charaAnim;
 
         attackCount = this.charaData.maxAttackCount;
+
+        UpdateDisplayAttackCount();
     }
 
     /// <summary>
@@ -74,6 +79,9 @@ public class CharaController : MonoBehaviour
                     Attack();
                     attackCount--;
 
+                    // 残り攻撃回数の表示更新
+                    UpdateDisplayAttackCount();
+
                     // 攻撃回数がなくなったら
                     if (attackCount <= 0) {
                         // キャラ破壊
@@ -91,6 +99,8 @@ public class CharaController : MonoBehaviour
     /// </summary>
     private void Attack() {
         Debug.Log("攻撃");
+
+        // TODO キャラの上に攻撃エフェクトを生成
 
         //Destroy(enemy.gameObject);
 
@@ -128,5 +138,12 @@ public class CharaController : MonoBehaviour
     /// </summary>
     public void OnClickChara() {
         gameManager.PreparateCreateReturnCharaPopUp(this);
+    }
+
+    /// <summary>
+    /// 残り攻撃回数の表示更新
+    /// </summary>
+    private void UpdateDisplayAttackCount() {
+        txtAttackCount.text = attackCount.ToString();
     }
 }
