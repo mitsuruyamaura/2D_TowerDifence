@@ -22,6 +22,9 @@ public class CharaController : MonoBehaviour
     [SerializeField]
     private Animator anim;
 
+    private string overrideClipName = "Chara_4";
+    private AnimatorOverrideController overrideController;
+
     [SerializeField]
     private BoxCollider2D boxCollider;
 
@@ -44,15 +47,20 @@ public class CharaController : MonoBehaviour
         this.charaData = charaData;
         this.gameManager = gameManager;
 
-        spriteRenderer.sprite = this.charaData.charaSprite;
+        // ÇPñáäGóp
+        //spriteRenderer.sprite = this.charaData.charaSprite;
 
         attackPower = this.charaData.attackPower;
 
         intervalAttackTime = this.charaData.intervalAttackTime;
 
-        boxCollider.size = CharaDataSO.GetAttackRangeSize(charaData.attackRange);
+        boxCollider.size = CharaDataSO.GetAttackRangeSize(this.charaData.attackRange);
 
-        anim.runtimeAnimatorController = this.charaData.charaAnim;
+        // Editor óp
+        //anim.runtimeAnimatorController = this.charaData.charaAnim;
+
+        // ÉLÉÉÉâÇ≤Ç∆ÇÃ AnimationClip Çê›íË
+        SetUpAnimation();
 
         attackCount = this.charaData.maxAttackCount;
 
@@ -145,5 +153,32 @@ public class CharaController : MonoBehaviour
     /// </summary>
     private void UpdateDisplayAttackCount() {
         txtAttackCount.text = attackCount.ToString();
+    }
+
+    /// <summary>
+    /// Motion Ç…ìoò^Ç≥ÇÍÇƒÇ¢ÇÈ AnimationClip ÇïœçX
+    /// http://tsubakit1.hateblo.jp/entry/2016/11/18/234130
+    /// </summary>
+    private void SetUpAnimation() {
+        overrideController = new AnimatorOverrideController();
+
+        overrideController.runtimeAnimatorController = anim.runtimeAnimatorController;
+        anim.runtimeAnimatorController = overrideController;
+
+        AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[anim.layerCount];
+
+        for (int i = 0; i < anim.layerCount; i++) {
+            layerInfo[i] = anim.GetCurrentAnimatorStateInfo(i);
+        }
+
+        overrideController[overrideClipName] = this.charaData.charaAnim;
+
+        anim.runtimeAnimatorController = overrideController;
+
+        anim.Update(0.0f);
+
+        for (int i = 0; i < anim.layerCount; i++) {
+            anim.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
+        }
     }
 }
