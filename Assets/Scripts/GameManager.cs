@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(charaGenerator.SetUpCharaGenerator(this, currentMapInfo));
 
         // 拠点の設定
-        defenseBase.SetUpDefenseBase(this, currentStageData.defenseBaseDurability);
+        defenseBase.SetUpDefenseBase(this, currentStageData.defenseBaseDurability, uiManager);
 
         // オープニング演出再生
         yield return StartCoroutine(uiManager.Opening());

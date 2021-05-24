@@ -17,7 +17,7 @@ MonoBehaviour:
     stageNo: 0
     generateIntervalTime: 500
     clearPoint: 100
-    defenseBaseDurability: 10
+    defenseBaseDurability: 5
     mapInfo: {fileID: 1076739480964982573, guid: c3e177096455d0044842921e7ef6c56a, type: 3}
   - stageName: "\u30E1\u30EB\u30C9\u6E7F\u5730"
     stageNo: 1
