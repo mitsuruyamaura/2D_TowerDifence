@@ -7,31 +7,46 @@ public class DefenseBase : MonoBehaviour
     [Header("‘Ï‹v’l")]
     public int defenseBaseDurability;
 
+    private int maxDefenseBaseDurability;
+
     [SerializeField, HideInInspector]
     private GameObject damageEffectPrefab;  // “G‘¤‚Æd•¡‚·‚é‚Ì‚Åˆê’U‚È‚µ‚É‚µ‚Ä•Û—¯
 
+    [SerializeField]
+    private UnityEngine.UI.Slider durabilityGauge;
+
     private GameManager gameManager;
+    private UIManager uiManager;
 
     /// <summary>
     /// İ’è
     /// </summary>
     /// <param name="gameManager"></param>
-    public void SetUpDefenseBase(GameManager gameManager, int defenseBaseDurability) {
+    public void SetUpDefenseBase(GameManager gameManager, int defenseBaseDurability, UIManager uiManager) {
         this.gameManager = gameManager;
+        this.uiManager = uiManager;
+        uiManager.SetDurabilityGauge(durabilityGauge);
 
         if (GameData.instance.isDebug) {
-            defenseBaseDurability = GameData.instance.defenseBaseDurability;
+            maxDefenseBaseDurability = GameData.instance.defenseBaseDurability;
         } else {
-            this.defenseBaseDurability = defenseBaseDurability;
+            maxDefenseBaseDurability = defenseBaseDurability;
         }
+
+        this.defenseBaseDurability = maxDefenseBaseDurability;
+
+        uiManager.UpdateDisplayDurabilityGauge(this.defenseBaseDurability, maxDefenseBaseDurability);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.TryGetComponent(out EnemyController enemyController)) {
-            defenseBaseDurability -= enemyController.attackPower;
+            defenseBaseDurability = Mathf.Clamp(defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
 
             // ƒ_ƒ[ƒW‰‰o¶¬
             //CreateDamageEffect();
+
+            uiManager.UpdateDisplayDurabilityGauge(defenseBaseDurability, maxDefenseBaseDurability);
+
 
             if (defenseBaseDurability <= 0 && gameManager.currentGameState == GameManager.GameState.Play) {
                 Debug.Log("Game Over");

@@ -28,6 +28,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private LogoEffect gameCearEffectPrefab;
 
+    [SerializeField]
+    private Slider sliderDurabilityGauge;
+
 
     void Start() {
         // 購読開始
@@ -92,5 +95,25 @@ public class UIManager : MonoBehaviour
         gameClear.PlayGameClear();
 
         yield return new WaitForSeconds(1.5f);
+    }
+
+    /// <summary>
+    /// 拠点の耐久力のゲージ表示の更新
+    /// </summary>
+    /// <param name="durabilityValue"></param>
+    public void UpdateDisplayDurabilityGauge(int durabilityValue, int maxDurabilityValue) {
+
+        float value = (float)durabilityValue / maxDurabilityValue;
+
+        sliderDurabilityGauge.DOValue(value, 0.25f).SetEase(Ease.Linear);
+    }
+
+    /// <summary>
+    /// 耐久力ゲージをセット
+    /// </summary>
+    /// <returns></returns>
+    public void SetDurabilityGauge(Slider slider) {
+
+        sliderDurabilityGauge = slider;
     }
 }
