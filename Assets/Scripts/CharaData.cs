@@ -22,6 +22,8 @@ public class CharaData
 
     [Multiline]
     public string discription;
+
+    public int engagePoint;
     
     // TODO ‘¼‚É‚à‚ ‚ê‚Î’Ç‰Á
 

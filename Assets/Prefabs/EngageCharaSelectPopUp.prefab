@@ -246,7 +246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 37}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &2077409164113678332
@@ -273,6 +273,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85c89bcc626b0b4bb0a46c2b072910f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btnClosePopUp: {fileID: 4853910659490369879}
+  btnChooseChara: {fileID: 6528565368411953615}
+  canvasGroup: {fileID: 2077409164113678332}
+  imgPickupChara: {fileID: 1035814881870736280}
+  txtPickupCharaName: {fileID: 6394522165070893036}
+  txtPickupCharaAttackPower: {fileID: 3226325953539272262}
+  txtPickupCharaAttackRangeType: {fileID: 8448899377569985125}
+  txtPickupCharaCost: {fileID: 8932377729816657247}
+  txtPickupCharaMAxAttackCount: {fileID: 2028137494654228119}
+  selectCharaDetailPrefab: {fileID: 2885847821553746486, guid: 2db56f8af6eaff149a7fdf467947f9ff, type: 3}
+  selectCharaDetailTran: {fileID: 3035540994556932243}
+  txtEngagePoint: {fileID: 7131840845383948757}
+  selectCharaDetailsList: []
 --- !u!1 &1132396647991870750
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +766,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 586, y: 419}
+  m_AnchoredPosition: {x: 586, y: 456}
   m_SizeDelta: {x: 494.27, y: 141}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5386882802566799477
@@ -1693,7 +1706,7 @@ GameObject:
   - component: {fileID: 5918043548701592586}
   - component: {fileID: 6462451023308294732}
   m_Layer: 5
-  m_Name: txtPickupCharaMAxAttackCount
+  m_Name: txtPickupCharaMaxAttackCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1804,7 +1817,7 @@ GameObject:
   - component: {fileID: 1807406415795518925}
   - component: {fileID: 1356747820383465150}
   m_Layer: 5
-  m_Name: lblPickupCharaMaxAttackCount (1)
+  m_Name: lblEngagePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2553,7 +2566,7 @@ GameObject:
   - component: {fileID: 5578690125100855755}
   - component: {fileID: 4311794486461993315}
   m_Layer: 5
-  m_Name: txtPickupCharaMAxAttackCount (1)
+  m_Name: txtEngagePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

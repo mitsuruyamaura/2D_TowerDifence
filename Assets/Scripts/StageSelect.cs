@@ -19,6 +19,14 @@ public class StageSelect : MonoBehaviour
 
     private StageSelectPopUp stageSelectPopUp;
 
+    [SerializeField]
+    private EngageCharaPopUp engageCharaPopUpPrefab;
+
+    private EngageCharaPopUp engageCharaPopUp;
+
+    [SerializeField]
+    private Button btnEngage;
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +40,10 @@ public class StageSelect : MonoBehaviour
         }
 
         SetUpAllStageSelectDetails();
+
+        GenerateEngageCharaPopUp();
+
+        btnEngage.onClick.AddListener(OnClickEngage);
     }
 
     /// <summary>
@@ -69,5 +81,22 @@ public class StageSelect : MonoBehaviour
     /// </summary>
     public void PraparateBattle() {
         SceneStateManager.instance.PreparateNextScene(SceneName.Battle);
+    }
+
+    /// <summary>
+    /// キャラ契約用のポップアップの生成
+    /// </summary>
+    private void GenerateEngageCharaPopUp() {
+
+        engageCharaPopUp = Instantiate(engageCharaPopUpPrefab, canvasTran, false);
+
+        engageCharaPopUp.SetUpEngageCharaPopUp();
+    }
+
+    /// <summary>
+    /// エンゲージボタンを押下した際の処理
+    /// </summary>
+    private void OnClickEngage() {
+        engageCharaPopUp.ShowPopUp();
     }
 }
