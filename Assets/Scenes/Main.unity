@@ -756,7 +756,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3455275415108423837, guid: 6a1e2a23ac0921e479c2d0ebdc01ba0c, type: 3}
       propertyPath: m_Name
-      value: StageSelectDetail (1)
+      value: StageSelectDetail_1
       objectReference: {fileID: 0}
     - target: {fileID: 5770424783329640010, guid: 6a1e2a23ac0921e479c2d0ebdc01ba0c, type: 3}
       propertyPath: stageNo
@@ -1213,7 +1213,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3455275415108423837, guid: 6a1e2a23ac0921e479c2d0ebdc01ba0c, type: 3}
       propertyPath: m_Name
-      value: StageSelectDetail (2)
+      value: StageSelectDetail_2
       objectReference: {fileID: 0}
     - target: {fileID: 5770424783329640010, guid: 6a1e2a23ac0921e479c2d0ebdc01ba0c, type: 3}
       propertyPath: stageNo
@@ -1314,7 +1314,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3455275415108423837, guid: 6a1e2a23ac0921e479c2d0ebdc01ba0c, type: 3}
       propertyPath: m_Name
-      value: StageSelectDetail
+      value: StageSelectDetail_0
       objectReference: {fileID: 0}
     - target: {fileID: 8314923754468112123, guid: 6a1e2a23ac0921e479c2d0ebdc01ba0c, type: 3}
       propertyPath: m_Pivot.x
