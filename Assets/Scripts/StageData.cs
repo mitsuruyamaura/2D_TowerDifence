@@ -12,6 +12,8 @@ public class StageData
     public int clearPoint;
     public int defenseBaseDurability;
 
+    public Sprite stageSprite;
+
     public MapInfo mapInfo;
 
     // TODO
