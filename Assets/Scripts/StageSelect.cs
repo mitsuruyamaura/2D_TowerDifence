@@ -27,6 +27,10 @@ public class StageSelect : MonoBehaviour
 
         GenerateStageSelectPopUp();
 
+        if (!GameData.instance.clearedStageNosList.Contains(0)) {
+            GameData.instance.clearedStageNosList.Add(0);
+        }
+
         SetUpAllStageSelectDetails();
     }
 
@@ -47,9 +51,16 @@ public class StageSelect : MonoBehaviour
         stageSelectPopUp.SetUpStageSelectPopUp(this);
     }
 
+    /// <summary>
+    /// StageSelectDetail ÇÃê›íËÇ∆ï\é¶êÿÇËë÷Ç¶
+    /// </summary>
     private void SetUpAllStageSelectDetails() {
         for (int i = 0; i < stageSelectDetailsList.Count; i++) {
             stageSelectDetailsList[i].SetUpStageSelectDetail(stageSelectPopUp);
+
+            if (GameData.instance.clearedStageNosList.Contains(stageSelectDetailsList[i].GetStageNo())) {
+                stageSelectDetailsList[i].SwitchActivateStageSelectDetail(true);
+            }
         }
     }
 

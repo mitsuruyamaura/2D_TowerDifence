@@ -5,29 +5,32 @@ using UniRx;
 
 public class GameManager : MonoBehaviour
 {
-    public bool isEnemyGenerate;
-
-    public int generateIntervalTime;
-
     [SerializeField]
     private EnemyGenerator enemyGenerator;
 
     [SerializeField]
-    private List<EnemyController> enemiesList = new List<EnemyController>();
+    private CharaGenerator charaGenerator;
+
+    public bool isEnemyGenerate;
+
+    public int generateIntervalTime;
 
     public int generateEnemyCount;
-    private int destroyEnemyCount;
 
     public int maxEnemyCount;
+
+
+    // mi
+    [SerializeField]
+    private List<EnemyController> enemiesList = new List<EnemyController>();
+
+    private int destroyEnemyCount;
 
     [SerializeField]
     private UIManager uiManager;
 
     //[SerializeField]
     private DefenseBase defenseBase;
-
-    [SerializeField]
-    private CharaGenerator charaGenerator;
 
     [SerializeField]
     private List<CharaController> charasList = new List<CharaController>();
@@ -52,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private DefenseBase defenseBasePrefab;
-    
+
     IEnumerator Start()
     {
         // ゲームの進行状態を準備中に設定
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
         // ステージの設定
         SetUpStageData();
 
-        // キャラ生成の設定
+        // キャラ配置用ポップアップの生成と設定
         StartCoroutine(charaGenerator.SetUpCharaGenerator(this, currentMapInfo));
 
         // 拠点の設定
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviour
 
         // カレンシーの自動獲得処理の開始
         StartCoroutine(TimeToCurrency());
+
     }
 
     /// <summary>
@@ -148,17 +152,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void JudgeGameClear() {
         // 生成数を超えているか
-        if (destroyEnemyCount >= generateEnemyCount) {
+        if (destroyEnemyCount >= maxEnemyCount) {
 
             Debug.Log("ゲームクリア");
 
-            GameUp();
-
-            // TODO ゲームクリア演出
-            uiManager.CreateGameClearSet();
-
-            // クリアボーナスの獲得
-            GameData.instance.totalClearPoint += currentStageData.clearPoint;
+            // クリア報酬
+            GameClearAndResult();
 
             // TODO ゲームクリアの処理を追加
 
@@ -171,19 +170,21 @@ public class GameManager : MonoBehaviour
     public void GameOver() {
 
         // ゲーム終了処理
-        GameUp();
+        GameUpToCommon();
 
         // 表示
         uiManager.CreateGameOverSet();
 
-        // TODO ゲームオーバーの処理を追加
+        // TODO ゲームオーバー時の処理を追加
 
+        // シーン遷移
+        SceneStateManager.instance.PreparateNextScene(SceneName.Main);
     }
 
     /// <summary>
-    /// ゲーム終了
+    /// ゲーム終了時の共通処理
     /// </summary>
-    private void GameUp() {
+    private void GameUpToCommon() {
 
         // ゲームの進行状態をゲーム終了に変更
         SetGameState(GameState.GameUp);
@@ -191,7 +192,7 @@ public class GameManager : MonoBehaviour
         // キャラ配置用のポップアップが開いている場合には破棄
         charaGenerator.InactivatePlacementCharaSelectPopUp();
 
-        // TODO ゲーム終了時に行う処理を追加
+        // TODO ゲーム終了時に、ゲームクリアとゲームオーバーの共通する処理を追加
 
     }
 
@@ -308,5 +309,29 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < enemiesList.Count; i++) {
             enemiesList[i].ResumeMove();
         }
+    }
+
+    /// <summary>
+    /// ゲームクリアと報酬処理
+    /// </summary>
+    private void GameClearAndResult() {
+
+        // ゲーム終了
+        GameUpToCommon();
+
+        // TODO ゲームクリア演出
+        uiManager.CreateGameClearSet();
+
+        // クリアボーナスの獲得
+        GameData.instance.totalClearPoint += currentStageData.clearPoint;
+
+        // 未クリアである場合
+        if (!GameData.instance.clearedStageNosList.Contains(currentStageData.stageNo++)) {
+            // 次のステージを登録してステージシーンで表示できるようにする
+            GameData.instance.clearedStageNosList.Add(currentStageData.stageNo++);
+        }
+
+        // シーン遷移
+        SceneStateManager.instance.PreparateNextScene(SceneName.Main);
     }
 }
