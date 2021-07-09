@@ -38,6 +38,8 @@ public class StageSelectDetail : MonoBehaviour
         txtStageName.text = stageData.stageName;
 
         btnStageSelect.onClick.AddListener(OnClickStageSelectDetail);
+
+        SwitchActivateStageSelectDetail(false);
     }
 
     /// <summary>
@@ -45,5 +47,21 @@ public class StageSelectDetail : MonoBehaviour
     /// </summary>
     private void OnClickStageSelectDetail() {
         stageSelectPopUp.ShowStageSelectPopUp(stageData);
+    }
+
+    /// <summary>
+    /// ステージ番号の取得
+    /// </summary>
+    /// <returns></returns>
+    public int GetStageNo() {
+        return stageData.stageNo;
+    }
+
+    /// <summary>
+    /// ゲームオブジェクトの表示切り替え
+    /// </summary>
+    /// <param name="isSwitch"></param>
+    public void SwitchActivateStageSelectDetail(bool isSwitch) {
+        gameObject.SetActive(isSwitch);
     }
 }

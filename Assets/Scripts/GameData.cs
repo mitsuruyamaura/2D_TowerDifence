@@ -30,6 +30,10 @@ public class GameData : MonoBehaviour
     [Header("所持しているキャラの番号")]
     public List<int> possessionCharaNosList = new List<int>();
 
+    [Header("表示するステージの番号")]
+    public List<int> clearedStageNosList = new List<int>();
+
+
     // TODO 敵の破壊数の管理も ReactiveProperty を使う
 
 
