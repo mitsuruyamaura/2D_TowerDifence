@@ -22,7 +22,8 @@ MonoBehaviour:
     attackRange: 0
     intervalAttackTime: 120
     maxAttackCount: 3
-    discription: 
+    discription: "\u6B74\u6226\u306E\u9B54\u8853\u5E2B\u3002\u30B3\u30B9\u30C8\u304C\u5B89\u304F\u3001\u653B\u6483\u56DE\u6570\u304C\u591A\u3044\u3002"
+    engagePoint: 100
   - charaNo: 1
     cost: 200
     charaSprite: {fileID: 1248525323487703161, guid: 82a7f4ebc9d63584ba6e9834987ee30c, type: 3}
@@ -32,7 +33,8 @@ MonoBehaviour:
     attackRange: 0
     intervalAttackTime: 200
     maxAttackCount: 2
-    discription: 
+    discription: "\u653B\u6483\u7BC4\u56F2\u306F\u72ED\u304F\u3001\u653B\u6483\u56DE\u6570\u3082\u5C11\u306A\u3044\u304C\u3001\u653B\u6483\u529B\u306E\u5927\u304D\u3044\u6226\u58EB\u3002"
+    engagePoint: 200
   - charaNo: 2
     cost: 150
     charaSprite: {fileID: 2684471460419224087, guid: 5278527c151a5424ab1aad3fd3038e0d, type: 3}
@@ -43,6 +45,7 @@ MonoBehaviour:
     intervalAttackTime: 120
     maxAttackCount: 2
     discription: 
+    engagePoint: 300
   - charaNo: 3
     cost: 200
     charaSprite: {fileID: 4558515143993472460, guid: 0b0ee8d89fbcddb41960ae890c9e858f, type: 3}
@@ -53,6 +56,7 @@ MonoBehaviour:
     intervalAttackTime: 80
     maxAttackCount: 3
     discription: 
+    engagePoint: 400
   - charaNo: 4
     cost: 300
     charaSprite: {fileID: 4814029082027783119, guid: dcb348c7b73fe9d4ab7a322471cc3de5, type: 3}
@@ -63,3 +67,4 @@ MonoBehaviour:
     intervalAttackTime: 300
     maxAttackCount: 4
     discription: 
+    engagePoint: 500

@@ -17,6 +17,8 @@ public class SelectCharaDetail : MonoBehaviour
 
     private CharaData charaData;
 
+    private EngageCharaPopUp engageCharaPop;
+
     /// <summary>
     /// SelectCharaDetail の設定
     /// </summary>
@@ -26,7 +28,7 @@ public class SelectCharaDetail : MonoBehaviour
         this.placementCharaSelectPop = placementCharaSelectPop;
         this.charaData = charaData;
 
-        btnSelectCharaDetail.interactable = false;
+        ChangeActivateButton(false);
 
         imgChara.sprite = this.charaData.charaSprite;
 
@@ -35,6 +37,9 @@ public class SelectCharaDetail : MonoBehaviour
 
         // ボタンにメソッドを登録
         btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetail);
+
+        // TODO 後程、コストに応じてボタンを押せるかどうかを切り替えるようにする
+        ChangeActivateButton(true);
     }
 
     /// <summary>
@@ -47,17 +52,30 @@ public class SelectCharaDetail : MonoBehaviour
         placementCharaSelectPop.SetSelectCharaDetail(charaData);
     }
 
+    // mi
+
+    /// <summary>
+    /// ボタンを押せる状態の切り替え
+    /// </summary>
+    public void ChangeActivateButton(bool isSwitch) {
+        btnSelectCharaDetail.interactable = isSwitch;
+    }
+
     /// <summary>
     /// コストが支払えるか確認する
     /// </summary>
-    public void JudgePermissionCost(int value) {
+    public bool JudgePermissionCost(int value) {
+
+        //Debug.Log("コスト確認");
 
         // コストが支払える場合
         if (charaData.cost <= value) {
 
             // ボタンを押せる状態にする
             ChangeActivateButton(true);
+            return true;
         }
+        return false;
     }
 
     /// <summary>
@@ -71,9 +89,17 @@ public class SelectCharaDetail : MonoBehaviour
     }
 
     /// <summary>
-    /// ボタンを押せる状態の切り替え
+    /// 
     /// </summary>
-    public void ChangeActivateButton(bool isSwitch) {
-        btnSelectCharaDetail.interactable = isSwitch;
+    /// <param name="engageCharaPopUp"></param>
+    /// <param name="charaData"></param>
+    public void SetUpForEngagePopUp(EngageCharaPopUp engageCharaPopUp, CharaData charaData) {
+        this.engageCharaPop = engageCharaPopUp;
+
+        this.charaData = charaData;
+
+        imgChara.sprite = this.charaData.charaSprite;
+
+        // 契約可能な状態かを確認する
     }
 }
