@@ -8,10 +8,10 @@ using UniRx;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
-    private PopUpBase gameClearSetPrefab;
+    private InfoManager gameClearSetPrefab;
 
     [SerializeField]
-    private PopUpBase gameOverSetPrefab;
+    private InfoManager gameOverSetPrefab;
 
     [SerializeField]
     private Transform canvasTran;
@@ -54,8 +54,8 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void CreateGameOverSet() {
         ResetSubscribe();
-        PopUpBase gameOverSet = Instantiate(gameOverSetPrefab, canvasTran, false);
-        gameOverSet.SetUpPopUpBase();
+        InfoManager gameOverSet = Instantiate(gameOverSetPrefab, canvasTran, false);
+        gameOverSet.SetUpInfo();
     }
 
     /// <summary>

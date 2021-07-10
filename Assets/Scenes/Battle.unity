@@ -167,6 +167,7 @@ MonoBehaviour:
     generateIntervalTime: 0
     clearPoint: 0
     defenseBaseDurability: 0
+    stageSprite: {fileID: 0}
     mapInfo: {fileID: 0}
   currentGameState: 0
   defenseBasePrefab: {fileID: 6519958887863936403, guid: 8abf5c532c05bb441b176d04d0efb2f8, type: 3}
@@ -919,8 +920,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c9f6196a25e8e74794154dc481ca76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameClearSetPrefab: {fileID: 2649624077108566022, guid: 3e7cd9fd46336984db51c8058b48f18b, type: 3}
-  gameOverSetPrefab: {fileID: 7064288228121943772, guid: ffcf24a27362eee4f89a58c48340dec8, type: 3}
+  gameClearSetPrefab: {fileID: 5753062218276380886, guid: 3e7cd9fd46336984db51c8058b48f18b, type: 3}
+  gameOverSetPrefab: {fileID: 6773414585774116418, guid: ffcf24a27362eee4f89a58c48340dec8, type: 3}
   canvasTran: {fileID: 635654292}
   txtCost: {fileID: 2001248844}
   returnCharaPopUpPrefab: {fileID: 8289275981426463077, guid: 0a6e659c1d048a943baf2a785d015425, type: 3}

@@ -4,145 +4,97 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class EngageCharaPopUp : MonoBehaviour
+public class EngageCharaPopUp : CharaSelectPopUpBase
 {
-    [SerializeField]
-    private Button btnClosePopUp;
-
-    [SerializeField]
-    private Button btnChooseChara;
-
-    [SerializeField]
-    private CanvasGroup canvasGroup;
-
-    [SerializeField]
-    private Image imgPickupChara;
-
-    [SerializeField]
-    private Text txtPickupCharaName;
-
-    [SerializeField]
-    private Text txtPickupCharaAttackPower;
-
-    [SerializeField]
-    private Text txtPickupCharaAttackRangeType;
-
-    [SerializeField]
-    private Text txtPickupCharaCost;
-
-    [SerializeField]
-    private Text txtPickupCharaMAxAttackCount;
-
-    [SerializeField]
-    private SelectCharaDetail selectCharaDetailPrefab;
-
-    [SerializeField]
-    private Transform selectCharaDetailTran;
-
     [SerializeField]
     private Text txtEngagePoint;
 
     [SerializeField]
-    private List<SelectCharaDetail> selectCharaDetailsList = new List<SelectCharaDetail>();
+    private ContractDetail contractDetailPrefab;
 
-    private CharaData chooseCharaData;
+    /// <summary>
+    /// ポップアップの設定
+    /// </summary>
+    /// <param name="sceneStateBase"></param>
+    public override void SetUpPopUp(SceneStateBase sceneStateBase) {
 
-    public void SetUpEngageCharaPopUp() {
-
-        canvasGroup.alpha = 0;
+        base.SetUpPopUp(sceneStateBase);
 
         // データベース内のすべてのキャラのデータをボタンとして生成する
         for (int i = 0; i < DataBaseManager.instance.charaDataSO.charaDatasList.Count; i++) {
             SelectCharaDetail selectCharaDetail = Instantiate(selectCharaDetailPrefab, selectCharaDetailTran, false);
             selectCharaDetail.SetUpForEngagePopUp(this, DataBaseManager.instance.charaDataSO.charaDatasList[i]);
             selectCharaDetailsList.Add(selectCharaDetail);
+
+            // 初期ピックアップキャラの登録がなく、所持していないキャラで、かつ、契約料が支払えるキャラがいる場合は、初期ピックアップとして登録する
+            if (chooseCharaData == null && selectCharaDetail.GetActivateButtonState()) {
+                chooseCharaData = selectCharaDetail.GetCharaData();
+            }
         }
 
-        // 所持しているキャラの場合はボタンを押せない状態にする
-
-
-        btnChooseChara.onClick.AddListener(OnClickSubmitChooseChara);
-        btnClosePopUp.onClick.AddListener(OnClickClosePopUp);
-
+        btnClosePopUp.interactable = true;
     }
 
     /// <summary>
-    /// 各ボタンのアクティブ状態の切り替え
+    /// ポップアップの表示と契約状態の確認
     /// </summary>
-    /// <param name="isSwitch"></param>
-    public void SwithcActivateButtons(bool isSwitch) {
-        btnChooseChara.interactable = isSwitch;
-        btnClosePopUp.interactable = isSwitch;
-    }
+    public override void ShowPopUp() {
 
-    /// <summary>
-    /// ポップアップの表示
-    /// </summary>
-    public void ShowPopUp() {
+        btnChooseChara.interactable = false;
 
-        canvasGroup.DOFade(1.0f, 0.5f);
+        // 契約状態の確認
+        for (int i = 0; i < selectCharaDetailsList.Count; i++) {
+            selectCharaDetailsList[i].CheckEngageState();
+        }
+
+        base.ShowPopUp();
     }
 
     /// <summary>
     /// 選択しているキャラを配置するボタンを押した際の処理
     /// </summary>
-    private void OnClickSubmitChooseChara() {
+    protected override void OnClickSubmitChooseChara() {
 
-        // TODO コストの支払いが可能か最終確認
-        //if (chooseCharaData.cost > GameData.instance.CurrencyReactiveProperty.Value) {
-        //    return;
-        //}
+        // 契約料の支払いが可能か最終確認
+        if (chooseCharaData.engagePoint > GameData.instance.totalClearPoint) {
+            return;
+        }
 
-        // キャラの生成
-        //charaGenerator.CreateChooseChara(chooseCharaData);
+        // 支払い
+        GameData.instance.totalClearPoint -= chooseCharaData.engagePoint;
+
+        // GameData にキャラ追加
+        GameData.instance.engageCharaNosList.Add(chooseCharaData.charaNo);
+
+        // 表示更新　UniRX でも
+        sceneStateBase.UpdateDisplay();
+
+        // 契約演出
+        GenerateEngageEffect();
 
         // ポップアップの非表示
         HidePopUp();
     }
 
     /// <summary>
-    /// 配置を止めるボタンを押した際の処理
+    /// 契約演出
     /// </summary>
-    private void OnClickClosePopUp() {
-
-        // ポップアップの非表示
-        HidePopUp();
-    }
-
-    /// <summary>
-    /// ポップアップの非表示
-    /// </summary>
-    private void HidePopUp() {
-
-        // TODO 各キャラのボタンの制御
-        //for (int i = 0; i < selectCharaDetailsList.Count; i++) {
-        //    selectCharaDetailsList[i].ChangeActivateButton(selectCharaDetailsList[i].JudgePermissionCost(GameData.instance.CurrencyReactiveProperty.Value));
-        //}
-
-        // ポップアップの非表示
-        canvasGroup.DOFade(0, 0.5f); //.OnComplete(() => charaGenerator.InactivatePlacementCharaSelectPopUp());
+    /// <returns></returns>
+    private void GenerateEngageEffect() {
+        ContractDetail contractDetail = Instantiate(contractDetailPrefab, transform, false);
+        contractDetail.transform.SetParent(transform.parent);
+        contractDetail.SetUpContractDetail(chooseCharaData);
     }
 
     /// <summary>
     /// 選択された SelectCharaDetail の情報をポップアップ内のピックアップに表示する
     /// </summary>
     /// <param name="charaData"></param>
-    public void SetSelectCharaDetail(CharaData charaData) {
-        chooseCharaData = charaData;
-
-        // 各値の設定
-        imgPickupChara.sprite = charaData.charaSprite;
-
-        txtPickupCharaName.text = charaData.charaName;
-
-        txtPickupCharaAttackPower.text = charaData.attackPower.ToString();
-
-        txtPickupCharaAttackRangeType.text = charaData.attackRange.ToString();
-
-        txtPickupCharaCost.text = charaData.cost.ToString();
-
-        txtPickupCharaMAxAttackCount.text = charaData.maxAttackCount.ToString();
+    public override void SetSelectCharaDetail(CharaData charaData) {
+        base.SetSelectCharaDetail(charaData);
 
         txtEngagePoint.text = charaData.engagePoint.ToString();
+
+        btnChooseChara.interactable = true;
     }
 }

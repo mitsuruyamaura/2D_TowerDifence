@@ -19,12 +19,15 @@ public class SelectCharaDetail : MonoBehaviour
 
     private EngageCharaPopUp engageCharaPop;
 
+    [SerializeField]
+    private Image imgLock;
+
     /// <summary>
     /// SelectCharaDetail の設定
     /// </summary>
     /// <param name="placementCharaSelectPop"></param>
     /// <param name="charaData"></param>
-    public void SetUpSelectCharaDetail(PlacementCharaSelectPopUp placementCharaSelectPop, CharaData charaData) {
+    public void SetUpSelectCharaDetail(PlacementCharaSelectPopUp placementCharaSelectPop, CharaData charaData) {   // TODO 引数を Base クラスに変更する
         this.placementCharaSelectPop = placementCharaSelectPop;
         this.charaData = charaData;
 
@@ -89,7 +92,7 @@ public class SelectCharaDetail : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// SetUp メソッドはあとで Base クラスに変えて統一する。多態性の学習につかう
     /// </summary>
     /// <param name="engageCharaPopUp"></param>
     /// <param name="charaData"></param>
@@ -101,5 +104,62 @@ public class SelectCharaDetail : MonoBehaviour
         imgChara.sprite = this.charaData.charaSprite;
 
         // 契約可能な状態かを確認する
+        CheckEngageState();
+    }
+
+    /// <summary>
+    /// 契約状態の確認
+    /// </summary>
+    public void CheckEngageState() {
+        ChangeActivateButton(false);
+        imgLock.enabled = false;
+
+        // 所持しているキャラの場合
+        if (GameData.instance.engageCharaNosList.Contains(this.charaData.charaNo)) {
+            return;
+        
+        } else if (!GameData.instance.engageCharaNosList.Contains(this.charaData.charaNo) && CheckPaymentEngagePoint()) {
+            //所持していないキャラの場合で、契約料が支払える場合はボタンを押せる状態にする
+            ChangeActivateButton(true);
+
+            // ボタンにメソッドを登録
+            btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetailFotEngage);
+        } else {
+            // 契約できない場合には、ロック画像を表示
+            imgLock.enabled = true;
+        }
+    }
+
+    /// <summary>
+    /// 契約料が支払えて契約可能な状態か確認
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckPaymentEngagePoint() {
+        return charaData.engagePoint <= GameData.instance.totalClearPoint ? true : false;
+    }
+
+    /// <summary>
+    /// ボタンの状態の取得
+    /// </summary>
+    /// <returns></returns>
+    public bool GetActivateButtonState() {
+        return btnSelectCharaDetail.interactable;
+    }
+
+    /// <summary>
+    /// CharaData の取得
+    /// </summary>
+    /// <returns></returns>
+    public CharaData GetCharaData() {
+        return charaData;
+    }
+
+    /// <summary>
+    /// キャラ選択用のメソッド。あとで多態性を利用する処理に変える
+    /// </summary>
+    private void OnClickSelectCharaDetailFotEngage() {
+
+        // ピックアップに登録
+        engageCharaPop.SetSelectCharaDetail(charaData);
     }
 }

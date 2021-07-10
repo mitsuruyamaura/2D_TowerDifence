@@ -6,7 +6,7 @@ using DG.Tweening;
 using Coffee.UIExtensions;
 
 
-public class LogoEffect : PopUpBase
+public class LogoEffect : InfoManager 
 {
     [SerializeField]
     private Image imgStart;
@@ -37,6 +37,6 @@ public class LogoEffect : PopUpBase
         sequence.Append(canvasGroup.DOFade(1.0f, 0.5f).OnComplete(() => shinyEffect.Play(1.0f)));
 
         // ƒ{ƒ^ƒ“‚ð‰Ÿ‚¹‚é‚æ‚¤‚É‚·‚é
-        sequence.AppendInterval(1.0f).OnComplete(() => SetUpPopUpBase());
+        sequence.AppendInterval(1.0f).OnComplete(() => SetUpInfo());
     }
 }
