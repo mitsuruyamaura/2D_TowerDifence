@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageSelect : MonoBehaviour
+public class StageSelect : SceneStateBase
 {
     [SerializeField]
     private Text txtTotalClearPoint;
@@ -31,7 +31,7 @@ public class StageSelect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateDisplayTotalClearPoint();
+        UpdateDisplay();
 
         GenerateStageSelectPopUp();
 
@@ -49,7 +49,7 @@ public class StageSelect : MonoBehaviour
     /// <summary>
     /// トータルクリアポイントの表示更新
     /// </summary>
-    private void UpdateDisplayTotalClearPoint() {
+    public override void UpdateDisplay() {
         txtTotalClearPoint.text = GameData.instance.totalClearPoint.ToString();
     }
 
@@ -90,7 +90,7 @@ public class StageSelect : MonoBehaviour
 
         engageCharaPopUp = Instantiate(engageCharaPopUpPrefab, canvasTran, false);
 
-        engageCharaPopUp.SetUpPopUp();
+        engageCharaPopUp.SetUpPopUp(this);
     }
 
     /// <summary>

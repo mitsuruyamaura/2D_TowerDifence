@@ -9,10 +9,13 @@ public class EngageCharaPopUp : CharaSelectPopUpBase
     [SerializeField]
     private Text txtEngagePoint;
 
+    /// <summary>
+    /// ポップアップの設定
+    /// </summary>
+    /// <param name="sceneStateBase"></param>
+    public override void SetUpPopUp(SceneStateBase sceneStateBase) {
 
-    public override void SetUpPopUp() {
-
-        base.SetUpPopUp();
+        base.SetUpPopUp(sceneStateBase);
 
         // データベース内のすべてのキャラのデータをボタンとして生成する
         for (int i = 0; i < DataBaseManager.instance.charaDataSO.charaDatasList.Count; i++) {
@@ -30,21 +33,58 @@ public class EngageCharaPopUp : CharaSelectPopUpBase
     }
 
     /// <summary>
+    /// ポップアップの表示と契約状態の確認
+    /// </summary>
+    public override void ShowPopUp() {
+        
+        // 契約状態の確認
+        for (int i = 0; i < selectCharaDetailsList.Count; i++) {
+            selectCharaDetailsList[i].CheckEngageState();
+        }
+
+        base.ShowPopUp();
+    }
+
+    /// <summary>
     /// 選択しているキャラを配置するボタンを押した際の処理
     /// </summary>
     protected override void OnClickSubmitChooseChara() {
 
-        // TODO 契約料の支払いが可能か最終確認
-        //if (chooseCharaData.cost > GameData.instance.CurrencyReactiveProperty.Value) {
-        //    return;
-        //}
+        // 契約料の支払いが可能か最終確認
+        if (chooseCharaData.engagePoint > GameData.instance.totalClearPoint) {
+            return;
+        }
+
+        // 支払い
+        GameData.instance.totalClearPoint -= chooseCharaData.engagePoint;
 
         // GameData にキャラ追加
+        GameData.instance.engageCharaNosList.Add(chooseCharaData.charaNo);
 
-        // 演出
+        // 表示更新　UniRX でも
+        sceneStateBase.UpdateDisplay();
+
+        // 契約演出
+        StartCoroutine(PreparateEngageEffect());
+    }
+
+    /// <summary>
+    /// 契約演出の準備と待機
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PreparateEngageEffect() {
+        yield return StartCoroutine(GenerateEngageEffect());
 
         // ポップアップの非表示
         HidePopUp();
+    }
+
+    /// <summary>
+    /// 契約演出
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator GenerateEngageEffect() {
+        yield return null;
     }
 
     /// <summary>

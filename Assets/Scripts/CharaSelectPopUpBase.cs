@@ -44,11 +44,14 @@ public class CharaSelectPopUpBase : MonoBehaviour
 
     protected CharaData chooseCharaData;
 
+    protected SceneStateBase sceneStateBase;
 
     /// <summary>
     /// ポップアップの初期設定
     /// </summary>
-    public virtual void SetUpPopUp() {
+    public virtual void SetUpPopUp(SceneStateBase sceneStateBase) {
+
+        this.sceneStateBase = sceneStateBase; 
 
         canvasGroup.alpha = 0;
         HidePopUp();

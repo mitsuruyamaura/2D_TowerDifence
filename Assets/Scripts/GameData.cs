@@ -27,8 +27,8 @@ public class GameData : MonoBehaviour
 
     public int totalClearPoint;
 
-    [Header("所持しているキャラの番号")]
-    public List<int> possessionCharaNosList = new List<int>();
+    [Header("契約して所持しているキャラの番号")]
+    public List<int> engageCharaNosList = new List<int>();
 
     [Header("表示するステージの番号")]
     public List<int> clearedStageNosList = new List<int>();

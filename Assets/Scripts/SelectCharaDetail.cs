@@ -101,18 +101,31 @@ public class SelectCharaDetail : MonoBehaviour
 
         this.charaData = charaData;
 
-        ChangeActivateButton(false);
-
         imgChara.sprite = this.charaData.charaSprite;
 
         // 契約可能な状態かを確認する
-        // 所持していないキャラの場合で、契約料が支払える場合はボタンを押せる状態にする
-        if (!GameData.instance.possessionCharaNosList.Contains(this.charaData.charaNo) && CheckEngage()) {
+        CheckEngageState();
+    }
+
+    /// <summary>
+    /// 契約状態の確認
+    /// </summary>
+    public void CheckEngageState() {
+        ChangeActivateButton(false);
+        imgLock.enabled = false;
+
+        // 所持しているキャラの場合
+        if (GameData.instance.engageCharaNosList.Contains(this.charaData.charaNo)) {
+            return;
+        
+        } else if (!GameData.instance.engageCharaNosList.Contains(this.charaData.charaNo) && CheckPaymentEngagePoint()) {
+            //所持していないキャラの場合で、契約料が支払える場合はボタンを押せる状態にする
             ChangeActivateButton(true);
 
             // ボタンにメソッドを登録
             btnSelectCharaDetail.onClick.AddListener(OnClickSelectCharaDetailFotEngage);
         } else {
+            // 契約できない場合には、ロック画像を表示
             imgLock.enabled = true;
         }
     }
@@ -121,7 +134,7 @@ public class SelectCharaDetail : MonoBehaviour
     /// 契約料が支払えて契約可能な状態か確認
     /// </summary>
     /// <returns></returns>
-    private bool CheckEngage() {
+    public bool CheckPaymentEngagePoint() {
         return charaData.engagePoint <= GameData.instance.totalClearPoint ? true : false;
     }
 
