@@ -9,6 +9,9 @@ public class EngageCharaPopUp : CharaSelectPopUpBase
     [SerializeField]
     private Text txtEngagePoint;
 
+    [SerializeField]
+    private ContractDetail contractDetailPrefab;
+
     /// <summary>
     /// ポップアップの設定
     /// </summary>
@@ -36,7 +39,9 @@ public class EngageCharaPopUp : CharaSelectPopUpBase
     /// ポップアップの表示と契約状態の確認
     /// </summary>
     public override void ShowPopUp() {
-        
+
+        btnChooseChara.interactable = false;
+
         // 契約状態の確認
         for (int i = 0; i < selectCharaDetailsList.Count; i++) {
             selectCharaDetailsList[i].CheckEngageState();
@@ -65,15 +70,7 @@ public class EngageCharaPopUp : CharaSelectPopUpBase
         sceneStateBase.UpdateDisplay();
 
         // 契約演出
-        StartCoroutine(PreparateEngageEffect());
-    }
-
-    /// <summary>
-    /// 契約演出の準備と待機
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator PreparateEngageEffect() {
-        yield return StartCoroutine(GenerateEngageEffect());
+        GenerateEngageEffect();
 
         // ポップアップの非表示
         HidePopUp();
@@ -83,8 +80,10 @@ public class EngageCharaPopUp : CharaSelectPopUpBase
     /// 契約演出
     /// </summary>
     /// <returns></returns>
-    private IEnumerator GenerateEngageEffect() {
-        yield return null;
+    private void GenerateEngageEffect() {
+        ContractDetail contractDetail = Instantiate(contractDetailPrefab, transform, false);
+        contractDetail.transform.SetParent(transform.parent);
+        contractDetail.SetUpContractDetail(chooseCharaData);
     }
 
     /// <summary>

@@ -286,6 +286,7 @@ MonoBehaviour:
   selectCharaDetailTran: {fileID: 3035540994556932243}
   selectCharaDetailsList: []
   txtEngagePoint: {fileID: 7131840845383948757}
+  contractDetailPrefab: {fileID: 1059284265660860439, guid: 1286f96f7bd3f4646b42d58e0ae735af, type: 3}
 --- !u!1 &1132396647991870750
 GameObject:
   m_ObjectHideFlags: 0
