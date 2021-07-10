@@ -90,7 +90,7 @@ public class StageSelect : MonoBehaviour
 
         engageCharaPopUp = Instantiate(engageCharaPopUpPrefab, canvasTran, false);
 
-        engageCharaPopUp.SetUpEngageCharaPopUp();
+        engageCharaPopUp.SetUpPopUp();
     }
 
     /// <summary>

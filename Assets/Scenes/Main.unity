@@ -747,6 +747,10 @@ PrefabInstance:
       propertyPath: clearedStageNosList.Array.data[2]
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: possessionCharaNosList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682849, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: m_RootOrder
       value: 1

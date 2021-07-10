@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1169750848574385367}
   - component: {fileID: 6480390428399522726}
-  - component: {fileID: 2649624077108566022}
+  - component: {fileID: 5753062218276380886}
   m_Layer: 5
   m_Name: GameClearSet
   m_TagString: Untagged
@@ -52,7 +52,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &2649624077108566022
+--- !u!114 &5753062218276380886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2755553824077348749}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f886d74e39f07e43a86da36bfeed3da, type: 3}
+  m_Script: {fileID: 11500000, guid: 1993d7e264e2e8f4eb72441e3283069a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   btnSubmit: {fileID: 3786354568104914357}
