@@ -64,11 +64,11 @@ public class GameManager : MonoBehaviour
         // ゲームデータを初期化
         RefreshGameData();
 
-        // ステージの設定
+        // ステージの設定 + ステージごとの PathData を設定
         SetUpStageData();
 
         // キャラ配置用ポップアップの生成と設定
-        StartCoroutine(charaGenerator.SetUpCharaGenerator(this, currentMapInfo));
+        StartCoroutine(charaGenerator.SetUpCharaGenerator(this, currentStageData));
 
         // 拠点の設定
         defenseBase.SetUpDefenseBase(this, currentStageData.defenseBaseDurability, uiManager);
@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour
     /// ゲームデータを初期化
     /// </summary>
     private void RefreshGameData() {
-        GameData.instance.charaPlacementCount = 0;
+        // デバッグ用
+        GameData.instance.charaPlacementCount = 0;   
 
         // ゲームの度にインスタンスする
         GameData.instance.CurrencyReactiveProperty = new ReactiveProperty<int>();
@@ -118,6 +119,13 @@ public class GameManager : MonoBehaviour
         // TODO 他にもあれば追加
         currentMapInfo = Instantiate(currentStageData.mapInfo);
         defenseBase = Instantiate(defenseBasePrefab, currentMapInfo.GetDefenseBaseTran());
+
+        // PathDatas の設定
+        PathData[] pathDatas = new PathData[currentStageData.mapInfo.appearEnemyInfos.Length];
+        for (int i = 0; i < currentStageData.mapInfo.appearEnemyInfos.Length; i++) {
+            pathDatas[i] = currentStageData.mapInfo.appearEnemyInfos[i].enemyPathData;
+        }
+        enemyGenerator.SetUpPathDatas(pathDatas);
     }
 
     /// <summary>
@@ -201,6 +209,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void AddCharasList(CharaController chara) {
         charasList.Add(chara);
+
+        // TODO キャラ数カウント
+        GameData.instance.charaPlacementCount++;
     }
 
     /// <summary>
@@ -333,5 +344,9 @@ public class GameManager : MonoBehaviour
 
         // シーン遷移
         SceneStateManager.instance.PreparateNextScene(SceneName.Main);
+    }
+
+    public int GetPlacementCharaCount() {
+        return charasList.Count;
     }
 }

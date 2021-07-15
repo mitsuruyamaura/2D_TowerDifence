@@ -11,9 +11,9 @@ public class GameData : MonoBehaviour
 
     public int maxCurrency;
 
-    public int charaPlacementCount;
+    public int charaPlacementCount;       // デバッグ用
 
-    public int maxCharaPlacementCount;
+    public int maxCharaPlacementCount;    // デバッグ用
 
     public bool isDebug;
 
@@ -21,7 +21,7 @@ public class GameData : MonoBehaviour
 
     public int addCurrencyPoint;
 
-    public int defenseBaseDurability;
+    public int defenseBaseDurability;     // デバッグ用
 
     public int stageNo;
 
