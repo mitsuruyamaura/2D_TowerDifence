@@ -80,10 +80,9 @@ public class CharaController : MonoBehaviour
 
                     // 攻撃回数がなくなったら
                     if (attackCount <= 0) {
-                        // キャラ破壊
-                        Destroy(gameObject);
 
-                        gameManager.RemoveCharasList(this);
+                        // キャラを破壊
+                        DestroyChara();
                     }
                 }
             }
@@ -185,12 +184,26 @@ public class CharaController : MonoBehaviour
         }
     }
 
-    //mi
-
     /// <summary>
     /// キャラをタップした際の処理(EventTrigger)
     /// </summary>
     public void OnClickChara() {
         gameManager.PreparateCreateReturnCharaPopUp(this);
+    }
+
+    //mi
+
+    /// <summary>
+    /// キャラが破壊された場合の処理
+    /// </summary>
+    private void DestroyChara() {
+
+        // エフェクト
+        GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Destroy_Chara), transform.position, Quaternion.identity);
+
+        // キャラ破壊
+        Destroy(gameObject);
+
+        gameManager.RemoveCharasList(this);
     }
 }

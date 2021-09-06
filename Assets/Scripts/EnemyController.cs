@@ -33,11 +33,11 @@ public class EnemyController : MonoBehaviour
 
 
     // 未
-    [SerializeField]
-    private GameObject hitEffectPrefab;
+    [SerializeField, HideInInspector]
+    private GameObject hitEffectPrefab;        // EffectManager で対応
 
-    [SerializeField]
-    private GameObject destroyEffectPrefab;
+    [SerializeField, HideInInspector]
+    private GameObject destroyEffectPrefab;    // EffectManager で対応
 
 
     //IEnumerator Start() {
@@ -165,31 +165,36 @@ public class EnemyController : MonoBehaviour
 
             // 破壊
             DestroyEnemy(true);
+        } else {
+
+            // 演出用のエフェクト生成
+            CreateHitEffect();
+
+            // ヒットストップ演出
+            StartCoroutine(WaitMove());
         }
-
-        // 演出用のエフェクト生成
-        //CreateHitEffect();
-
-        // ヒットストップ演出
-        StartCoroutine(WaitMove());        
     }
 
     /// <summary>
     /// 敵破壊処理
     /// </summary>
-    public void DestroyEnemy(bool isPlayerDestroyed) {   // 引数まだ使ってないのでサイトには記載していない
+    public void DestroyEnemy(bool isPlayerDestroyed = true) {   // 引数まだ使ってないのでサイトには記載していない
         tween.Kill();
 
-        // TODO SE
+        // プレイヤーが破壊した場合(防衛拠点に侵入した場合には、防衛拠点のエフェクトを出す。両方だすと見えなくなるため)
+        if (isPlayerDestroyed) {
+            // TODO SE
 
+            // エフェクト
+            //GameObject effect = Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
+            GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Destroy_Enemy), transform.position, Quaternion.identity);
+            Destroy(effect, 1.5f);
+        }
 
-        //GameObject effect = Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
-        //Destroy(effect,1.5f);
-
-        //// Enemy の List から削除
+        //// Enemy の List から削除  => CountUpDestroyEnemyCount の中でやるので不要
         //gameManager.RemoveEnemyList(this);
 
-        // プレイヤーが破壊している場合
+        // プレイヤーが破壊している場合  =>  分けないようにしたので不要
         //if (isPlayerDestroyed) {
         // 倒した敵の数をカウント(Enemy の List から削除)
         gameManager.CountUpDestoryEnemyCount(this);
@@ -205,7 +210,8 @@ public class EnemyController : MonoBehaviour
         // TODO SE
 
 
-        GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+        //GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Hit_Enemy) , transform.position, Quaternion.identity);
         Destroy(effect, 1.5f);
         
     }

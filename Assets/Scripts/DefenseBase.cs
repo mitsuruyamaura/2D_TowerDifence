@@ -12,7 +12,7 @@ public class DefenseBase : MonoBehaviour
 
     // 未
     [SerializeField, HideInInspector]
-    private GameObject damageEffectPrefab;  // 敵側と重複するので一旦なしにして保留
+    private GameObject damageEffectPrefab;  // 敵側と重複するので一旦なしにして保留  EffectManager で対応
 
     [SerializeField]
     private UnityEngine.UI.Slider durabilityGauge;
@@ -44,8 +44,8 @@ public class DefenseBase : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out EnemyController enemyController)) {
             defenseBaseDurability = Mathf.Clamp(defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
 
-            // ダメージ演出生成
-            //CreateDamageEffect();
+            // ダメージ演出生成(耐久力 0 になった場合で別のエフェクトを用意してもいい)
+            CreateDamageEffect();
 
             uiManager.UpdateDisplayDurabilityGauge(defenseBaseDurability, maxDefenseBaseDurability);
 
@@ -66,7 +66,9 @@ public class DefenseBase : MonoBehaviour
     /// ダメージ演出生成
     /// </summary>
     private void CreateDamageEffect() {
-        GameObject effect = Instantiate(damageEffectPrefab, transform.position, Quaternion.identity);
+        //GameObject effect = Instantiate(damageEffectPrefab, transform.position, Quaternion.identity);
+
+        GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Hit_DefenseBase), transform.position, Quaternion.identity);
         Destroy(effect, 1.5f);
     }
 }
