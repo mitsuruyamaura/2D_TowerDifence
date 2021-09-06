@@ -9,6 +9,8 @@ public class DefenseBase : MonoBehaviour
 
     private int maxDefenseBaseDurability;
 
+
+    // –¢
     [SerializeField, HideInInspector]
     private GameObject damageEffectPrefab;  // “G‘¤‚Æd•¡‚·‚é‚Ì‚Åˆê’U‚È‚µ‚É‚µ‚Ä•Û—¯
 

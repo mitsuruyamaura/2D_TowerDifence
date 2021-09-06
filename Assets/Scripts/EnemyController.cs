@@ -4,127 +4,151 @@ using UnityEngine;
 using DG.Tweening;
 using System.Linq;
 
-
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Header("移動経路の情報")]
     private PathData pathData;
 
+    [SerializeField, Header("移動速度")]
+    private float moveSpeed;
+
+    [SerializeField, Header("最大HP")]
+    private int maxHp;
+
+    [SerializeField]
+    private int hp;
+
+    private Tween tween;
+    private Vector3[] paths;
+
+    private Animator anim;
+
+    //private Vector3 currentPos;
+
+    private GameManager gameManager;
+
+    public int attackPower;
+
+    public EnemyData enemyData;
+
+
+    // 未
     [SerializeField]
     private GameObject hitEffectPrefab;
 
     [SerializeField]
     private GameObject destroyEffectPrefab;
 
-    [SerializeField]
-    private DrawPathLine pathLinePrefab;
 
-    public int attackPower;
-
-    [Header("移動速度")]
-    public float moveSpeed;
-
-    [Header("HP")]
-    public int maxHp;
-
-    [SerializeField]
-    private int hp;
-
-    private Vector3 currentPos;
-
-    private Animator anim;
-
-    private Tween tween;
-
-    private GameManager gameManager;
-
-    public EnemyData enemyData;
-
-    
-    //IEnumerator  Start()
-    //{
+    //IEnumerator Start() {
     //    hp = maxHp;
 
     //    TryGetComponent(out anim);
 
+    //    //Vector3[]  paths = new Vector3[pathData.pathTranArray.Length];
+
+    //    //for (int i = 0; i < pathData.pathTranArray.Length; i++) {
+    //    //    paths[i] = pathData.pathTranArray[i].position;
+    //    //}
+
     //    // 移動する地点を取得
-    //    Vector3[] paths = pathData.pathTranArray.Select(x => x.position).ToArray();
+    //    paths = pathData.pathTranArray.Select(x => x.position).ToArray();
 
     //    // 経路生成
-    //    yield return StartCoroutine(CreatePathLine(paths));
+    //    //yield return StartCoroutine(CreatePathLine(paths));
 
     //    // 各地点に向けて移動
-    //    tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear);
+    //    tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear).OnWaypointChange(ChangeAnimeDirection);
+
+    //    yield return null;
     //}
 
     /// <summary>
     /// 敵の設定
     /// </summary>
-    /// <returns></returns>
-    public IEnumerator SetUpEnemyController(PathData pathData, GameManager gameManager, EnemyData enemyData) {
+    public void SetUpEnemyController(Vector3[] pathsData, GameManager gameManager, EnemyData enemyData = null) {
         this.enemyData = enemyData;
 
         moveSpeed = this.enemyData.moveSpeed;
         attackPower = this.enemyData.attackPower;
 
         maxHp = this.enemyData.hp;
-        hp = maxHp;
 
-        TryGetComponent(out anim);
-
-        this.pathData = pathData;
         this.gameManager = gameManager;
 
+        hp = maxHp;
+
+        if (TryGetComponent(out anim)) {
+            SetUpAnimation();
+        }
+
         // 移動する地点を取得
-        Vector3[] paths = pathData.pathTranArray.Select(x => x.position).ToArray();
+        //paths = pathData.pathTranArray.Select(x => x.position).ToArray();
+
+        paths = pathsData;
 
         // 経路生成
-        yield return StartCoroutine(CreatePathLine(paths));
+        //yield return StartCoroutine(CreatePathLine(paths));
 
         // 各地点に向けて移動
-        tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear);
+        tween = transform.DOPath(paths, 1000 / moveSpeed).SetEase(Ease.Linear).OnWaypointChange(ChangeAnimeDirection);
+
+        PauseMove();
 
         // ゲーム停止中なら移動を止める
-        if (gameManager.currentGameState == GameManager.GameState.Stop) {
-            PauseMove();
-        }
+        //if (gameManager.currentGameState == GameManager.GameState.Stop) {
+        //    PauseMove();
+        //}
     }
 
 
-    void Update()
-    {
-        // 敵の進行方向を取得
-        ChangeAnimeDirection();
-    }
+    //void Update()
+    //{
+    //    // 敵の進行方向を取得
+    //    ChangeAnimeDirection();
+    //}
 
     /// <summary>
-    /// 敵の進行方向を取得
+    /// 敵の進行方向を取得して、移動アニメと同期
     /// </summary>
-    private void ChangeAnimeDirection() {
+    private void ChangeAnimeDirection(int index = 0) {
 
-        if (transform.position.x < currentPos.x) {
-            anim.SetFloat("Y", 0f);
-            anim.SetFloat("X", -1.0f);
+        //Debug.Log(index);
 
-            //Debug.Log("左方向");
-        } else if (transform.position.y > currentPos.y) {
-            anim.SetFloat("X", 0f);
-            anim.SetFloat("Y", 1.0f);
-
-            //Debug.Log("上左向");
-        } else if (transform.position.y < currentPos.y) {
-            anim.SetFloat("X", 0f);
-            anim.SetFloat("Y", -1.0f);
-
-            //Debug.Log("下方向");
-        } else {
-            anim.SetFloat("Y", 0f);
-            anim.SetFloat("X", 1.0f);
-
-            //Debug.Log("右方向");         
+        if (index >= paths.Length) {
+            return;
         }
 
-        currentPos = transform.position;
+        Vector3 direction = (transform.position - paths[index]).normalized;
+        //Debug.Log(direction);
+
+        anim.SetFloat("X", direction.x);
+        anim.SetFloat("Y", direction.y);
+
+
+        //if (transform.position.x > paths[index].x) {
+        //    anim.SetFloat("Y", 0f);
+        //    anim.SetFloat("X", -1.0f);
+
+        //    Debug.Log("左方向");
+        //} else if (transform.position.y < paths[index].y) {
+        //    anim.SetFloat("X", 0f);
+        //    anim.SetFloat("Y", 1.0f);
+
+        //    Debug.Log("上左向");
+        //} else if (transform.position.y > paths[index].y) {
+        //    anim.SetFloat("X", 0f);
+        //    anim.SetFloat("Y", -1.0f);
+
+        //    Debug.Log("下方向");
+        //} else {
+        //    anim.SetFloat("Y", 0f);
+        //    anim.SetFloat("X", 1.0f);
+
+        //    Debug.Log("右方向");         
+        //}
+
+        //currentPos = transform.position;
     }
 
     /// <summary>
@@ -144,7 +168,7 @@ public class EnemyController : MonoBehaviour
         }
 
         // 演出用のエフェクト生成
-        CreateHitEffect();
+        //CreateHitEffect();
 
         // ヒットストップ演出
         StartCoroutine(WaitMove());        
@@ -153,23 +177,23 @@ public class EnemyController : MonoBehaviour
     /// <summary>
     /// 敵破壊処理
     /// </summary>
-    public void DestroyEnemy(bool isPlayerDestroyed) {
+    public void DestroyEnemy(bool isPlayerDestroyed) {   // 引数まだ使ってないのでサイトには記載していない
         tween.Kill();
 
         // TODO SE
 
 
-        GameObject effect = Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
-        Destroy(effect,1.5f);
+        //GameObject effect = Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
+        //Destroy(effect,1.5f);
 
-        // TODO Enemy の List から削除
-        gameManager.RemoveEnemyList(this);
+        //// Enemy の List から削除
+        //gameManager.RemoveEnemyList(this);
 
         // プレイヤーが破壊している場合
-        if (isPlayerDestroyed) {
-            // 倒した敵の数をカウント
-            gameManager.CountUpDestoryEnemyCount();
-        }
+        //if (isPlayerDestroyed) {
+        // 倒した敵の数をカウント(Enemy の List から削除)
+        gameManager.CountUpDestoryEnemyCount(this);
+        //}
 
         Destroy(gameObject);
     }
@@ -186,6 +210,53 @@ public class EnemyController : MonoBehaviour
         
     }
 
+    ///// <summary>
+    ///// 経路の生成と破棄
+    ///// </summary>
+    //private IEnumerator CreatePathLine(Vector3[] paths) {
+
+    //    yield return null;
+
+    //    List<DrawPathLine> drawPathLinesList = new List<DrawPathLine>(); 
+
+    //    // １つの Path ごとに１つずつ順番に経路を生成
+    //    for (int i = 0; i < paths.Length -1; i++) {
+    //        DrawPathLine drawPathLine = Instantiate(pathLinePrefab, transform.position, Quaternion.identity);
+
+    //        Vector3[] drawPaths = new Vector3[2] { paths[i], paths[i + 1] };
+
+    //        drawPathLine.CreatePathLine(drawPaths);
+
+    //        drawPathLinesList.Add(drawPathLine);
+
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+
+    //    // すべてのラインを生成して待機
+    //    yield return new WaitForSeconds(0.5f);
+
+    //    // １つのラインずつ順番に削除する
+    //    for (int i = 0; i < drawPathLinesList.Count;i++) {
+    //        Destroy(drawPathLinesList[i].gameObject);
+
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //}
+
+    /// <summary>
+    /// 移動を一時停止
+    /// </summary>
+    public void PauseMove() {
+        tween.Pause();
+    }
+
+    /// <summary>
+    /// 移動再開
+    /// </summary>
+    public void ResumeMove() {
+        tween.Play();
+    }
+
     /// <summary>
     /// ヒットストップ演出
     /// </summary>
@@ -200,49 +271,11 @@ public class EnemyController : MonoBehaviour
     }
 
     /// <summary>
-    /// 経路の生成と破棄
+    /// AnimatorController を AnimatorOverrideController で変更
     /// </summary>
-    private IEnumerator CreatePathLine(Vector3[] paths) {
-
-        yield return null;
-
-        List<DrawPathLine> drawPathLinesList = new List<DrawPathLine>(); 
-
-        // １つの Path ごとに１つずつ順番に経路を生成
-        for (int i = 0; i < paths.Length -1; i++) {
-            DrawPathLine drawPathLine = Instantiate(pathLinePrefab, transform.position, Quaternion.identity);
-
-            Vector3[] drawPaths = new Vector3[2] { paths[i], paths[i + 1] };
-
-            drawPathLine.CreatePathLine(drawPaths);
-
-            drawPathLinesList.Add(drawPathLine);
-
-            yield return new WaitForSeconds(0.1f);
+    private void SetUpAnimation() {
+        if (enemyData.enemyOverrideController != null) {
+            anim.runtimeAnimatorController = enemyData.enemyOverrideController;   // enemyData.overrideController.runtimeAnimatorController だとダメ
         }
-
-        // すべてのラインを生成して待機
-        yield return new WaitForSeconds(0.5f);
-
-        // １つのラインずつ順番に削除する
-        for (int i = 0; i < drawPathLinesList.Count;i++) {
-            Destroy(drawPathLinesList[i].gameObject);
-
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    /// <summary>
-    /// 移動を一時停止
-    /// </summary>
-    public void PauseMove() {
-        tween.Pause();
-    }
-
-    /// <summary>
-    /// 移動再開
-    /// </summary>
-    public void ResumeMove() {
-        tween.Play();
     }
 }

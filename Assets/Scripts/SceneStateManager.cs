@@ -29,6 +29,9 @@ public class SceneStateManager : MonoBehaviour
     /// <param name="nextSceneName"></param>
     /// <returns></returns>
     public IEnumerator NextScene(SceneName nextSceneName) {
+
+        // ƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“ˆ—
+
         yield return null;
 
         SceneManager.LoadScene(nextSceneName.ToString());

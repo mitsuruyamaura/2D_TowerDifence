@@ -4,13 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class PlacementCharaSelectPopUp : MonoBehaviour
+public class PlacementCharaSelectPopUp : MonoBehaviour   // あとでクラス継承する
 {
     [SerializeField]
     private Button btnClosePopUp;
 
     [SerializeField]
     private Button btnChooseChara;
+
+    [SerializeField]
+    private CanvasGroup canvasGroup;
+
+    private CharaGenerator charaGenerator;
 
     [SerializeField]
     private Image imgPickupChara;
@@ -37,30 +42,27 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     private Transform selectCharaDetailTran;
 
     [SerializeField]
-    private CanvasGroup canvasGroup;
-
-    [SerializeField]
     private List<SelectCharaDetail> selectCharaDetailsList = new List<SelectCharaDetail>();
 
-    private Vector3Int createCharaPos;
+    //private Vector3Int createCharaPos;
 
     private CharaData chooseCharaData;
 
-    private CharaGenerator charaGenerator;
+
 
     /// <summary>
     /// ポップアップの設定
     /// </summary>
-    /// <param name="gridPos"></param>
+    /// <param name="charaGenerator"></param>
     /// <param name="haveCharaDataList"></param>
-    public void SetUpPlacementCharaSelectPopUp(List<CharaData> haveCharaDataList, CharaGenerator charaGenerator) {
-        canvasGroup.alpha = 0;
-        canvasGroup.DOFade(1.0f, 0.5f);
+    public void SetUpPlacementCharaSelectPopUp(CharaGenerator charaGenerator, List<CharaData> haveCharaDataList) {
 
         this.charaGenerator = charaGenerator;
 
-        btnChooseChara.interactable = false;
-        btnClosePopUp.interactable = false;
+        canvasGroup.alpha = 0;
+        ShowPopUp();
+
+        //SwithcActivateButtons(false);
 
         // 所持しているキャラ分の SelectCharaDetail を生成
         for (int i = 0; i < haveCharaDataList.Count; i++) {
@@ -77,8 +79,16 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
         btnChooseChara.onClick.AddListener(OnClickSubmitChooseChara);
         btnClosePopUp.onClick.AddListener(OnClickClosePopUp);
 
-        btnChooseChara.interactable = true;
-        btnClosePopUp.interactable = true;
+        SwithcActivateButtons(true);
+    }
+
+    /// <summary>
+    /// 各ボタンのアクティブ状態の切り替え
+    /// </summary>
+    /// <param name="isSwitch"></param>
+    public void SwithcActivateButtons(bool isSwitch) {
+        btnChooseChara.interactable = isSwitch;
+        btnClosePopUp.interactable = isSwitch;
     }
 
     /// <summary>
@@ -87,27 +97,6 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     public void ShowPopUp() {
 
         canvasGroup.DOFade(1.0f, 0.5f);
-    }
-
-    /// <summary>
-    /// 選択された SelectCharaDetail の情報をポップアップ内のピックアップに表示する
-    /// </summary>
-    /// <param name="charaData"></param>
-    public void SetSelectCharaDetail(CharaData charaData) {
-        chooseCharaData = charaData;
-        
-        // 各値の設定
-        imgPickupChara.sprite = charaData.charaSprite;
-
-        txtPickupCharaName.text = charaData.charaName;
-
-        txtPickupCharaAttackPower.text = charaData.attackPower.ToString();
-
-        txtPickupCharaAttackRangeType.text = charaData.attackRange.ToString();
-
-        txtPickupCharaCost.text = charaData.cost.ToString();
-
-        txtPickupCharaMAxAttackCount.text = charaData.maxAttackCount.ToString();
     }
 
     /// <summary>
@@ -142,11 +131,48 @@ public class PlacementCharaSelectPopUp : MonoBehaviour
     private void HidePopUp() {
 
         // 各キャラのボタンの制御
-        for (int i = 0; i < selectCharaDetailsList.Count; i++) {
-            selectCharaDetailsList[i].ChangeActivateButton(false);
-        }
+        CheckAllCharaButtons();
 
         // ポップアップの非表示
         canvasGroup.DOFade(0, 0.5f).OnComplete(() => charaGenerator.InactivatePlacementCharaSelectPopUp());
+    }
+
+    /// <summary>
+    /// 選択された SelectCharaDetail の情報をポップアップ内のピックアップに表示する
+    /// </summary>
+    /// <param name="charaData"></param>
+    public void SetSelectCharaDetail(CharaData charaData) {
+        chooseCharaData = charaData;
+
+        // 各値の設定
+        imgPickupChara.sprite = charaData.charaSprite;
+
+        txtPickupCharaName.text = charaData.charaName;
+
+        txtPickupCharaAttackPower.text = charaData.attackPower.ToString();
+
+        txtPickupCharaAttackRangeType.text = charaData.attackRange.ToString();
+
+        txtPickupCharaCost.text = charaData.cost.ToString();
+
+        txtPickupCharaMAxAttackCount.text = charaData.maxAttackCount.ToString();
+    }
+
+    /// <summary>
+    /// コストが支払えるかどうかを 各 SelectCharaDetail で確認してボタン押下機能を切り替え
+    /// </summary>
+    private void CheckAllCharaButtons() {
+        // 配置できるキャラがいない場合のみ処理を行う
+        if (selectCharaDetailsList.Count > 0) {
+            // 各キャラのコストとカレンシーを確認して、配置できるかどうかを判定してボタンの押下有無を設定
+            for (int i = 0; i < selectCharaDetailsList.Count; i++) {
+                selectCharaDetailsList[i].ChangeActivateButton(selectCharaDetailsList[i].JudgePermissionCost(GameData.instance.CurrencyReactiveProperty.Value));
+            }
+        }
+    }
+    private void OnEnable() {
+
+        // コストが支払えるかどうかを 各 SelectCharaDetail で確認してボタン押下機能を切り替え
+        CheckAllCharaButtons();
     }
 }

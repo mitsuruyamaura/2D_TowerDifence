@@ -8,19 +8,21 @@ using UniRx;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
-    private InfoManager gameClearSetPrefab;
-
-    [SerializeField]
-    private InfoManager gameOverSetPrefab;
+    private Text txtCost;
 
     [SerializeField]
     private Transform canvasTran;
 
     [SerializeField]
-    private Text txtCost;
+    private ReturnSelectCharaPopUp returnCharaPopUpPrefab;
+
+
+    // mi
+    [SerializeField]
+    private InfoManager gameClearSetPrefab;
 
     [SerializeField]
-    private ReturnSelectCharaPopUp returnCharaPopUpPrefab;
+    private InfoManager gameOverSetPrefab;
 
     [SerializeField]
     private LogoEffect openingEffectPrefab;
@@ -32,21 +34,40 @@ public class UIManager : MonoBehaviour
     private Slider sliderDurabilityGauge;
 
 
+    /// <summary>
+    /// カレンシーの表示更新
+    /// </summary>
+    public void UpdateDisplayCurrency() {
+
+        txtCost.text = GameData.instance.currency.ToString();
+    }
+
+    /// <summary>
+    /// キャラの配置を解除する選択用のポップアップの生成
+    /// </summary>
+    public void CreateReturnCharaPopUp(CharaController charaController, GameManager gameManager) {
+        ReturnSelectCharaPopUp returnSelectCharaPopUp = Instantiate(returnCharaPopUpPrefab, canvasTran, false);
+        returnSelectCharaPopUp.SetUpReturnSelectCharaPopUp(charaController, gameManager);
+    }
+
+
+    // mi
     void Start() {
         // 購読開始
         GameData.instance.CurrencyReactiveProperty.Subscribe((x) => txtCost.text = x.ToString());
     }
 
-
     /// <summary>
-    /// ゲームクリア表示生成
+    /// ゲームクリア表示生成(未使用)
     /// </summary>
-    public void CreateGameClearSet() {
+    public IEnumerator CreateGameClearSet() {
         ResetSubscribe();
-        //PopUpBase gameClearSet = Instantiate(gameClearSetPrefab, canvasTran, false);
-        //gameClearSet.SetUpPopUpBase();
 
-        StartCoroutine(GameClear());
+        // 文字で表示するクリア表示
+        //InfoManager gameClearSet = Instantiate(gameClearSetPrefab, canvasTran, false);
+        //gameClearSet.SetUpInfo();
+
+        yield return StartCoroutine(GameClear());
     }
 
     /// <summary>
@@ -56,14 +77,6 @@ public class UIManager : MonoBehaviour
         ResetSubscribe();
         InfoManager gameOverSet = Instantiate(gameOverSetPrefab, canvasTran, false);
         gameOverSet.SetUpInfo();
-    }
-
-    /// <summary>
-    /// キャラの配置を解除する選択用のポップアップの生成
-    /// </summary>
-    public void CreateReturnCharaPopUp(CharaController charaController, GameManager gameManager) {
-        ReturnSelectCharaPopUp returnSelectCharaPopUp = Instantiate(returnCharaPopUpPrefab, canvasTran, false);
-        returnSelectCharaPopUp.SetUpReturnSelectCharaPopUp(charaController, gameManager);
     }
 
     /// <summary>
@@ -90,6 +103,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public IEnumerator GameClear() {
+        ResetSubscribe();
 
         LogoEffect gameClear = Instantiate(gameCearEffectPrefab, canvasTran, false);
         gameClear.PlayGameClear();

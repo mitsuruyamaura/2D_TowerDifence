@@ -6,14 +6,17 @@ using System.Linq;
 
 public class CharaGenerator : MonoBehaviour
 {
-    //[SerializeField]
-    //private GameObject charaPrefab;
+    [SerializeField, HideInInspector]
+    private GameObject charaPrefab;
 
-    //[SerializeField]
+    [SerializeField]
+    private CharaController charaControllerPrefab;
+
+    [SerializeField]
+    private Grid grid;         // Base 側の Grid を指定する 
+
+    [SerializeField]
     private Tilemap tilemaps;　　　// Walk 側の Tilemap を指定する
-
-    //[SerializeField]
-    private Grid grid;     　　　　// Base 側の Grid を指定する 
 
     //[SerializeField]
     //private CharaDataSO charaDataSO;
@@ -24,82 +27,39 @@ public class CharaGenerator : MonoBehaviour
     [SerializeField]
     private Transform canvasTran;
 
-    [SerializeField]
-    private CharaController charaControllerPrefab;
-
-    private PlacementCharaSelectPopUp placementCharaSelectPopUp;
-
-    private GameManager gameManager;
-
-    [SerializeField, Header("所持しているキャラのデータ")]
+    [SerializeField, Header("キャラのデータリスト")]
     private List<CharaData> charaDatasList = new List<CharaData>();
 
+    private PlacementCharaSelectPopUp placementCharaSelectPopUp;
+    private GameManager gameManager;
     private Vector3Int gridPos;
+
+
+    // mi
+    private int maxCharaPlacementCount;
+
 
     //IEnumerator Start() {  // Debug用
     //    // 所持しているキャラのデータをリスト化
     //    yield return StartCoroutine(CreateHaveCharaDatasList());
     //}
 
-    /// <summary>
-    /// 設定
-    /// </summary>
-    /// <param name="gameManager"></param>
-    /// <returns></returns>
-    public IEnumerator SetUpCharaGenerator(GameManager gameManager, MapInfo mapInfo) {
-        this.gameManager = gameManager;
-
-        (tilemaps, grid) = mapInfo.GetMapInfo(); 
-
-        // 所持しているキャラのデータをリスト化
-        CreateHaveCharaDatasList();
-
-        yield return StartCoroutine(CreatePlacementCharaSelectPopUp());
-    }
-
-    /// <summary>
-    /// 所持しているキャラのデータをリスト化
-    /// </summary>
-    private void CreateHaveCharaDatasList() {
-
-        // 所持しているキャラの番号を元にキャラのデータのリストを作成
-        for (int i = 0; i < GameData.instance.possessionCharaNosList.Count; i++) {
-            charaDatasList.Add(DataBaseManager.instance.charaDataSO.charaDatasList.Find(x => x.charaNo == GameData.instance.possessionCharaNosList[i]));
-        }
-    }
-
-    /// <summary>
-    /// 配置キャラ選択用ポップアップ生成
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator CreatePlacementCharaSelectPopUp() {
-
-        placementCharaSelectPopUp = Instantiate(placementCharaSelectPopUpPrefab, canvasTran, false);
-
-        // TODO 第2引数は所持しているキャラのリストに変更する
-        placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(charaDatasList, this);
-
-        placementCharaSelectPopUp.gameObject.SetActive(false);
-
-        yield return null;
-    }
-
 
     void Update()
     {
         // 配置できる最大キャラ数に達している場合には配置できない
-        if (GameData.instance.charaPlacementCount >= GameData.instance.maxCharaPlacementCount) {
+        if (gameManager.GetPlacementCharaCount() >= maxCharaPlacementCount) {
             return;
         }
 
-        // タップしたら (かつゲームプレイ中で、配置キャラポップアップが非表示状態なら)
-        if (Input.GetMouseButtonDown(0) && gameManager.currentGameState == GameManager.GameState.Play && !placementCharaSelectPopUp.gameObject.activeSelf) {
+        // 画面をタップ(マウスクリック)したら (かつゲームプレイ中で、配置キャラポップアップが非表示状態なら)
+        if (Input.GetMouseButtonDown(0) && !placementCharaSelectPopUp.gameObject.activeSelf && gameManager.currentGameState == GameManager.GameState.Play ) {
 
-            // タップした位置をワールド座標に変換
-            Vector3 touchPos = Input.mousePosition;
+            // タップ(マウスクリック)の位置を取得
+            //Vector3 touchPos = Input.mousePosition;
 
-            gridPos = grid.WorldToCell(Camera.main.ScreenToWorldPoint(touchPos));
-
+            // タップ(マウスクリック)の位置を取得してワールド座標に変換し、それをさらにタイルの座標に変換
+            gridPos = grid.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
             // タップした位置のタイルのコライダーの情報を確認する
             if (tilemaps.GetColliderType(gridPos) == Tile.ColliderType.None) {
@@ -113,60 +73,74 @@ public class CharaGenerator : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 配置キャラ選択用のポップアップの表示
-    /// </summary>
-    public void ActivatePlacementCharaSelectPopUp() {
-
-        // ゲームの進行状態をゲーム停止に変更
-        gameManager.SetGameState(GameManager.GameState.Stop);
-
-        // すべての敵の移動を一時停止
-        gameManager.PauseEnemies();
-
-        // 配置キャラ選択用のポップアップの表示
-        placementCharaSelectPopUp.gameObject.SetActive(true);
-        placementCharaSelectPopUp.ShowPopUp();
-    }
-
     ///// <summary>
     ///// キャラ生成。デバッグ用
     ///// </summary>
     ///// <param name="gridPos"></param>
     //private void CreateChara(Vector3Int gridPos) {
     //    // タップした位置のタイルのコライダーの情報を確認する
-    //    if (tilemaps.GetColliderType(gridPos) == Tile.ColliderType.None) {
+    //    //if (tilemaps.GetColliderType(gridPos) == Tile.ColliderType.None) {
     //        GameObject chara = Instantiate(charaPrefab, gridPos, Quaternion.identity);
 
     //        // 位置が左下を 0,0 としているので、中央にくるように調整
     //        chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
-    //    }
+    //    //}
     //}
 
     /// <summary>
-    /// 選択したキャラを生成して配置
+    /// 設定
     /// </summary>
-    /// <param name="gridPos"></param>
-    /// <param name="charaData"></param>
-    public void CreateChooseChara(CharaData charaData) {
+    /// <param name="gameManager"></param>
+    /// <returns></returns>
+    public IEnumerator SetUpCharaGenerator(GameManager gameManager, StageData stageData) {
+        this.gameManager = gameManager;
 
-        // コスト支払い
-        GameData.instance.CurrencyReactiveProperty.Value -= charaData.cost;
+        // TODO ステージのデータを取得
+        //(tilemaps, grid) = mapInfo.GetMapInfo();
 
-        // キャラ数カウント
-        GameData.instance.charaPlacementCount++;
+        // TODO 所持しているキャラのデータをリスト化
+        CreateHaveCharaDatasList();
 
-        // キャラをタップした位置に生成
-        CharaController chara = Instantiate(charaControllerPrefab, gridPos, Quaternion.identity);
+        yield return StartCoroutine(CreatePlacementCharaSelectPopUp());
 
-        // 位置が左下を 0,0 としているので、中央にくるように調整
-        chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
+        // mi
+        if (GameData.instance.isDebug) {
+            maxCharaPlacementCount = GameData.instance.maxCharaPlacementCount;
+        } else {
+            maxCharaPlacementCount = stageData.maxCharaPlacementCount;
+        }
+    }
 
-        // キャラの設定
-        chara.SetUpChara(charaData, gameManager);
+    /// <summary>
+    /// 配置キャラ選択用ポップアップ生成
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator CreatePlacementCharaSelectPopUp() {
 
-        // キャラを List に追加
-        gameManager.AddCharasList(chara);
+        placementCharaSelectPopUp = Instantiate(placementCharaSelectPopUpPrefab, canvasTran, false);
+
+        // TODO 第2引数は所持しているキャラのリストに変更する
+        placementCharaSelectPopUp.SetUpPlacementCharaSelectPopUp(this, charaDatasList);
+
+        placementCharaSelectPopUp.gameObject.SetActive(false);
+
+        yield return null;
+    }
+
+    /// <summary>
+    /// 配置キャラ選択用のポップアップの表示
+    /// </summary>
+    public void ActivatePlacementCharaSelectPopUp() {
+
+        // TODO ゲームの進行状態をゲーム停止に変更
+        gameManager.SetGameState(GameManager.GameState.Stop);
+
+        // TODO すべての敵の移動を一時停止
+        gameManager.PauseEnemies();
+
+        // 配置キャラ選択用のポップアップの表示
+        placementCharaSelectPopUp.gameObject.SetActive(true);
+        placementCharaSelectPopUp.ShowPopUp();
     }
 
     /// <summary>
@@ -188,6 +162,42 @@ public class CharaGenerator : MonoBehaviour
             // カレンシーの加算処理を再開
             StartCoroutine(gameManager.TimeToCurrency());
         }
+    }
+
+    /// <summary>
+    /// 所持しているキャラのデータをリスト化
+    /// </summary>
+    private void CreateHaveCharaDatasList() {
+
+        // 所持しているキャラの番号を元にキャラのデータのリストを作成
+        for (int i = 0; i < DataBaseManager.instance.charaDataSO.charaDatasList.Count; i++) {  // GameData.instance.possessionCharaNosList
+            charaDatasList.Add(DataBaseManager.instance.charaDataSO.charaDatasList[i]);  // .Find(x => x.charaNo == GameData.instance.possessionCharaNosList[i])
+        }
+
+        // CharaNo の低い順にソート
+        charaDatasList = charaDatasList.OrderBy(x => x.charaNo).ToList();
+    }
+
+    /// <summary>
+    /// 選択したキャラを生成して配置
+    /// </summary>
+    /// <param name="charaData"></param>
+    public void CreateChooseChara(CharaData charaData) {
+
+        // TODO コスト支払い
+        GameData.instance.CurrencyReactiveProperty.Value -= charaData.cost;
+
+        // キャラをタップした位置に生成
+        CharaController chara = Instantiate(charaControllerPrefab, gridPos, Quaternion.identity);
+
+        // 位置が左下を 0,0 としているので、中央にくるように調整
+        chara.transform.position = new Vector2(chara.transform.position.x + 0.5f, chara.transform.position.y + 0.5f);
+
+        // キャラの設定
+        chara.SetUpChara(charaData, gameManager);
+
+        // キャラを List に追加
+        gameManager.AddCharasList(chara);
     }
 
 

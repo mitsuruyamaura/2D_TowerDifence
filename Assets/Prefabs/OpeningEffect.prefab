@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5743430510299070119}
   - component: {fileID: 6426274416754974064}
   m_Layer: 5
-  m_Name: OpeningSet
+  m_Name: OpeningEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,9 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f718a7201646af458ea397677f1fdbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btnSubmit: {fileID: 0}
+  canvasGroup: {fileID: 6426274416754974064}
   imgStart: {fileID: 7360840140684424073}
   shinyEffect: {fileID: 9088098085164849813}
-  canvasGroup: {fileID: 6426274416754974064}
 --- !u!225 &6426274416754974064
 CanvasGroup:
   m_ObjectHideFlags: 0

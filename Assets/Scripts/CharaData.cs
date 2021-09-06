@@ -10,7 +10,6 @@ public class CharaData
     public int charaNo;
     public int cost;
     public Sprite charaSprite;
-    public AnimationClip charaAnim;
     //public Sprite[] charaSprites;
     //public AnimatorController charaAnim;
     public string charaName;
@@ -23,6 +22,9 @@ public class CharaData
     [Multiline]
     public string discription;
 
+    public AnimationClip charaAnim;
+
+    [HideInInspector]
     public int engagePoint;
     
     // TODO ‘¼‚É‚à‚ ‚ê‚Î’Ç‰Á

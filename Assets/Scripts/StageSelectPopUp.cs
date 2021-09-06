@@ -10,6 +10,15 @@ public class StageSelectPopUp : MonoBehaviour
     private Text txtStageName;
 
     [SerializeField]
+    private Text txtClearPoint;
+
+    [SerializeField]
+    private Text txtDefenseBaseDurability;
+
+    [SerializeField]
+    private Text txtMaxCharaCount;
+
+    [SerializeField]
     private Image imgStage;
 
     [SerializeField]
@@ -49,6 +58,9 @@ public class StageSelectPopUp : MonoBehaviour
 
         // ステージ情報の設定
         txtStageName.text = stageData.stageName;
+        txtClearPoint.text = stageData.clearPoint.ToString();
+        txtDefenseBaseDurability.text = stageData.defenseBaseDurability.ToString();
+        txtMaxCharaCount.text = stageData.maxCharaPlacementCount.ToString();
 
         imgStage.sprite = stageData.stageSprite;
 
