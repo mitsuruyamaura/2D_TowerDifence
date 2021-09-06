@@ -68,7 +68,7 @@ public class DefenseBase : MonoBehaviour
     private void CreateDamageEffect() {
         //GameObject effect = Instantiate(damageEffectPrefab, transform.position, Quaternion.identity);
 
-        GameObject effect = Instantiate(EffectManager.instance.GetEffect(EffectType.Hit_DefenseBase), transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Hit_DefenseBase), transform.position, Quaternion.identity);
         Destroy(effect, 1.5f);
     }
 }

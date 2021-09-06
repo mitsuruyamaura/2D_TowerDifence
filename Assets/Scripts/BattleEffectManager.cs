@@ -12,9 +12,9 @@ public enum EffectType {
     // TODO 他にもあれば追加
 }
 
-public class EffectManager : MonoBehaviour
+public class BattleEffectManager : MonoBehaviour
 {
-    public static EffectManager instance;
+    public static BattleEffectManager instance;
 
     // キャラ 用
     public GameObject destroyCharaEffectPrefab;
@@ -30,7 +30,7 @@ public class EffectManager : MonoBehaviour
     void Awake() {
         if (instance == null) {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);  // シーン遷移する必要がないのでコメントアウト
         } else {
             Destroy(gameObject);
         }

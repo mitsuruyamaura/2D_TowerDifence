@@ -199,7 +199,7 @@ public class CharaController : MonoBehaviour
     private void DestroyChara() {
 
         // エフェクト
-        GameObject effect = Instantiate(EffectManager.instance.GetEffect(EffectType.Destroy_Chara), transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Destroy_Chara), transform.position, Quaternion.identity);
 
         // キャラ破壊
         Destroy(gameObject);

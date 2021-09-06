@@ -187,7 +187,7 @@ public class EnemyController : MonoBehaviour
 
             // エフェクト
             //GameObject effect = Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
-            GameObject effect = Instantiate(EffectManager.instance.GetEffect(EffectType.Destroy_Enemy), transform.position, Quaternion.identity);
+            GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Destroy_Enemy), transform.position, Quaternion.identity);
             Destroy(effect, 1.5f);
         }
 
@@ -211,7 +211,7 @@ public class EnemyController : MonoBehaviour
 
 
         //GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-        GameObject effect = Instantiate(EffectManager.instance.GetEffect(EffectType.Hit_Enemy) , transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(BattleEffectManager.instance.GetEffect(EffectType.Hit_Enemy) , transform.position, Quaternion.identity);
         Destroy(effect, 1.5f);
         
     }
