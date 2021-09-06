@@ -1,70 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
 
 public class CharaController : MonoBehaviour
 {
-    public bool isAttack;
+    [SerializeField, Header("UŒ‚—Í")]
+    private int attackPower = 1;
 
-    public EnemyController enemy;
-
-    [Header("UŒ‚—Í")]
-    public int attackPower = 1;
-
-    [Header("UŒ‚‚·‚é‚Ü‚Å‚Ì‘Ò‹@ŠÔ")]
-    public float intervalAttackTime = 60.0f;
+    [SerializeField, Header("UŒ‚‚·‚é‚Ü‚Å‚Ì‘Ò‹@ŠÔ")]
+    private float intervalAttackTime = 60.0f;
 
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
+    private bool isAttack;
 
     [SerializeField]
-    private Animator anim;
+    private EnemyController enemy;
 
-    private string overrideClipName = "Chara_4";
-    private AnimatorOverrideController overrideController;
+    private int attackCount = 0;     // TODO Œ»İ‚ÌUŒ‚‰ñ”‚Ìc‚è Reactive Property ‚É‚µ‚Ä‚à‚¢‚¢
 
     [SerializeField]
-    private BoxCollider2D boxCollider;
+    private UnityEngine.UI.Text txtAttackCount;
+
+    [SerializeField]
+    private BoxCollider2D attackRangeArea;
 
     [SerializeField]
     private CharaData charaData;
 
-    [SerializeField]
-    private Text txtAttackCount;
-
     private GameManager gameManager;
 
-    private int attackCount = 0;     // TODO Œ»İ‚ÌUŒ‚‰ñ”‚Ìc‚è Reactive Property ‚É‚µ‚Ä‚à‚¢‚¢
+    private SpriteRenderer spriteRenderer;
+
+    private Animator anim;
+    private string overrideClipName = "Chara_4"; // Motion ‚É“o˜^‚³‚ê‚Ä‚¢‚é AnimationClip ‚Ì–¼‘O‚ğ“o˜^‚·‚é
+    private AnimatorOverrideController overrideController;
 
 
-    /// <summary>
-    /// ƒLƒƒƒ‰‚Ìİ’è
-    /// </summary>
-    /// <param name="charaData"></param>
-    public void SetUpChara(CharaData charaData, GameManager gameManager) {
-        this.charaData = charaData;
-        this.gameManager = gameManager;
+    private void OnTriggerStay2D(Collider2D collision) {
 
-        // ‚P–‡ŠG—p
-        //spriteRenderer.sprite = this.charaData.charaSprite;
+        // “G‚ğ–¢”­Œ©‚©‚ÂAUŒ‚’†‚Å‚Í‚È‚¢ê‡
+        if (!isAttack && !enemy) {
 
-        attackPower = this.charaData.attackPower;
+            Debug.Log("“G”­Œ©");
 
-        intervalAttackTime = this.charaData.intervalAttackTime;
+            //Destroy(collision.gameObject);
 
-        boxCollider.size = CharaDataSO.GetAttackRangeSize(this.charaData.attackRange);
+            // “G‚Ìî•ñ(EnemyController)‚ğæ“¾‚·‚é
+            if (collision.gameObject.TryGetComponent(out enemy)) {
 
-        // Editor —p
-        //anim.runtimeAnimatorController = this.charaData.charaAnim;
-
-        // ƒLƒƒƒ‰‚²‚Æ‚Ì AnimationClip ‚ğİ’è
-        SetUpAnimation();
-
-        attackCount = this.charaData.maxAttackCount;
-
-        UpdateDisplayAttackCount();
+                // æ“¾‚Å‚«‚½‚çAUŒ‚‚Ì€”õ‚É“ü‚é
+                isAttack = true;
+                StartCoroutine(PrepareteAttack());
+            }
+        }
     }
 
     /// <summary>
@@ -93,7 +81,9 @@ public class CharaController : MonoBehaviour
                     // UŒ‚‰ñ”‚ª‚È‚­‚È‚Á‚½‚ç
                     if (attackCount <= 0) {
                         // ƒLƒƒƒ‰”j‰ó
-                        gameManager.JudgeReturnChara(true, this);
+                        Destroy(gameObject);
+
+                        gameManager.RemoveCharasList(this);
                     }
                 }
             }
@@ -115,21 +105,6 @@ public class CharaController : MonoBehaviour
         enemy.CulcDamage(attackPower);
     }
 
-    private void OnTriggerStay2D(Collider2D collision) {
-
-        // “G‚ğ–¢”­Œ©‚©‚ÂAUŒ‚’†‚Å‚Í‚È‚¢ê‡
-        if (collision.tag == "Enemy" && !isAttack && !enemy) {
-
-            Debug.Log("“G”­Œ©");
-
-            if (collision.gameObject.TryGetComponent(out enemy)) {
-                isAttack = true;
-                StartCoroutine(PrepareteAttack());
-            }
-        }
-
-    }
-
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.tag == "Enemy") {
 
@@ -142,13 +117,6 @@ public class CharaController : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒLƒƒƒ‰‚ğƒ^ƒbƒv‚µ‚½Û‚Ìˆ—(EventTrigger)
-    /// </summary>
-    public void OnClickChara() {
-        gameManager.PreparateCreateReturnCharaPopUp(this);
-    }
-
-    /// <summary>
     /// c‚èUŒ‚‰ñ”‚Ì•\¦XV
     /// </summary>
     private void UpdateDisplayAttackCount() {
@@ -156,29 +124,73 @@ public class CharaController : MonoBehaviour
     }
 
     /// <summary>
+    /// ƒLƒƒƒ‰‚Ìİ’è
+    /// </summary>
+    /// <param name="charaData"></param>
+    /// <param name="gameManager"></param>
+    public void SetUpChara(CharaData charaData, GameManager gameManager) {
+        this.charaData = charaData;
+        this.gameManager = gameManager;
+
+        if (TryGetComponent(out spriteRenderer)) {
+            // ‚P–‡ŠG—p
+            //spriteRenderer.sprite = this.charaData.charaSprite;
+        }
+
+        attackPower = this.charaData.attackPower;
+
+        intervalAttackTime = this.charaData.intervalAttackTime;
+
+        attackRangeArea.size = DataBaseManager.instance.attackRangeSizeSO.GetAttackRangeSize(charaData.attackRange); //CharaDataSO.GetAttackRangeSize(this.charaData.attackRange);
+
+        attackCount = this.charaData.maxAttackCount;
+
+        // Editor —p
+        //anim.runtimeAnimatorController = this.charaData.charaAnim;
+
+        // ƒLƒƒƒ‰‚²‚Æ‚Ì AnimationClip ‚ğİ’è
+        SetUpAnimation();
+
+        UpdateDisplayAttackCount();
+    }
+
+    /// <summary>
     /// Motion ‚É“o˜^‚³‚ê‚Ä‚¢‚é AnimationClip ‚ğ•ÏX
     /// http://tsubakit1.hateblo.jp/entry/2016/11/18/234130
     /// </summary>
     private void SetUpAnimation() {
-        overrideController = new AnimatorOverrideController();
+        if (TryGetComponent(out anim)) {
 
-        overrideController.runtimeAnimatorController = anim.runtimeAnimatorController;
-        anim.runtimeAnimatorController = overrideController;
+            overrideController = new AnimatorOverrideController();
 
-        AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[anim.layerCount];
+            overrideController.runtimeAnimatorController = anim.runtimeAnimatorController;
+            anim.runtimeAnimatorController = overrideController;
 
-        for (int i = 0; i < anim.layerCount; i++) {
-            layerInfo[i] = anim.GetCurrentAnimatorStateInfo(i);
+            AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[anim.layerCount];
+
+            for (int i = 0; i < anim.layerCount; i++) {
+                layerInfo[i] = anim.GetCurrentAnimatorStateInfo(i);
+            }
+
+            overrideController[overrideClipName] = this.charaData.charaAnim;
+            //  overrideController["Chara_4"] = AnimationClip
+
+            anim.runtimeAnimatorController = overrideController;
+
+            anim.Update(0.0f);
+
+            for (int i = 0; i < anim.layerCount; i++) {
+                anim.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
+            }
         }
+    }
 
-        overrideController[overrideClipName] = this.charaData.charaAnim;
+    //mi
 
-        anim.runtimeAnimatorController = overrideController;
-
-        anim.Update(0.0f);
-
-        for (int i = 0; i < anim.layerCount; i++) {
-            anim.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
-        }
+    /// <summary>
+    /// ƒLƒƒƒ‰‚ğƒ^ƒbƒv‚µ‚½Û‚Ìˆ—(EventTrigger)
+    /// </summary>
+    public void OnClickChara() {
+        gameManager.PreparateCreateReturnCharaPopUp(this);
     }
 }

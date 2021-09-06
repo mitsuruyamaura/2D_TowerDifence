@@ -16,55 +16,55 @@ MonoBehaviour:
   - charaNo: 0
     cost: 100
     charaSprite: {fileID: 4480065207194443510, guid: cdb7543f3566e474a9b88aa4b07acb9b, type: 3}
-    charaAnim: {fileID: 7400000, guid: aba4411775896154791eb24923430e3e, type: 2}
     charaName: Aria
     attackPower: 1
     attackRange: 0
     intervalAttackTime: 120
     maxAttackCount: 3
     discription: "\u6B74\u6226\u306E\u9B54\u8853\u5E2B\u3002\u30B3\u30B9\u30C8\u304C\u5B89\u304F\u3001\u653B\u6483\u56DE\u6570\u304C\u591A\u3044\u3002"
+    charaAnim: {fileID: 7400000, guid: aba4411775896154791eb24923430e3e, type: 2}
     engagePoint: 100
   - charaNo: 1
     cost: 200
     charaSprite: {fileID: 1248525323487703161, guid: 82a7f4ebc9d63584ba6e9834987ee30c, type: 3}
-    charaAnim: {fileID: 7400000, guid: d77073d3096750c4b8f5b60e51cf5fe0, type: 2}
     charaName: Billy
     attackPower: 2
     attackRange: 0
     intervalAttackTime: 200
     maxAttackCount: 2
     discription: "\u653B\u6483\u7BC4\u56F2\u306F\u72ED\u304F\u3001\u653B\u6483\u56DE\u6570\u3082\u5C11\u306A\u3044\u304C\u3001\u653B\u6483\u529B\u306E\u5927\u304D\u3044\u6226\u58EB\u3002"
+    charaAnim: {fileID: 7400000, guid: d77073d3096750c4b8f5b60e51cf5fe0, type: 2}
     engagePoint: 200
   - charaNo: 2
     cost: 150
     charaSprite: {fileID: 2684471460419224087, guid: 5278527c151a5424ab1aad3fd3038e0d, type: 3}
-    charaAnim: {fileID: 7400000, guid: 14937885bd596ca4ca3109963d280827, type: 2}
     charaName: Call
     attackPower: 1
     attackRange: 2
     intervalAttackTime: 120
     maxAttackCount: 2
     discription: 
+    charaAnim: {fileID: 7400000, guid: 14937885bd596ca4ca3109963d280827, type: 2}
     engagePoint: 300
   - charaNo: 3
     cost: 200
     charaSprite: {fileID: 4558515143993472460, guid: 0b0ee8d89fbcddb41960ae890c9e858f, type: 3}
-    charaAnim: {fileID: 7400000, guid: f1f0a259b4e9d7241a4c50c36a15c61d, type: 2}
     charaName: Devin
     attackPower: 1
     attackRange: 1
     intervalAttackTime: 80
     maxAttackCount: 3
     discription: 
+    charaAnim: {fileID: 7400000, guid: f1f0a259b4e9d7241a4c50c36a15c61d, type: 2}
     engagePoint: 400
   - charaNo: 4
     cost: 300
     charaSprite: {fileID: 4814029082027783119, guid: dcb348c7b73fe9d4ab7a322471cc3de5, type: 3}
-    charaAnim: {fileID: 7400000, guid: 35b91c969fb9514429d1590c68a18de1, type: 2}
     charaName: Elen
     attackPower: 3
     attackRange: 0
     intervalAttackTime: 300
     maxAttackCount: 4
     discription: 
+    charaAnim: {fileID: 7400000, guid: 35b91c969fb9514429d1590c68a18de1, type: 2}
     engagePoint: 500

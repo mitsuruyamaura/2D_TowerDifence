@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056857183176930857}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: 7.51, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9110149913850291491}
@@ -1717,16 +1717,13 @@ MonoBehaviour:
   defenceBaseTran: {fileID: 3099304408336903115}
   appearEnemyInfos:
   - enemyNo: 0
-    pathNo: 0
-    enemyInfo: {x: 0, y: 0}
+    isRandomPos: 0
     enemyPathData: {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
   - enemyNo: 1
-    pathNo: 1
-    enemyInfo: {x: 1, y: 1}
+    isRandomPos: 0
     enemyPathData: {fileID: 3515562598619921082, guid: a2816bb7fba79a24a955f09e82f35052, type: 3}
   - enemyNo: -1
-    pathNo: -1
-    enemyInfo: {x: -1, y: -1}
+    isRandomPos: 1
     enemyPathData: {fileID: 6480637869730562238, guid: c22d709802aec2f4a84b041f36f377d0, type: 3}
 --- !u!1 &9110149914183043087
 GameObject:

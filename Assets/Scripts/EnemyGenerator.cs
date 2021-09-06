@@ -58,23 +58,21 @@ public class EnemyGenerator : MonoBehaviour
                 if (timer > gameManager.generateIntervalTime) {
                     timer = 0;
 
-                    int randomValue = Random.Range(0, pathDatas.Length);
+                    //int randomValue = Random.Range(0, pathDatas.Length);
 
-                    EnemyController enemyController = Instantiate(enemyControllerPrefab, pathDatas[randomValue].generateTran.position, Quaternion.identity);
+                    //EnemyController enemyController = Instantiate(enemyControllerPrefab, pathDatas[randomValue].generateTran.position, Quaternion.identity);
 
-                    Vector3[] paths = pathDatas[randomValue].pathTranArray.Select(x => x.position).ToArray();
+                    //Vector3[] paths = pathDatas[randomValue].pathTranArray.Select(x => x.position).ToArray();
 
-                    // 敵の情報の設定
-                    enemyController.SetUpEnemyController(paths);
+                    //// 敵の情報の設定
+                    //enemyController.SetUpEnemyController(paths);
 
-                    StartCoroutine(PreparateCreatePathLine(paths, enemyController));
+                    //StartCoroutine(PreparateCreatePathLine(paths, enemyController));
 
 
 
                     // 敵の生成と List への追加
                     gameManager.AddEnemyList(GenerateEnemy(gameManager.generateEnemyCount));
-
-                    gameManager.generateEnemyCount++;
 
                     // 最大生成数を超えたら生成停止
                     gameManager.JudgeGenerateEnemysEnd();
@@ -93,17 +91,19 @@ public class EnemyGenerator : MonoBehaviour
     /// <summary>
     /// 敵の生成
     /// </summary>
+    /// <param name="generateNo"></param>
+    /// <returns></returns>
     public EnemyController GenerateEnemy(int generateNo) {
 
         //int randomValue = Random.Range(0, enemyGenerateTrans.Length);
         //EnemyController enemy = Instantiate(enemyControllerPrefab, enemyGenerateTrans[randomValue].position, Quaternion.identity);
         //StartCoroutine(enemy.SetUpEnemyController(enemyPathDatas[randomValue], gameManager, stageData.enemyPathDatas[posNo] Random.Range(0, enemyDataSO.enemyDatasList.Count))));
 
-        // 生成位置
-        int posNo = stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.y;
+        // 生成位置(基本的には Element の番号と同じ。-1 の場合はランダム)
+        int posNo = generateNo;
 
         // 生成位置がランダムか確認
-        if (stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.y == -1) {
+        if (stageData.mapInfo.appearEnemyInfos[generateNo].isRandomPos) {
             posNo = Random.Range(0, stageData.mapInfo.appearEnemyInfos.Length);
         }
 
@@ -111,10 +111,10 @@ public class EnemyGenerator : MonoBehaviour
         EnemyController enemyController = Instantiate(enemyControllerPrefab, stageData.mapInfo.appearEnemyInfos[posNo].enemyPathData.generateTran.position, Quaternion.identity);
 
         // 敵の種類
-        int enemyNo = stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.x;
+        int enemyNo = stageData.mapInfo.appearEnemyInfos[generateNo].enemyNo;
 
         // 敵がランダムか確認
-        if (stageData.mapInfo.appearEnemyInfos[generateNo].enemyInfo.x == -1) {
+        if (stageData.mapInfo.appearEnemyInfos[generateNo].enemyNo == -1) {
             enemyNo = Random.Range(0, DataBaseManager.instance.enemyDataSO.enemyDatasList.Count);
         }
 
@@ -122,11 +122,9 @@ public class EnemyGenerator : MonoBehaviour
         Vector3[] paths = stageData.mapInfo.appearEnemyInfos[posNo].enemyPathData.pathTranArray.Select(x => x.position).ToArray();
 
         // 敵の情報の設定
-        enemyController.SetUpEnemyController(paths, DataBaseManager.instance.enemyDataSO.enemyDatasList.Find(x => x.enemyNo == enemyNo));
+        enemyController.SetUpEnemyController(paths, gameManager, DataBaseManager.instance.enemyDataSO.enemyDatasList.Find(x => x.enemyNo == enemyNo));
 
         StartCoroutine(PreparateCreatePathLine(paths, enemyController));
-
-        enemyController.ResumeMove();
 
         return enemyController;
     }
@@ -139,6 +137,8 @@ public class EnemyGenerator : MonoBehaviour
     private IEnumerator PreparateCreatePathLine(Vector3[] paths, EnemyController enemyController) {
         yield return StartCoroutine(CreatePathLine(paths));
 
+        yield return new WaitUntil(() => gameManager.currentGameState == GameManager.GameState.Play);
+        
         enemyController.ResumeMove();
     }
 
@@ -172,6 +172,8 @@ public class EnemyGenerator : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
+
+    // mi
 
     /// <summary>
     /// ステージに応じた PathDatas をセット

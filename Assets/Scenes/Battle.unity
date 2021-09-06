@@ -158,6 +158,7 @@ MonoBehaviour:
   generateIntervalTime: 200
   generateEnemyCount: 0
   maxEnemyCount: 5
+  currentGameState: 0
   enemiesList: []
   uiManager: {fileID: 1024534446}
   charasList: []
@@ -169,7 +170,7 @@ MonoBehaviour:
     defenseBaseDurability: 0
     stageSprite: {fileID: 0}
     mapInfo: {fileID: 0}
-  currentGameState: 0
+    maxCharaPlacementCount: 0
   defenseBasePrefab: {fileID: 6519958887863936403, guid: 8abf5c532c05bb441b176d04d0efb2f8, type: 3}
 --- !u!4 &184673229
 Transform:
@@ -884,7 +885,7 @@ Transform:
   - {fileID: 591766982}
   - {fileID: 837936996}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &961966405 stripped
 RectTransform:
@@ -920,11 +921,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c9f6196a25e8e74794154dc481ca76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtCost: {fileID: 2001248844}
+  canvasTran: {fileID: 635654292}
+  returnCharaPopUpPrefab: {fileID: 8289275981426463077, guid: 0a6e659c1d048a943baf2a785d015425, type: 3}
   gameClearSetPrefab: {fileID: 5753062218276380886, guid: 3e7cd9fd46336984db51c8058b48f18b, type: 3}
   gameOverSetPrefab: {fileID: 6773414585774116418, guid: ffcf24a27362eee4f89a58c48340dec8, type: 3}
-  canvasTran: {fileID: 635654292}
-  txtCost: {fileID: 2001248844}
-  returnCharaPopUpPrefab: {fileID: 8289275981426463077, guid: 0a6e659c1d048a943baf2a785d015425, type: 3}
   openingEffectPrefab: {fileID: 5743430510299070119, guid: 12bf6f9a7e9eba246b8a7a01588de86c, type: 3}
   gameCearEffectPrefab: {fileID: 499653293768713791, guid: 5081456b854b51e488586ff734647344, type: 3}
   sliderDurabilityGauge: {fileID: 0}
@@ -959,7 +960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1525304520991991745, guid: adaf07c1a5c8cc44ca50e31c3ce7b7b9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988388635614947307, guid: adaf07c1a5c8cc44ca50e31c3ce7b7b9, type: 3}
       propertyPath: m_RootOrder
@@ -1232,7 +1233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2048701068
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2024,9 +2025,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: currencyIntervalTime
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: engageCharaNosList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: engageCharaNosList.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682849, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682849, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2842,7 +2855,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4853559910832458764, guid: b5985b51a8eb045449a04b17a7049055, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4853559910832458764, guid: b5985b51a8eb045449a04b17a7049055, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3373,16 +3386,13 @@ MonoBehaviour:
   defenceBaseTran: {fileID: 6385606137707476788}
   appearEnemyInfos:
   - enemyNo: 0
-    pathNo: 0
-    enemyInfo: {x: 0, y: 0}
+    isRandomPos: 0
     enemyPathData: {fileID: 8731422298378982035, guid: 2330e7909bae0f8458bdd67d5ffb804a, type: 3}
   - enemyNo: 1
-    pathNo: 1
-    enemyInfo: {x: 1, y: 1}
+    isRandomPos: 0
     enemyPathData: {fileID: 3515562598619921082, guid: a2816bb7fba79a24a955f09e82f35052, type: 3}
   - enemyNo: -1
-    pathNo: -1
-    enemyInfo: {x: -1, y: -1}
+    isRandomPos: 1
     enemyPathData: {fileID: 6480637869730562238, guid: c22d709802aec2f4a84b041f36f377d0, type: 3}
 --- !u!1 &6385606137707476658
 GameObject:

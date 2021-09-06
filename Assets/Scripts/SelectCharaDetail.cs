@@ -17,6 +17,7 @@ public class SelectCharaDetail : MonoBehaviour
 
     private CharaData charaData;
 
+    //mi
     private EngageCharaPopUp engageCharaPop;
 
     [SerializeField]
@@ -55,8 +56,6 @@ public class SelectCharaDetail : MonoBehaviour
         placementCharaSelectPop.SetSelectCharaDetail(charaData);
     }
 
-    // mi
-
     /// <summary>
     /// ボタンを押せる状態の切り替え
     /// </summary>
@@ -80,6 +79,25 @@ public class SelectCharaDetail : MonoBehaviour
         }
         return false;
     }
+
+    /// <summary>
+    /// ボタンの状態の取得
+    /// </summary>
+    /// <returns></returns>
+    public bool GetActivateButtonState() {
+        return btnSelectCharaDetail.interactable;
+    }
+
+    /// <summary>
+    /// CharaData の取得
+    /// </summary>
+    /// <returns></returns>
+    public CharaData GetCharaData() {
+        return charaData;
+    }
+
+
+    // mi
 
     /// <summary>
     /// このクラスでの購読を停止する
@@ -136,22 +154,6 @@ public class SelectCharaDetail : MonoBehaviour
     /// <returns></returns>
     public bool CheckPaymentEngagePoint() {
         return charaData.engagePoint <= GameData.instance.totalClearPoint ? true : false;
-    }
-
-    /// <summary>
-    /// ボタンの状態の取得
-    /// </summary>
-    /// <returns></returns>
-    public bool GetActivateButtonState() {
-        return btnSelectCharaDetail.interactable;
-    }
-
-    /// <summary>
-    /// CharaData の取得
-    /// </summary>
-    /// <returns></returns>
-    public CharaData GetCharaData() {
-        return charaData;
     }
 
     /// <summary>

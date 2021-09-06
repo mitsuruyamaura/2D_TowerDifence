@@ -10,9 +10,12 @@ public class EnemyData
     public int hp;
     public int attackPower;
     public int moveSpeed;
+    public EnemyType enemyType;
 
     [Header("アイテムドロップ率")]
     public int itemDropRate;
+
+    public AnimatorOverrideController enemyOverrideController;
 
     // TODO
 

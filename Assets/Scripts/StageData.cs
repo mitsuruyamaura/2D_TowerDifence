@@ -16,6 +16,7 @@ public class StageData
 
     public MapInfo mapInfo;
 
+    public int maxCharaPlacementCount;
     // TODO
 
 }

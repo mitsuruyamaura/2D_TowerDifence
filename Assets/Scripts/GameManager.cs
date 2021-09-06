@@ -19,25 +19,6 @@ public class GameManager : MonoBehaviour
 
     public int maxEnemyCount;
 
-
-    // mi
-    [SerializeField]
-    private List<EnemyController> enemiesList = new List<EnemyController>();
-
-    private int destroyEnemyCount;
-
-    [SerializeField]
-    private UIManager uiManager;
-
-    //[SerializeField]
-    private DefenseBase defenseBase;
-
-    [SerializeField]
-    private List<CharaController> charasList = new List<CharaController>();
-
-    [SerializeField]
-    private StageData currentStageData;
-
     /// <summary>
     /// ゲームの状態
     /// </summary>
@@ -50,11 +31,33 @@ public class GameManager : MonoBehaviour
 
     public GameState currentGameState;
 
+    [SerializeField]
+    private List<EnemyController> enemiesList = new List<EnemyController>();
+
+    [SerializeField]
+    private UIManager uiManager;
+
+    [SerializeField]
+    private List<CharaController> charasList = new List<CharaController>();
+
+    private int destroyEnemyCount;
+
+
+    // mi
+
+
+    //[SerializeField]
+    private DefenseBase defenseBase;
+
+    [SerializeField]
+    private StageData currentStageData;
+
     //[SerializeField]
     private MapInfo currentMapInfo;
 
     [SerializeField]
     private DefenseBase defenseBasePrefab;
+
 
     IEnumerator Start()
     {
@@ -75,7 +78,7 @@ public class GameManager : MonoBehaviour
 
         // オープニング演出再生
         yield return StartCoroutine(uiManager.Opening());
-
+        
         isEnemyGenerate = true;
 
         // ゲームの進行状態をプレイ中に変更
@@ -86,8 +89,184 @@ public class GameManager : MonoBehaviour
 
         // カレンシーの自動獲得処理の開始
         StartCoroutine(TimeToCurrency());
-
     }
+
+    /// <summary>
+    /// 敵の情報を List に追加
+    /// </summary>
+    /// <param name="enemy"></param>
+    public void AddEnemyList(EnemyController enemy) {
+        enemiesList.Add(enemy);
+        generateEnemyCount++;
+    }
+
+    /// <summary>
+    /// 敵の生成を停止するか判定
+    /// </summary>
+    public void JudgeGenerateEnemysEnd() {
+        if (generateEnemyCount >= maxEnemyCount) {
+            isEnemyGenerate = false;
+        }
+    }
+
+    /// <summary>
+    /// GameState の変更
+    /// </summary>
+    /// <param name="nextGameState"></param>
+    public void SetGameState(GameState nextGameState) {
+        currentGameState = nextGameState;
+    }
+
+    /// <summary>
+    /// すべての敵の移動を一時停止
+    /// </summary>
+    public void PauseEnemies() {
+        for (int i = 0; i < enemiesList.Count; i++) {
+            enemiesList[i].PauseMove();
+        }
+    }
+
+    /// <summary>
+    /// すべての敵の移動を再開
+    /// </summary>
+    public void ResumeEnemies() {
+        for (int i = 0; i < enemiesList.Count; i++) {
+            enemiesList[i].ResumeMove();
+        }
+    }
+
+    /// <summary>
+    /// 敵の情報を List から削除
+    /// </summary>
+    /// <param name="removeEnemy"></param>
+    public void RemoveEnemyList(EnemyController removeEnemy) {
+        enemiesList.Remove(removeEnemy);
+    }
+
+    /// <summary>
+    /// 破壊した敵の数をカウント
+    /// </summary>
+    public void CountUpDestoryEnemyCount(EnemyController enemyController) {
+        // 敵の情報を List から削除
+        RemoveEnemyList(enemyController);
+
+        destroyEnemyCount++;
+
+        Debug.Log("破壊した敵の数 : " + destroyEnemyCount);
+
+        // ゲームクリア判定
+        JudgeGameClear();
+    }
+
+    /// <summary>
+    /// ゲームクリア判定
+    /// </summary>
+    public void JudgeGameClear() {
+        // 生成数を超えているか
+        if (destroyEnemyCount >= maxEnemyCount) {
+
+            Debug.Log("ゲームクリア");
+
+            // ゲームクリアの処理を追加(クリア報酬)
+            StartCoroutine(GameClearAndResult());
+        }
+    }
+
+    /// <summary>
+    /// 時間の経過に応じてカレンシーを加算
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator TimeToCurrency() {
+
+        int timer = 0;
+
+        // ゲームプレイ中のみ加算
+        while (currentGameState == GameState.Play) {
+            timer++;
+
+            // 規定の時間が経過し、カレンシーが最大値でなければ
+            if (timer > GameData.instance.currencyIntervalTime && GameData.instance.CurrencyReactiveProperty.Value < GameData.instance.maxCurrency) {
+                timer = 0;
+
+                // 最大値以下になるようにカレンシーを加算
+                GameData.instance.CurrencyReactiveProperty.Value = Mathf.Clamp(GameData.instance.CurrencyReactiveProperty.Value += GameData.instance.addCurrencyPoint, 0, GameData.instance.maxCurrency);
+            }
+
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// 選択したキャラの情報を List に追加
+    /// </summary>
+    public void AddCharasList(CharaController chara) {
+        charasList.Add(chara);
+
+        // TODO キャラ数カウント
+        GameData.instance.charaPlacementCount++;
+    }
+
+    /// <summary>
+    /// 選択したキャラを破棄し、情報を List から削除
+    /// </summary>
+    /// <param name="chara"></param>
+    public void RemoveCharasList(CharaController chara) {
+        Destroy(chara.gameObject);
+        charasList.Remove(chara);
+    }
+
+    /// <summary>
+    /// 現在の配置しているキャラの数の取得
+    /// </summary>
+    /// <returns></returns>
+    public int GetPlacementCharaCount() {
+        return charasList.Count;
+    }
+
+    /// <summary>
+    /// 配置解除を選択するポップアップ作成の準備
+    /// </summary>
+    /// <param name="chara"></param>
+    public void PreparateCreateReturnCharaPopUp(CharaController chara) {
+
+        // ゲームの進行状態をゲーム停止に変更
+        SetGameState(GameState.Stop);
+
+        // すべての敵の移動を一時停止
+        PauseEnemies();
+
+        // 配置解除を選択するポップアップを作成
+        uiManager.CreateReturnCharaPopUp(chara, this);
+    }
+
+    /// <summary>
+    /// 選択したキャラの配置解除
+    /// </summary>
+    /// <param name="isReturnChara"></param>
+    /// <param name="chara"></param>
+    public void JudgeReturnChara(bool isReturnChara, CharaController chara) {
+
+        // キャラの配置を解除する場合
+        if (isReturnChara) {
+            // 選択したキャラを破棄し、情報を List から削除
+            RemoveCharasList(chara);
+
+            // 配置数を減算
+            GameData.instance.charaPlacementCount--;
+        }
+
+        //  ゲームの進行状態をプレイ中に変更して、ゲーム再開
+        SetGameState(GameState.Play);
+
+        // すべての敵の移動を再開
+        ResumeEnemies();
+
+        // カレンシーの加算処理を再開
+        StartCoroutine(TimeToCurrency());
+    }
+
+
+    //　未
 
     /// <summary>
     /// ゲームデータを初期化
@@ -128,49 +307,7 @@ public class GameManager : MonoBehaviour
         enemyGenerator.SetUpPathDatas(pathDatas);
     }
 
-    /// <summary>
-    /// 敵の情報を List に追加
-    /// </summary>
-    /// <param name="enemy"></param>
-    public void AddEnemyList(EnemyController enemy) {
-        enemiesList.Add(enemy);
-        generateEnemyCount++;
-    }
 
-    /// <summary>
-    /// 敵の情報を List から削除
-    /// </summary>
-    /// <param name="removeEnemy"></param>
-    public void RemoveEnemyList(EnemyController removeEnemy) {
-        enemiesList.Remove(removeEnemy);
-    }
-
-    /// <summary>
-    /// 破壊した敵の数をカウント
-    /// </summary>
-    public void CountUpDestoryEnemyCount() {
-        destroyEnemyCount++;
-
-        // ゲームクリア判定
-        JudgeGameClear();
-    }
-
-    /// <summary>
-    /// ゲームクリア判定
-    /// </summary>
-    public void JudgeGameClear() {
-        // 生成数を超えているか
-        if (destroyEnemyCount >= maxEnemyCount) {
-
-            Debug.Log("ゲームクリア");
-
-            // クリア報酬
-            GameClearAndResult();
-
-            // TODO ゲームクリアの処理を追加
-
-        }
-    }
 
     /// <summary>
     /// ゲームオーバー処理
@@ -205,148 +342,31 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 選択したキャラの情報を List に追加
-    /// </summary>
-    public void AddCharasList(CharaController chara) {
-        charasList.Add(chara);
-
-        // TODO キャラ数カウント
-        GameData.instance.charaPlacementCount++;
-    }
-
-    /// <summary>
-    /// 選択したキャラを破棄し、情報を List から削除
-    /// </summary>
-    /// <param name="chara"></param>
-    public void RemoveCharasList(CharaController chara) {
-        Destroy(chara.gameObject);
-        charasList.Remove(chara);
-    }
-
-    /// <summary>
-    /// 配置解除を選択するポップアップ作成の準備
-    /// </summary>
-    /// <param name="chara"></param>
-    public void PreparateCreateReturnCharaPopUp(CharaController chara) {
-
-        // ゲームの進行状態をゲーム停止に変更
-        SetGameState(GameState.Stop);
-
-        // すべての敵の移動を一時停止
-        PauseEnemies();
-
-        // 配置解除を選択するポップアップを作成
-        uiManager.CreateReturnCharaPopUp(chara, this);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public void JudgeReturnChara(bool isReturnChara, CharaController chara) {
-
-        // キャラの配置を解除する場合
-        if (isReturnChara) {
-            // 選択したキャラを破棄し、情報を List から削除
-            RemoveCharasList(chara);
-
-            // 配置数を減算
-            GameData.instance.charaPlacementCount--;
-        }
-
-        //  ゲームの進行状態をプレイ中に変更して、ゲーム再開
-        SetGameState(GameState.Play);
-
-        // すべての敵の移動を再開
-        ResumeEnemies();
-
-        // カレンシーの加算処理を再開
-        StartCoroutine(TimeToCurrency());
-    }
-
-    /// <summary>
-    /// 時間の経過に応じてカレンシーを加算
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator TimeToCurrency() {
-
-        int timer = 0;
-
-        // ゲームプレイ中のみ加算
-        while (currentGameState == GameState.Play) {
-            timer++;
-
-            // 規定の時間が経過し、カレンシーが最大値でなければ
-            if (timer > GameData.instance.getCurrencyIntervalTime && GameData.instance.CurrencyReactiveProperty.Value < GameData.instance.maxCurrency) {
-                timer = 0;
-
-                // 最大値以下になるようにカレンシーを加算
-                GameData.instance.CurrencyReactiveProperty.Value = Mathf.Clamp(GameData.instance.CurrencyReactiveProperty.Value += GameData.instance.addCurrencyPoint, 0, GameData.instance.maxCurrency);
-            }
-
-            yield return null;
-        }
-    }
-
-    /// <summary>
-    /// 敵の生成を停止するか判定
-    /// </summary>
-    public void JudgeGenerateEnemysEnd() {
-        if (generateEnemyCount >= maxEnemyCount) {
-            isEnemyGenerate = false;
-        }
-    }
-
-    /// <summary>
-    /// GameState の変更
-    /// </summary>
-    /// <param name="nextGameState"></param>
-    public void SetGameState(GameState nextGameState) {
-        currentGameState = nextGameState;
-    }
-
-    /// <summary>
-    /// すべての敵の移動を一時停止
-    /// </summary>
-    public void PauseEnemies() {
-        for (int i = 0; i < enemiesList.Count; i++) {
-            enemiesList[i].PauseMove();
-        }
-    }
-
-    /// <summary>
-    /// すべての敵の移動を再開
-    /// </summary>
-    public void ResumeEnemies() {
-        for (int i = 0; i < enemiesList.Count; i++) {
-            enemiesList[i].ResumeMove();
-        }
-    }
-
-    /// <summary>
     /// ゲームクリアと報酬処理
     /// </summary>
-    private void GameClearAndResult() {
+    private IEnumerator GameClearAndResult() {
 
         // ゲーム終了
         GameUpToCommon();
 
-        // TODO ゲームクリア演出
-        uiManager.CreateGameClearSet();
+        // TODO ゲームクリア演出(文字)
+        //yield return StartCoroutine(uiManager.CreateGameClearSet());
+
+        // ロゴで演出
+        yield return StartCoroutine(uiManager.GameClear());
 
         // クリアボーナスの獲得
         GameData.instance.totalClearPoint += currentStageData.clearPoint;
 
+        GameData.instance.stageNo++;
+
         // 未クリアである場合
-        if (!GameData.instance.clearedStageNosList.Contains(currentStageData.stageNo++)) {
+        if (!GameData.instance.clearedStageNosList.Contains(GameData.instance.stageNo)) {
             // 次のステージを登録してステージシーンで表示できるようにする
-            GameData.instance.clearedStageNosList.Add(currentStageData.stageNo++);
+            GameData.instance.clearedStageNosList.Add(GameData.instance.stageNo);
         }
 
         // シーン遷移
         SceneStateManager.instance.PreparateNextScene(SceneName.Main);
-    }
-
-    public int GetPlacementCharaCount() {
-        return charasList.Count;
     }
 }
