@@ -358,14 +358,12 @@ public class GameManager : MonoBehaviour
         // クリアボーナスの獲得
         GameData.instance.totalClearPoint += currentStageData.clearPoint;
 
-        int nextStageNo = GameData.instance.stageNo++;
-
-        Debug.Log(nextStageNo);
+        GameData.instance.stageNo++;
 
         // 未クリアである場合
-        if (!GameData.instance.clearedStageNosList.Contains(nextStageNo)) {
+        if (!GameData.instance.clearedStageNosList.Contains(GameData.instance.stageNo)) {
             // 次のステージを登録してステージシーンで表示できるようにする
-            GameData.instance.clearedStageNosList.Add(nextStageNo);
+            GameData.instance.clearedStageNosList.Add(GameData.instance.stageNo);
         }
 
         // シーン遷移
