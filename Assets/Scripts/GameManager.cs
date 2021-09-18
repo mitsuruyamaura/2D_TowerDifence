@@ -42,21 +42,19 @@ public class GameManager : MonoBehaviour
 
     private int destroyEnemyCount;
 
-
-    // mi
-
-
     //[SerializeField]
     private DefenseBase defenseBase;
 
     [SerializeField]
-    private StageData currentStageData;
-
-    //[SerializeField]
     private MapInfo currentMapInfo;
 
     [SerializeField]
     private DefenseBase defenseBasePrefab;
+
+
+    // mi
+    [SerializeField]
+    private StageData currentStageData;
 
 
     IEnumerator Start()
@@ -265,26 +263,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(TimeToCurrency());
     }
 
-
-    //　未
-
-    /// <summary>
-    /// ゲームデータを初期化
-    /// </summary>
-    private void RefreshGameData() {
-        // デバッグ用
-        GameData.instance.charaPlacementCount = 0;   
-
-        // ゲームの度にインスタンスする
-        GameData.instance.CurrencyReactiveProperty = new ReactiveProperty<int>();
-
-        if (GameData.instance.isDebug) {
-            GameData.instance.CurrencyReactiveProperty.Value = GameData.instance.maxCurrency;
-        } else {
-            GameData.instance.CurrencyReactiveProperty.Value = 0;
-        }      
-    }
-
     /// <summary>
     /// ステージデータの設定
     /// </summary>
@@ -308,6 +286,24 @@ public class GameManager : MonoBehaviour
     }
 
 
+    //　未
+
+    /// <summary>
+    /// ゲームデータを初期化
+    /// </summary>
+    private void RefreshGameData() {
+        // デバッグ用
+        GameData.instance.charaPlacementCount = 0;   
+
+        // ゲームの度にインスタンスする
+        GameData.instance.CurrencyReactiveProperty = new ReactiveProperty<int>();
+
+        if (GameData.instance.isDebug) {
+            GameData.instance.CurrencyReactiveProperty.Value = GameData.instance.maxCurrency;
+        } else {
+            GameData.instance.CurrencyReactiveProperty.Value = 0;
+        }      
+    }
 
     /// <summary>
     /// ゲームオーバー処理

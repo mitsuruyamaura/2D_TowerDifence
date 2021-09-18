@@ -30,10 +30,10 @@ public class GameData : MonoBehaviour
 
     public int defenseBaseDurability;     // デバッグ用
 
-
-    // 未
     public int stageNo;
 
+
+    // 未
     public int totalClearPoint;
 
     [Header("契約して所持しているキャラの番号")]
