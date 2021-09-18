@@ -9,6 +9,9 @@ public class DefenseBase : MonoBehaviour
 
     private int maxDefenseBaseDurability;
 
+    private GameManager gameManager;
+    private UIManager uiManager;
+
 
     // –¢
     [SerializeField, HideInInspector]
@@ -16,9 +19,6 @@ public class DefenseBase : MonoBehaviour
 
     [SerializeField]
     private UnityEngine.UI.Slider durabilityGauge;
-
-    private GameManager gameManager;
-    private UIManager uiManager;
 
     /// <summary>
     /// İ’è

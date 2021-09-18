@@ -28,8 +28,6 @@ public class EnemyGenerator : MonoBehaviour
 
     private GameManager gameManager;
 
-
-    // mi
     private StageData stageData;
 
 
@@ -172,8 +170,6 @@ public class EnemyGenerator : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-
-    // mi
 
     /// <summary>
     /// ステージに応じた PathDatas をセット

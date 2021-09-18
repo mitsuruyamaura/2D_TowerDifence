@@ -162,6 +162,8 @@ MonoBehaviour:
   enemiesList: []
   uiManager: {fileID: 1024534446}
   charasList: []
+  currentMapInfo: {fileID: 0}
+  defenseBasePrefab: {fileID: 6519958887863936403, guid: 8abf5c532c05bb441b176d04d0efb2f8, type: 3}
   currentStageData:
     stageName: 
     stageNo: 0
@@ -171,7 +173,6 @@ MonoBehaviour:
     stageSprite: {fileID: 0}
     mapInfo: {fileID: 0}
     maxCharaPlacementCount: 0
-  defenseBasePrefab: {fileID: 6519958887863936403, guid: 8abf5c532c05bb441b176d04d0efb2f8, type: 3}
 --- !u!4 &184673229
 Transform:
   m_ObjectHideFlags: 0
@@ -1725,6 +1726,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: stageNo
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: currencyIntervalTime
       value: 60
