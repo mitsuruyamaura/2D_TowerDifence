@@ -319,7 +319,7 @@ public class GameManager : MonoBehaviour
         // TODO ゲームオーバー時の処理を追加
 
         // シーン遷移
-        SceneStateManager.instance.PreparateNextScene(SceneName.Main);
+        SceneStateManager.instance.PreparateNextScene(SceneType.Main);
     }
 
     /// <summary>
@@ -363,6 +363,6 @@ public class GameManager : MonoBehaviour
         }
 
         // シーン遷移
-        SceneStateManager.instance.PreparateNextScene(SceneName.Main);
+        SceneStateManager.instance.PreparateNextScene(SceneType.Main);
     }
 }

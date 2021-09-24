@@ -80,7 +80,7 @@ public class StageSelect : SceneStateBase
     /// ƒoƒgƒ‹‚Ì€”õ
     /// </summary>
     public void PraparateBattle() {
-        SceneStateManager.instance.PreparateNextScene(SceneName.Battle);
+        SceneStateManager.instance.PreparateNextScene(SceneType.Battle);
     }
 
     /// <summary>
