@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
+/// <summary>
+/// ƒV[ƒ“‚Ìí—Ş
+/// </summary>
 public enum SceneType {
-    Main,
-    Battle
-
+    //Main,
+    Battle,
+    World,
 }
 
 public class SceneStateManager : MonoBehaviour

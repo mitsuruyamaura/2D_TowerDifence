@@ -69,12 +69,12 @@ public class ContractDetail : MonoBehaviour
 
         canvasGroupSubmitContractStamp.alpha = 1.0f;
 
-        // スタンプを元の大きさに戻す
+        // スタンプを元の大きさに戻す。Easeの設定により、スタンプを捺しているように見せる
         imgContractStamp.transform.DOScale(Vector3.one, 0.75f)
             .SetEase(Ease.OutBack, 1.0f)
             .OnComplete(() => 
             {
-                // ボタンを押せるようにする
+                // ボタン(画面)を押せるようにする
                 canvasGroupSubmitContractStamp.blocksRaycasts = true;
             }
         );

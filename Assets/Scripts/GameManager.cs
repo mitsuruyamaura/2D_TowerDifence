@@ -51,8 +51,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private DefenseBase defenseBasePrefab;
 
-
-    // mi
     [SerializeField]
     private StageData currentStageData;
 
@@ -285,8 +283,52 @@ public class GameManager : MonoBehaviour
         enemyGenerator.SetUpPathDatas(pathDatas);
     }
 
+    /// <summary>
+    /// ゲームクリアと報酬処理
+    /// </summary>
+    private IEnumerator GameClearAndResult() {
 
-    //　未
+        // ゲーム終了
+        GameUpToCommon();
+
+        // TODO ゲームクリア演出(文字)
+        //yield return StartCoroutine(uiManager.CreateGameClearSet());
+
+        // ロゴで演出
+        yield return StartCoroutine(uiManager.GameClear());
+
+        // クリアボーナスの獲得
+        GameData.instance.totalClearPoint += currentStageData.clearPoint;
+
+        GameData.instance.stageNo++;
+
+        // 未クリアである場合
+        if (!GameData.instance.clearedStageNosList.Contains(GameData.instance.stageNo)) {
+            // 次のステージを登録してステージシーンで表示できるようにする
+            GameData.instance.clearedStageNosList.Add(GameData.instance.stageNo);
+        }
+
+        // セーブ
+        GameData.instance.SetSaveData();
+
+        // シーン遷移
+        SceneStateManager.instance.PreparateNextScene(SceneType.World);
+    }
+
+    /// <summary>
+    /// ゲーム終了時の共通処理
+    /// </summary>
+    private void GameUpToCommon() {
+
+        // ゲームの進行状態をゲーム終了に変更
+        SetGameState(GameState.GameUp);
+
+        // キャラ配置用のポップアップが開いている場合には破棄
+        charaGenerator.InactivatePlacementCharaSelectPopUp();
+
+        // TODO ゲーム終了時に、ゲームクリアとゲームオーバーの共通する処理を追加
+
+    }
 
     /// <summary>
     /// ゲームデータを初期化
@@ -319,50 +361,6 @@ public class GameManager : MonoBehaviour
         // TODO ゲームオーバー時の処理を追加
 
         // シーン遷移
-        SceneStateManager.instance.PreparateNextScene(SceneType.Main);
-    }
-
-    /// <summary>
-    /// ゲーム終了時の共通処理
-    /// </summary>
-    private void GameUpToCommon() {
-
-        // ゲームの進行状態をゲーム終了に変更
-        SetGameState(GameState.GameUp);
-
-        // キャラ配置用のポップアップが開いている場合には破棄
-        charaGenerator.InactivatePlacementCharaSelectPopUp();
-
-        // TODO ゲーム終了時に、ゲームクリアとゲームオーバーの共通する処理を追加
-
-    }
-
-    /// <summary>
-    /// ゲームクリアと報酬処理
-    /// </summary>
-    private IEnumerator GameClearAndResult() {
-
-        // ゲーム終了
-        GameUpToCommon();
-
-        // TODO ゲームクリア演出(文字)
-        //yield return StartCoroutine(uiManager.CreateGameClearSet());
-
-        // ロゴで演出
-        yield return StartCoroutine(uiManager.GameClear());
-
-        // クリアボーナスの獲得
-        GameData.instance.totalClearPoint += currentStageData.clearPoint;
-
-        GameData.instance.stageNo++;
-
-        // 未クリアである場合
-        if (!GameData.instance.clearedStageNosList.Contains(GameData.instance.stageNo)) {
-            // 次のステージを登録してステージシーンで表示できるようにする
-            GameData.instance.clearedStageNosList.Add(GameData.instance.stageNo);
-        }
-
-        // シーン遷移
-        SceneStateManager.instance.PreparateNextScene(SceneType.Main);
+        SceneStateManager.instance.PreparateNextScene(SceneType.World);
     }
 }
