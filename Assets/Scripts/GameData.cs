@@ -32,8 +32,6 @@ public class GameData : MonoBehaviour
 
     public int stageNo;
 
-
-    // 未
     public int totalClearPoint;
 
     [Header("契約して所持しているキャラの番号")]
@@ -43,6 +41,7 @@ public class GameData : MonoBehaviour
     public List<int> clearedStageNosList = new List<int>();
 
 
+    // 未
     public int charaPlacementCount;       // デバッグ用(不要) 
 
     // TODO 敵の破壊数の管理も ReactiveProperty を使う
