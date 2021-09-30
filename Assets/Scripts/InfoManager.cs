@@ -28,7 +28,7 @@ public class InfoManager : MonoBehaviour
         canvasGroup.DOFade(0, 0.5f)
             .SetEase(Ease.Linear)
             .OnComplete(() => {
-                SceneStateManager.instance.PreparateNextScene(SceneType.Main);
+                SceneStateManager.instance.PreparateNextScene(SceneType.World);
                 Destroy(gameObject);
             });
     }

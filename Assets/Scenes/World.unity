@@ -790,12 +790,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: save
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: isDebug
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: totalClearPoint
-      value: 200
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: currencyIntervalTime
@@ -806,8 +810,16 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: engageCharaNosList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: clearedStageNosList.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: engageCharaNosList.Array.data[1]
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: clearedStageNosList.Array.data[1]
