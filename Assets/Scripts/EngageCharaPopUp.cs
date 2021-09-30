@@ -66,6 +66,9 @@ public class EngageCharaPopUp : CharaSelectPopUpBase
         // GameData にキャラ追加
         GameData.instance.engageCharaNosList.Add(chooseCharaData.charaNo);
 
+        // セーブ
+        GameData.instance.SetSaveData();
+
         // 表示更新　UniRX でも
         sceneStateBase.UpdateDisplay();
 

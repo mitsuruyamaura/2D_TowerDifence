@@ -35,9 +35,10 @@ public class StageSelect : SceneStateBase
 
         GenerateStageSelectPopUp();
 
-        if (!GameData.instance.clearedStageNosList.Contains(0)) {
-            GameData.instance.clearedStageNosList.Add(0);
-        }
+        // GameData ë§Ç≈ê›íË
+        //if (!GameData.instance.clearedStageNosList.Contains(0)) {
+        //    GameData.instance.clearedStageNosList.Add(0);
+        //}
 
         SetUpAllStageSelectDetails();
 

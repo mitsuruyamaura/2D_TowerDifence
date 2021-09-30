@@ -308,8 +308,11 @@ public class GameManager : MonoBehaviour
             GameData.instance.clearedStageNosList.Add(GameData.instance.stageNo);
         }
 
+        // セーブ
+        GameData.instance.SetSaveData();
+
         // シーン遷移
-        SceneStateManager.instance.PreparateNextScene(SceneType.Main);
+        SceneStateManager.instance.PreparateNextScene(SceneType.World);
     }
 
     /// <summary>
@@ -358,6 +361,6 @@ public class GameManager : MonoBehaviour
         // TODO ゲームオーバー時の処理を追加
 
         // シーン遷移
-        SceneStateManager.instance.PreparateNextScene(SceneType.Main);
+        SceneStateManager.instance.PreparateNextScene(SceneType.World);
     }
 }
