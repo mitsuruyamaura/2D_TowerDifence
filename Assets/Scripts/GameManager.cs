@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
 
     //[SerializeField]
     private DefenseBase defenseBase;
+    private DefenseBase[] defenseBases;
 
     [SerializeField]
     private MapInfo currentMapInfo;
@@ -69,8 +70,8 @@ public class GameManager : MonoBehaviour
         // キャラ配置用ポップアップの生成と設定
         StartCoroutine(charaGenerator.SetUpCharaGenerator(this, currentStageData));
 
-        // 拠点の設定
-        defenseBase.SetUpDefenseBase(this, currentStageData.defenseBaseDurability, uiManager);
+        // 拠点の設定(複数にしたので、SetUpStageData メソッド内で行う)
+        //defenseBase.SetUpDefenseBase(this, currentStageData.defenseBaseDurability, uiManager);
 
         // オープニング演出再生
         yield return StartCoroutine(uiManager.Opening());
@@ -160,6 +161,14 @@ public class GameManager : MonoBehaviour
     public void JudgeGameClear() {
         // 生成数を超えているか
         if (destroyEnemyCount >= maxEnemyCount) {
+
+            // 防衛拠点の耐久力が 0 以下の場合
+            if (GameData.instance.defenseBaseDurability <= 0) {
+
+                // ゲームオーバー
+                GameOver();
+                return;
+            }
 
             Debug.Log("ゲームクリア");
 
@@ -273,7 +282,20 @@ public class GameManager : MonoBehaviour
 
         // TODO 他にもあれば追加
         currentMapInfo = Instantiate(currentStageData.mapInfo);
-        defenseBase = Instantiate(defenseBasePrefab, currentMapInfo.GetDefenseBaseTran());
+
+        //defenseBase = Instantiate(defenseBasePrefab, currentMapInfo.GetDefenseBaseTran());
+
+        // DefenseBase の位置情報を取得
+        Transform[] defenseBaseTrans = currentMapInfo.GetMultipleDefenseBaseTrans();
+        Debug.Log(defenseBaseTrans.Length);
+
+        defenseBases = new DefenseBase[defenseBaseTrans.Length];
+
+        // 複数の DefenseBase の生成(１つの場合にも対応)
+        for (int i = 0; i < defenseBaseTrans.Length; i++) {
+            defenseBases[i] = Instantiate(defenseBasePrefab, defenseBaseTrans[i]);
+            defenseBases[i].SetUpDefenseBase(this, currentStageData.defenseBaseDurability, uiManager);
+        }
 
         // PathDatas の設定
         PathData[] pathDatas = new PathData[currentStageData.mapInfo.appearEnemyInfos.Length];

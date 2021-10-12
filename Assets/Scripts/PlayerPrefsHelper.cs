@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using System.Linq;
 
 /// <summary>
@@ -21,8 +21,9 @@ public static class PlayerPrefsHelper {
     /// <summary>
     /// 指定されたオブジェクトのデータをセーブ
     /// </summary>
+    /// <typeparam name="T">セーブする型</typeparam>
     /// <param name="key">データを識別するためのキー</param>
-    /// <param name="isSave"></param>
+    /// <param name="obj">セーブする情報</param>
     public static void SaveSetObjectData<T>(string key, T obj) {
 
         // オブジェクトのデータを Json 形式に変換
@@ -38,8 +39,8 @@ public static class PlayerPrefsHelper {
     /// <summary>
     /// 指定されたオブジェクトのデータをロード
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
+    /// <typeparam name="T">ロードする型</typeparam>
+    /// <param name="key">データを識別するためのキー</param>
     /// <returns></returns>
     public static T LoadGetObjectData<T>(string key) {
 

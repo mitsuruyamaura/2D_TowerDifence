@@ -25,9 +25,9 @@ MonoBehaviour:
     stageNo: 1
     generateIntervalTime: 300
     clearPoint: 300
-    defenseBaseDurability: 80
+    defenseBaseDurability: 10
     stageSprite: {fileID: 21300000, guid: 88beb41e54072f8429af554c8661e02a, type: 3}
-    mapInfo: {fileID: 1076739480964982573, guid: c3e177096455d0044842921e7ef6c56a, type: 3}
+    mapInfo: {fileID: 1076739480964982573, guid: 7efbbacca17af994cb92329763b98a46, type: 3}
     maxCharaPlacementCount: 5
   - stageName: "\u30EB\u30FC\u30F4\u30A9\u30B9\u306E\u68EE"
     stageNo: 2
@@ -35,5 +35,5 @@ MonoBehaviour:
     clearPoint: 500
     defenseBaseDurability: 100
     stageSprite: {fileID: 21300000, guid: 391f97da05cf45240a8ecdec752cd9be, type: 3}
-    mapInfo: {fileID: 1076739480964982573, guid: c3e177096455d0044842921e7ef6c56a, type: 3}
+    mapInfo: {fileID: 1076739480964982573, guid: 7efbbacca17af994cb92329763b98a46, type: 3}
     maxCharaPlacementCount: 6

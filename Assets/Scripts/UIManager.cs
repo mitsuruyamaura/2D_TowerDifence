@@ -33,6 +33,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Slider sliderDurabilityGauge;
 
+    [SerializeField]
+    private Slider sliderMultipleDefenseBaseDurabilityGauge;
+
 
     /// <summary>
     /// カレンシーの表示更新
@@ -129,5 +132,17 @@ public class UIManager : MonoBehaviour
     public void SetDurabilityGauge(Slider slider) {
 
         sliderDurabilityGauge = slider;
+    }
+
+    /// <summary>
+    /// 複数の防衛拠点の場合の耐久力ゲージ表示の更新
+    /// </summary>
+    /// <param name="durabilityValue"></param>
+    /// <param name="maxDurabilityValue"></param>
+    public void UpdateDipslayMultipleDefenseBaseDurabilityGauge(int durabilityValue, int maxDurabilityValue) {
+
+        float value = (float)durabilityValue / maxDurabilityValue;
+
+        sliderMultipleDefenseBaseDurabilityGauge.DOValue(value, 0.25f).SetEase(Ease.Linear);
     }
 }

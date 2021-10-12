@@ -11,7 +11,10 @@ public class MapInfo : MonoBehaviour
     private Grid grid;                            // Base 側の Grid を指定する 
 
     [SerializeField]
-    private Transform defenceBaseTran;            // DesenseBase を生成する位置
+    private Transform defenseBaseTran;            // DesenseBase を生成する位置
+
+    [SerializeField]
+    private Transform[] multipleDefenseBaseTrans;   // 複数の DefenseBase を生成するための位置情報
 
     /// <summary>
     /// 出現するエネミー１体分の情報用クラス
@@ -44,6 +47,11 @@ public class MapInfo : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public Transform GetDefenseBaseTran() {
-        return defenceBaseTran;
+        return defenseBaseTran;
+    }
+
+
+    public Transform[] GetMultipleDefenseBaseTrans() {
+        return multipleDefenseBaseTrans;
     }
 }

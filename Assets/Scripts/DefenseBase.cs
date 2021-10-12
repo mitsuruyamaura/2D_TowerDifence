@@ -5,7 +5,7 @@ using UnityEngine;
 public class DefenseBase : MonoBehaviour
 {
     [Header("耐久値")]
-    public int defenseBaseDurability;
+    public int defenseBaseDurability;       // 複数ある場合には利用しない
 
     private int maxDefenseBaseDurability;
 
@@ -27,7 +27,12 @@ public class DefenseBase : MonoBehaviour
     public void SetUpDefenseBase(GameManager gameManager, int defenseBaseDurability, UIManager uiManager) {
         this.gameManager = gameManager;
         this.uiManager = uiManager;
-        uiManager.SetDurabilityGauge(durabilityGauge);
+
+        // １つの場合
+        //uiManager.SetDurabilityGauge(durabilityGauge);
+
+        // 複数の場合(拠点上のゲージは隠す)
+        durabilityGauge.gameObject.SetActive(false);
 
         if (GameData.instance.isDebug) {
             maxDefenseBaseDurability = GameData.instance.defenseBaseDurability;
@@ -35,22 +40,35 @@ public class DefenseBase : MonoBehaviour
             maxDefenseBaseDurability = defenseBaseDurability;
         }
 
-        this.defenseBaseDurability = maxDefenseBaseDurability;
+        // １つの場合
+        //this.defenseBaseDurability = maxDefenseBaseDurability;
+        //uiManager.UpdateDisplayDurabilityGauge(this.defenseBaseDurability, maxDefenseBaseDurability);
 
-        uiManager.UpdateDisplayDurabilityGauge(this.defenseBaseDurability, maxDefenseBaseDurability);
+        // 複数の場合
+        GameData.instance.defenseBaseDurability = maxDefenseBaseDurability;
+        uiManager.UpdateDipslayMultipleDefenseBaseDurabilityGauge(GameData.instance.defenseBaseDurability, maxDefenseBaseDurability);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.TryGetComponent(out EnemyController enemyController)) {
-            defenseBaseDurability = Mathf.Clamp(defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
+
+            // １つしかない場合 
+            //defenseBaseDurability = Mathf.Clamp(defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
+
+            // 複数の DefenseBase がある場合
+            GameData.instance.defenseBaseDurability = Mathf.Clamp(GameData.instance.defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
 
             // ダメージ演出生成(耐久力 0 になった場合で別のエフェクトを用意してもいい)
             CreateDamageEffect();
 
-            uiManager.UpdateDisplayDurabilityGauge(defenseBaseDurability, maxDefenseBaseDurability);
+            // １つしかない場合 
+            //uiManager.UpdateDisplayDurabilityGauge(defenseBaseDurability, maxDefenseBaseDurability);
 
+            // 複数の DefenseBase がある場合
+            uiManager.UpdateDipslayMultipleDefenseBaseDurabilityGauge(GameData.instance.defenseBaseDurability, maxDefenseBaseDurability);
 
-            if (defenseBaseDurability <= 0 && gameManager.currentGameState == GameManager.GameState.Play) {
+            // 複数の場合
+            if (GameData.instance.defenseBaseDurability <= 0 && gameManager.currentGameState == GameManager.GameState.Play) {
                 Debug.Log("Game Over");
 
                 // TODO ゲームオーバー処理
