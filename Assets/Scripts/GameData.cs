@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System;
 
 public class GameData : MonoBehaviour
 {
@@ -40,14 +41,21 @@ public class GameData : MonoBehaviour
     [Header("表示するステージの番号")]
     public List<int> clearedStageNosList = new List<int>();
 
-
-
+    /// <summary>
+    /// セーブ・ロード用のクラス
+    /// </summary>
     [System.Serializable]
     public class SaveData {
         public int clearPoint;
-        public string engageCharaNosListString;
-        public string clearedStageNosListString;
+        public List<int> engageList = new List<int>();
+        public List<int> clearedStageList = new List<int>();
+        //public string engageCharaNosListString;
+        //public string clearedStageNosListString;
     }
+
+    //private const string CLEAR_POINT_KEY = "clearPoint";
+    //private const string ENGAGE_CHARA_KEY = "engageCharaNosList";
+    //private const string CLEARED_STAGE_KEY = "clearedStageNosList";
 
     private const string SAVE_KEY = "SaveData";
 
@@ -67,6 +75,13 @@ public class GameData : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
+
+        // デバッグ用(不要)
+        //SetSaveData();
+        //GetSaveData();
+
+        //SaveEngageCharaList();
+        //LoadEngageCharaList();
 
         //ユーザーデータの初期化
         Initialize();
@@ -107,11 +122,15 @@ public class GameData : MonoBehaviour
 
         // セーブ用のデータを作成
         SaveData saveData = new SaveData {
-            clearPoint = totalClearPoint,
 
-            // 各 List は string 型に変換
-            engageCharaNosListString = PlayerPrefsHelper.ConvertListToString(engageCharaNosList),
-            clearedStageNosListString = PlayerPrefsHelper.ConvertListToString(clearedStageNosList)
+            // 各値を設定
+            clearPoint = totalClearPoint,
+            engageList = engageCharaNosList,
+            clearedStageList = clearedStageNosList
+
+            // 各 List は string 型に変換(しなくてもシリアライズできたので、不要)
+            //engageCharaNosListString = PlayerPrefsHelper.ConvertListToString(engageCharaNosList),
+            //clearedStageNosListString = PlayerPrefsHelper.ConvertListToString(clearedStageNosList)
         };
 
         // SaveData クラスとして SAVE_KEY の名前でセーブ
@@ -122,12 +141,81 @@ public class GameData : MonoBehaviour
     /// SaveData をロードして、各値に設定
     /// </summary>
     public void GetSaveData() {
+
+        // SaveData としてロード
         SaveData saveData = PlayerPrefsHelper.LoadGetObjectData<SaveData>(SAVE_KEY);
 
+        // 各値に SaveData 内の値を設定
         totalClearPoint = saveData.clearPoint;
 
-        engageCharaNosList = PlayerPrefsHelper.ConvertStringToList(saveData.engageCharaNosListString);
+        engageCharaNosList = saveData.engageList; //PlayerPrefsHelper.ConvertStringToList(saveData.engageCharaNosListString);
 
-        clearedStageNosList = PlayerPrefsHelper.ConvertStringToList(saveData.clearedStageNosListString);
+        clearedStageNosList = saveData.clearedStageList; //PlayerPrefsHelper.ConvertStringToList(saveData.clearedStageNosListString);
     }
+
+    ///// <summary>
+    ///// engageCharaNosList の値をセーブ
+    ///// </summary>
+    //public void SaveEngageCharaList() {
+
+    //    // 新しく作成する文字列
+    //    string engageCharaListString = "";
+
+    //    // 契約したキャラの List をカンマ区切りの１行の文字列にする
+    //    for (int i = 0; i < engageCharaNosList.Count; i++) {
+    //        engageCharaListString += engageCharaNosList[i].ToString() + ",";
+    //    }
+
+    //    // 文字列をセットしてセーブ
+    //    PlayerPrefs.SetString(ENGAGE_CHARA_KEY, engageCharaListString);
+    //    PlayerPrefs.Save();
+    //}
+
+    ///// <summary>
+    ///// engageCharaNosList の値をロード
+    ///// </summary>
+    //public void LoadEngageCharaList() {
+
+    //    // 文字列としてロード
+    //    string engageCharaListString = PlayerPrefs.GetString(ENGAGE_CHARA_KEY, "");
+
+    //    // ロードした文字列がある場合
+    //    if (!string.IsNullOrEmpty(engageCharaListString)) {
+
+    //        // カンマの位置で区切って、文字列の配列を作成。その際、最後にできる空白の文字列を削除
+    //        string[] strArray = engageCharaListString.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            
+    //        Debug.Log(strArray.Length);
+
+    //        // 配列の数だけ契約したキャラの情報があるので
+    //        for (int i = 0; i < strArray.Length; i++) {
+    //            Debug.Log(strArray[i]);
+
+    //            // 配列の文字列の値を int 型に変換して List に追加して、契約キャラの List を復元
+    //            engageCharaNosList.Add(int.Parse(strArray[i]));
+    //        }
+    //    }
+    //}
+
+    ///// <summary>
+    ///// TotalClearPoint の値をセーブ
+    ///// </summary>
+    //public void SaveClearPoint() {
+
+    //    PlayerPrefs.SetInt(CLEAR_POINT_KEY, totalClearPoint);
+
+    //    PlayerPrefs.Save();
+
+    //    Debug.Log("セーブ : " + CLEAR_POINT_KEY + " : " + totalClearPoint);
+    //}
+
+    ///// <summary>
+    ///// TotalClearPoint の値をロード
+    ///// </summary>
+    //public void LoadClearPoint() {
+
+    //    totalClearPoint = PlayerPrefs.GetInt(CLEAR_POINT_KEY, 0);
+
+    //    Debug.Log("ロード : " + CLEAR_POINT_KEY + " : " + totalClearPoint);
+    //}
 }

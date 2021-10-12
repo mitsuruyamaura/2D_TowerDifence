@@ -777,7 +777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: defenseBaseDurability
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: engageCharaNosList.Array.size
@@ -788,8 +788,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: engageCharaNosList.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: engageCharaNosList.Array.data[1]
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
+      propertyPath: engageCharaNosList.Array.data[2]
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2180004387296682848, guid: 6d3d891af73805f488e3a407ad59e722, type: 3}
       propertyPath: clearedStageNosList.Array.data[1]

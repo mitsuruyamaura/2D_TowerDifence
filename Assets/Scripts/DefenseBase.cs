@@ -5,7 +5,7 @@ using UnityEngine;
 public class DefenseBase : MonoBehaviour
 {
     [Header("‘Ï‹v’l")]
-    public int defenseBaseDurability;
+    public int defenseBaseDurability;       // •¡”‚ ‚éê‡‚É‚Í—˜—p‚µ‚È‚¢
 
     private int maxDefenseBaseDurability;
 
@@ -27,7 +27,12 @@ public class DefenseBase : MonoBehaviour
     public void SetUpDefenseBase(GameManager gameManager, int defenseBaseDurability, UIManager uiManager) {
         this.gameManager = gameManager;
         this.uiManager = uiManager;
-        uiManager.SetDurabilityGauge(durabilityGauge);
+
+        // ‚P‚Â‚Ìê‡
+        //uiManager.SetDurabilityGauge(durabilityGauge);
+
+        // •¡”‚Ìê‡(‹’“_ã‚ÌƒQ[ƒW‚Í‰B‚·)
+        durabilityGauge.gameObject.SetActive(false);
 
         if (GameData.instance.isDebug) {
             maxDefenseBaseDurability = GameData.instance.defenseBaseDurability;
@@ -35,26 +40,39 @@ public class DefenseBase : MonoBehaviour
             maxDefenseBaseDurability = defenseBaseDurability;
         }
 
-        this.defenseBaseDurability = maxDefenseBaseDurability;
+        // ‚P‚Â‚Ìê‡
+        //this.defenseBaseDurability = maxDefenseBaseDurability;
+        //uiManager.UpdateDisplayDurabilityGauge(this.defenseBaseDurability, maxDefenseBaseDurability);
 
-        uiManager.UpdateDisplayDurabilityGauge(this.defenseBaseDurability, maxDefenseBaseDurability);
+        // •¡”‚Ìê‡
+        GameData.instance.defenseBaseDurability = maxDefenseBaseDurability;
+        uiManager.UpdateDipslayMultipleDefenseBaseDurabilityGauge(GameData.instance.defenseBaseDurability, maxDefenseBaseDurability);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.TryGetComponent(out EnemyController enemyController)) {
-            defenseBaseDurability = Mathf.Clamp(defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
+
+            // ‚P‚Â‚µ‚©‚È‚¢ê‡ 
+            //defenseBaseDurability = Mathf.Clamp(defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
+
+            // •¡”‚Ì DefenseBase ‚ª‚ ‚éê‡
+            GameData.instance.defenseBaseDurability = Mathf.Clamp(GameData.instance.defenseBaseDurability - enemyController.attackPower, 0, maxDefenseBaseDurability);
 
             // ƒ_ƒ[ƒW‰‰o¶¬(‘Ï‹v—Í 0 ‚É‚È‚Á‚½ê‡‚Å•Ê‚ÌƒGƒtƒFƒNƒg‚ğ—pˆÓ‚µ‚Ä‚à‚¢‚¢)
             CreateDamageEffect();
 
-            uiManager.UpdateDisplayDurabilityGauge(defenseBaseDurability, maxDefenseBaseDurability);
+            // ‚P‚Â‚µ‚©‚È‚¢ê‡ 
+            //uiManager.UpdateDisplayDurabilityGauge(defenseBaseDurability, maxDefenseBaseDurability);
 
+            // •¡”‚Ì DefenseBase ‚ª‚ ‚éê‡
+            uiManager.UpdateDipslayMultipleDefenseBaseDurabilityGauge(GameData.instance.defenseBaseDurability, maxDefenseBaseDurability);
 
-            if (defenseBaseDurability <= 0 && gameManager.currentGameState == GameManager.GameState.Play) {
+            // •¡”‚Ìê‡
+            if (GameData.instance.defenseBaseDurability <= 0 && gameManager.currentGameState == GameManager.GameState.Play) {
                 Debug.Log("Game Over");
 
                 // TODO ƒQ[ƒ€ƒI[ƒo[ˆ—
-                gameManager.GameOver();
+                StartCoroutine(gameManager.GameOver());
             }
 
             // “G‚Ì”j‰ó
