@@ -159,16 +159,17 @@ public class GameManager : MonoBehaviour
     /// ゲームクリア判定
     /// </summary>
     public void JudgeGameClear() {
+
+        // 防衛拠点の耐久力が 0 以下の場合
+        if (GameData.instance.defenseBaseDurability <= 0) {
+
+            // ゲームオーバー
+            StartCoroutine(GameOver());
+            return;
+        }
+
         // 生成数を超えているか
         if (destroyEnemyCount >= maxEnemyCount) {
-
-            // 防衛拠点の耐久力が 0 以下の場合
-            if (GameData.instance.defenseBaseDurability <= 0) {
-
-                // ゲームオーバー
-                GameOver();
-                return;
-            }
 
             Debug.Log("ゲームクリア");
 
@@ -372,7 +373,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// ゲームオーバー処理
     /// </summary>
-    public void GameOver() {
+    public IEnumerator GameOver() {
 
         // ゲーム終了処理
         GameUpToCommon();
@@ -381,6 +382,9 @@ public class GameManager : MonoBehaviour
         uiManager.CreateGameOverSet();
 
         // TODO ゲームオーバー時の処理を追加
+
+
+        yield return new WaitForSeconds(3.0f);
 
         // シーン遷移
         SceneStateManager.instance.PreparateNextScene(SceneType.World);

@@ -72,7 +72,7 @@ public class DefenseBase : MonoBehaviour
                 Debug.Log("Game Over");
 
                 // TODO ゲームオーバー処理
-                gameManager.GameOver();
+                StartCoroutine(gameManager.GameOver());
             }
 
             // 敵の破壊

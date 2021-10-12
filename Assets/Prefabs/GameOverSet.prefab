@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0.8301887, g: 0.39629763, b: 0.39629763, a: 0.23529412}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -268,6 +268,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3240436718105045141}
     m_Modifications:
+    - target: {fileID: -659182924184274751, guid: 31b182e67df0a0a448c541eb8829802a, type: 3}
+      propertyPath: m_EffectColor.b
+      value: 0.5754717
+      objectReference: {fileID: 0}
+    - target: {fileID: -659182924184274751, guid: 31b182e67df0a0a448c541eb8829802a, type: 3}
+      propertyPath: m_EffectColor.g
+      value: 0.5754717
+      objectReference: {fileID: 0}
+    - target: {fileID: -659182924184274751, guid: 31b182e67df0a0a448c541eb8829802a, type: 3}
+      propertyPath: m_EffectColor.r
+      value: 0.5754717
+      objectReference: {fileID: 0}
     - target: {fileID: 4097824387231425116, guid: 31b182e67df0a0a448c541eb8829802a, type: 3}
       propertyPath: m_Text
       value: Game Over
